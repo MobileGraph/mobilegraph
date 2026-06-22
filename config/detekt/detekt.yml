@@ -1,0 +1,58 @@
+build:
+  maxIssues: 0
+  excludeCorrectable: false
+  weights:
+    # complexity: 2
+    # LongParameterList: 1
+    # style: 1
+    # comments: 1
+
+config:
+  validation: true
+  warningsAsErrors: false
+  checkExhaustiveness: false
+  # when validation is true, the config is validated against the default config
+  # if you want to exclude some rules from validation, add them here
+  # excludeProps:
+  #   - ".*>.*"
+
+complexity:
+  active: true
+  TooManyFunctions:
+    active: true
+    thresholdInFiles: 20
+    thresholdInClasses: 20
+    thresholdInInterfaces: 20
+    thresholdInObjects: 20
+    thresholdInEnums: 20
+  LargeClass:
+    active: true
+    threshold: 600
+
+style:
+  active: true
+  MagicNumber:
+    active: true
+    ignoreNumbers:
+      - '-1'
+      - '0'
+      - '1'
+      - '2'
+    ignoreHashCodeFunction: true
+    ignorePropertyDeclaration: true
+    ignoreLocalVariableDeclaration: true
+    ignoreConstantDeclaration: true
+    ignoreCompanionObjectPropertyDeclaration: true
+    ignoreAnnotation: true
+    ignoreNamedArgument: true
+    ignoreEnums: true
+
+naming:
+  active: true
+  FunctionNaming:
+    active: true
+    functionPattern: '[a-z][a-zA-Z0-9]*'
+    excludeClassPattern: '.*Test'
+  PackageNaming:
+    active: true
+    packagePattern: '[a-z]+(\.[a-z][a-z0-9]*)*'
