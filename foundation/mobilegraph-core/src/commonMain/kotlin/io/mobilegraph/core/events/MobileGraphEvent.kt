@@ -36,4 +36,55 @@ sealed interface MobileGraphEvent {
         override val sessionId: SessionId? = null,
         override val timestamp: Instant = Clock.System.now(),
     ) : MobileGraphEvent
+
+    // --- Phase 2: Knowledge & RAG Events ---
+
+    data class DocumentsLoaded(
+        override val traceId: TraceId,
+        override val requestId: RequestId,
+        val count: Int,
+        override val sessionId: SessionId? = null,
+        override val timestamp: Instant = Clock.System.now(),
+    ) : MobileGraphEvent
+
+    data class ChunkingCompleted(
+        override val traceId: TraceId,
+        override val requestId: RequestId,
+        val originalCount: Int,
+        val chunkCount: Int,
+        override val sessionId: SessionId? = null,
+        override val timestamp: Instant = Clock.System.now(),
+    ) : MobileGraphEvent
+
+    data class EmbeddingsGenerated(
+        override val traceId: TraceId,
+        override val requestId: RequestId,
+        val count: Int,
+        override val sessionId: SessionId? = null,
+        override val timestamp: Instant = Clock.System.now(),
+    ) : MobileGraphEvent
+
+    data class RetrievalStarted(
+        override val traceId: TraceId,
+        override val requestId: RequestId,
+        val query: String,
+        override val sessionId: SessionId? = null,
+        override val timestamp: Instant = Clock.System.now(),
+    ) : MobileGraphEvent
+
+    data class RetrievalCompleted(
+        override val traceId: TraceId,
+        override val requestId: RequestId,
+        val filteredDocumentCount: Int,
+        val vectorSearchedResult: List<Pair<String, Float>> = emptyList(), // ID and Score
+        override val sessionId: SessionId? = null,
+        override val timestamp: Instant = Clock.System.now(),
+    ) : MobileGraphEvent
+
+    data class RagResponseGenerated(
+        override val traceId: TraceId,
+        override val requestId: RequestId,
+        override val sessionId: SessionId? = null,
+        override val timestamp: Instant = Clock.System.now(),
+    ) : MobileGraphEvent
 }

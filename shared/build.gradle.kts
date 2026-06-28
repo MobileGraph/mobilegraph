@@ -19,7 +19,7 @@ kotlin {
     }
 
     android {
-        namespace = "io.mobilegrpah.ai.shared"
+        namespace = "io.mobilegraph.ai.shared"
         compileSdk =
             libs.versions.android.compileSdk
                 .get()

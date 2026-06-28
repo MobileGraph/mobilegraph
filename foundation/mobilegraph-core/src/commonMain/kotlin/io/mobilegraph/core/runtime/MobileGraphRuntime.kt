@@ -32,7 +32,7 @@ import kotlin.reflect.KClass
  */
 internal class MobileGraphRuntime(
     val environment: MobileGraphEnvironment,
-) {
+) : io.mobilegraph.core.events.EventPublisher {
     internal val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
     private val _events =
         MutableSharedFlow<MobileGraphEvent>(
@@ -43,6 +43,10 @@ internal class MobileGraphRuntime(
     val events = _events.asSharedFlow()
 
     fun createSession(modelName: String? = null): MobileGraphSession = DefaultMobileGraphSession(this, modelName)
+
+    override suspend fun publish(event: MobileGraphEvent) {
+        publishEvent(event)
+    }
 
     suspend fun publishEvent(event: MobileGraphEvent) {
         println("SDK Runtime: Publishing event: $event")

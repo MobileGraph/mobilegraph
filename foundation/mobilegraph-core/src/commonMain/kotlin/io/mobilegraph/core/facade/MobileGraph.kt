@@ -37,6 +37,17 @@ class MobileGraph private constructor(
      */
     fun createSession(modelName: String? = null): MobileGraphSession = runtime.createSession(modelName)
 
+    /**
+     * Accesses a component from the environment.
+     */
+    @Suppress("UNCHECKED_CAST")
+    fun <T : Any> getComponent(clazz: kotlin.reflect.KClass<T>): T? {
+        if (clazz == io.mobilegraph.core.events.EventPublisher::class) {
+            return runtime as T
+        }
+        return environment.getComponent(clazz)
+    }
+
     companion object {
         private var _instance: MobileGraph? = null
 

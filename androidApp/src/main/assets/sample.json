@@ -1,0 +1,58 @@
+{
+  "company": "ACME Robotics Pvt Ltd",
+  "documentVersion": "1.0",
+  "products": [
+    {
+      "productId": "RBX100",
+      "name": "RoboLift X100",
+      "category": "Warehouse Robot",
+      "priceUSD": 18500,
+      "payloadKg": 120,
+      "batteryHours": 14,
+      "chargingTimeHours": 2,
+      "navigation": "LiDAR + SLAM",
+      "otaUpdates": true,
+      "availableCountries": [
+        "India",
+        "Germany",
+        "Japan"
+      ]
+    },
+    {
+      "productId": "VAS200",
+      "name": "VisionAI Suite",
+      "category": "Computer Vision",
+      "priceUSD": 9500,
+      "supportedFeatures": [
+        "Object Detection",
+        "OCR",
+        "Barcode Reading",
+        "Defect Detection",
+        "Image Classification"
+      ],
+      "supportedPlatforms": [
+        "Windows",
+        "Linux",
+        "Docker"
+      ]
+    },
+    {
+      "productId": "FM300",
+      "name": "Fleet Manager",
+      "category": "Cloud Platform",
+      "priceUSD": 4500,
+      "features": [
+        "Robot Monitoring",
+        "Battery Analytics",
+        "Remote Diagnostics",
+        "OTA Deployment",
+        "User Management"
+      ]
+    }
+  ],
+  "support": {
+    "email": "support@acmerobotics.com",
+    "phone": "+91-80-1234-5678",
+    "workingHours": "Monday-Friday 09:00-18:00 IST"
+  }
+}

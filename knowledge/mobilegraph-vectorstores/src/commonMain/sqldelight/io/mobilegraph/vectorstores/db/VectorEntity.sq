@@ -1,0 +1,34 @@
+CREATE TABLE VectorEntity (
+    pk INTEGER PRIMARY KEY AUTOINCREMENT,
+    chunk_id TEXT NOT NULL UNIQUE,
+    doc_id TEXT NOT NULL,
+    doc_name TEXT,
+    page_number INTEGER,
+    content TEXT NOT NULL,
+    metadata TEXT NOT NULL, -- JSON string for other metadata
+    embedding BLOB NOT NULL
+);
+
+CREATE INDEX idx_doc_id ON VectorEntity(doc_id);
+
+insert:
+INSERT OR REPLACE INTO VectorEntity (chunk_id, doc_id, doc_name, page_number, content, metadata, embedding)
+VALUES (?, ?, ?, ?, ?, ?, ?);
+
+deleteById:
+DELETE FROM VectorEntity WHERE chunk_id = ?;
+
+deleteByDocId:
+DELETE FROM VectorEntity WHERE doc_id = ?;
+
+clear:
+DELETE FROM VectorEntity;
+
+getAll:
+SELECT * FROM VectorEntity;
+
+getByDocId:
+SELECT * FROM VectorEntity WHERE doc_id = ?;
+
+getUniqueDocIds:
+SELECT DISTINCT doc_id FROM VectorEntity;

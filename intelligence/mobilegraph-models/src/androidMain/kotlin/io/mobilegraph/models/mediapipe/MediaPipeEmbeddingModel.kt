@@ -13,7 +13,7 @@ import kotlinx.coroutines.withContext
  * An offline embedding model implementation using MediaPipe Tasks.
  *
  * @param contextProvider A function that provides the Android Context.
- * @param modelPath Path to the TFLite model file in the assets folder.
+ * @param modelPath Path to the TFLite model file in the assets folder. Download from: https://storage.googleapis.com/mediapipe-models/text_embedder/universal_sentence_encoder/float32/1/universal_sentence_encoder.tflite
  */
 class MediaPipeEmbeddingModel(
     private val contextProvider: () -> Any,
@@ -49,19 +49,18 @@ class MediaPipeEmbeddingModel(
     override suspend fun embed(
         text: String,
         context: ExecutionContext,
-    ): List<Float> =
+    ): FloatArray =
         withContext(Dispatchers.Default) {
             val result = getTextEmbedder().embed(text)
             result
                 .embeddingResult()
                 .embeddings()
                 .first()
-                .floatEmbedding()
-                .toList()
+                .floatEmbedding()!!
         }
 
-    override suspend fun embedBatch(
+    override suspend fun embed(
         texts: List<String>,
         context: ExecutionContext,
-    ): List<List<Float>> = texts.map { embed(it, context) }
+    ): List<FloatArray> = texts.map { embed(it, context) }
 }

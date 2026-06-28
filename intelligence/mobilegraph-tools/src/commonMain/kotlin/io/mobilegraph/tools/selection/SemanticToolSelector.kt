@@ -42,7 +42,7 @@ class SemanticToolSelector(
     private suspend fun getOrComputeEmbedding(
         tool: Tool<*, *>,
         context: ExecutionContext,
-    ): List<Float> {
+    ): FloatArray {
         val key = "tool:${tool.metadata.name}"
         return embeddingStore.get(key) ?: run {
             val embedding = embeddingModel.embed("${tool.metadata.name}: ${tool.metadata.description}", context)
@@ -52,8 +52,8 @@ class SemanticToolSelector(
     }
 
     private fun cosineSimilarity(
-        v1: List<Float>,
-        v2: List<Float>,
+        v1: FloatArray,
+        v2: FloatArray,
     ): Float {
         var dotProduct = 0.0f
         var normA = 0.0f
