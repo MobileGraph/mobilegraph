@@ -30,16 +30,17 @@ class SemanticToolSelectorTest {
         override suspend fun embed(
             text: String,
             context: ExecutionContext,
-        ): List<Float> =
+        ): FloatArray =
             embeddings.entries
                 .find {
                     text.contains(it.key)
-                }?.value ?: listOf(0f, 0f)
+                }?.value
+                ?.toFloatArray() ?: floatArrayOf(0f, 0f)
 
-        override suspend fun embedBatch(
+        override suspend fun embed(
             texts: List<String>,
             context: ExecutionContext,
-        ): List<List<Float>> = texts.map { embed(it, context) }
+        ): List<FloatArray> = texts.map { embed(it, context) }
     }
 
     @Test

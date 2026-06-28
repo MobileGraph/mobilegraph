@@ -20,23 +20,31 @@ dependencies {
     implementation(projects.intelligence.mobilegraphPrompts)
     implementation(projects.intelligence.mobilegraphParsers)
     implementation(projects.intelligence.mobilegraphTools)
+    implementation(projects.intelligence.mobilegraphRag)
+    implementation(projects.knowledge.mobilegraphDocuments)
+    implementation(projects.knowledge.mobilegraphEmbeddings)
+    implementation(projects.knowledge.mobilegraphRetrieval)
+    implementation(projects.knowledge.mobilegraphVectorstores)
 
+    implementation(libs.sqldelight.android.driver)
     implementation(libs.ktor.client.okhttp)
+    implementation(libs.jsoup)
     implementation(libs.androidx.activity.compose)
 
     implementation(libs.compose.uiToolingPreview)
     debugImplementation(libs.compose.uiTooling)
+    implementation(libs.pdfbox.android)
 }
 
 android {
-    namespace = "io.mobilegrpah.ai"
+    namespace = "io.mobilegraph.ai"
     compileSdk =
         libs.versions.android.compileSdk
             .get()
             .toInt()
 
     defaultConfig {
-        applicationId = "io.mobilegrpah.ai"
+        applicationId = "io.mobilegraph.ai"
         minSdk =
             libs.versions.android.minSdk
                 .get()

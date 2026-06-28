@@ -1,0 +1,11 @@
+EmployeeID,Name,Department,Designation,Location,JoiningDate,ExperienceYears,Manager,Email
+EMP001,Alice Johnson,Engineering,Senior Software Engineer,Bengaluru,2020-05-10,8,Rajesh Kumar,alice@acme.com
+EMP002,Bob Smith,Engineering,Tech Lead,Bengaluru,2018-02-15,12,Rajesh Kumar,bob@acme.com
+EMP003,Carol Davis,QA,QA Lead,Hyderabad,2019-09-20,10,Neha Singh,carol@acme.com
+EMP004,David Wilson,HR,HR Manager,Bengaluru,2017-11-01,15,Sonia Gupta,david@acme.com
+EMP005,Emily Brown,Sales,Regional Sales Manager,Mumbai,2021-06-11,9,Amit Verma,emily@acme.com
+EMP006,Frank Miller,Engineering,DevOps Engineer,Chennai,2022-03-18,6,Bob Smith,frank@acme.com
+EMP007,Grace Lee,Support,Customer Support Engineer,Pune,2023-01-09,4,Sneha Roy,grace@acme.com
+EMP008,Henry Walker,Engineering,AI Engineer,Bengaluru,2024-04-15,5,Bob Smith,henry@acme.com
+EMP009,Irene Scott,Finance,Financial Analyst,Delhi,2020-12-01,7,Rohit Jain,irene@acme.com
+EMP010,Jack Thomas,Operations,Operations Manager,Bengaluru,2016-08-05,16,Sonia Gupta,jack@acme.com

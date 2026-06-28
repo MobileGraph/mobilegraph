@@ -1,4 +1,4 @@
-package io.mobilegrpah.ai
+package io.mobilegraph.ai
 
 import androidx.compose.ui.window.ComposeUIViewController
 

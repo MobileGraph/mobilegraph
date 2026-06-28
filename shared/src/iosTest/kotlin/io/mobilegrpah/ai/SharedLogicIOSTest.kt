@@ -1,4 +1,4 @@
-package io.mobilegrpah.ai
+package io.mobilegraph.ai
 
 import kotlin.test.Test
 import kotlin.test.assertEquals

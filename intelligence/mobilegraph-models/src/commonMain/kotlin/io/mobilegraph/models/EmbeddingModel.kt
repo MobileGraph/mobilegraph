@@ -11,14 +11,14 @@ interface EmbeddingModel : Model {
      */
     suspend fun embed(
         text: String,
-        context: ExecutionContext,
-    ): List<Float>
+        context: ExecutionContext = ExecutionContext.Empty,
+    ): FloatArray
 
     /**
      * Generates embeddings for a list of texts.
      */
-    suspend fun embedBatch(
+    suspend fun embed(
         texts: List<String>,
-        context: ExecutionContext,
-    ): List<List<Float>>
+        context: ExecutionContext = ExecutionContext.Empty,
+    ): List<FloatArray>
 }

@@ -1,0 +1,65 @@
+ACME Robotics Pvt Ltd
+=====================
+
+Company Profile
+
+ACME Robotics is a technology company specializing in industrial automation,
+warehouse robotics, artificial intelligence, and autonomous navigation systems.
+
+Founded:
+2017
+
+Headquarters:
+Bengaluru, India
+
+Employees:
+540
+
+
+Vision:
+Building intelligent machines that improve industrial productivity.
+
+Products
+
+1. RoboLift X100
+   Autonomous warehouse robot
+
+2. VisionAI Suite
+   AI-based quality inspection platform
+
+3. Fleet Manager
+   Robot fleet management software
+
+Core Technologies
+
+- Artificial Intelligence
+- Machine Learning
+- Computer Vision
+- SLAM Navigation
+- Edge Computing
+- Cloud Analytics
+
+Office Locations
+
+India
+Germany
+Japan
+
+Support
+
+Email:
+support@acmerobotics.com
+
+Phone:
++91-80-1234-5678
+
+Business Hours
+
+Monday to Friday
+09:00 AM to 06:00 PM IST
+
+Document Version:
+1.2
+
+Last Updated:
+March 2026

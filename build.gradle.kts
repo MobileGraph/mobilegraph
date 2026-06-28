@@ -83,6 +83,11 @@ val subprojects =
         "intelligence:mobilegraph-parsers",
         "intelligence:mobilegraph-prompts",
         "intelligence:mobilegraph-tools",
+        "intelligence:mobilegraph-rag",
+        "knowledge:mobilegraph-documents",
+        "knowledge:mobilegraph-embeddings",
+        "knowledge:mobilegraph-retrieval",
+        "knowledge:mobilegraph-vectorstores",
     )
 
 tasks.register<JacocoReport>("combinedTestReport") {

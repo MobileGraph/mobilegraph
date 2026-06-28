@@ -102,13 +102,15 @@ The project includes a reference implementation for both Android and iOS that de
 
 Detailed guides for building agentic workflows with MobileGraph:
 
-| Group | Features | Guide |
-| :--- | :--- | :--- |
-| **Core & Setup** | ADK Initialization, Interaction Patterns, Model Registry | [Read Guide](./docs/usage/core-setup.md) |
-| **Intelligence** | Prompt Composer DSL, Structured Parsers, Custom Models | [Read Guide](./docs/usage/models-intelligence.md) |
-| **Tools & Agents** | Function Calling, Semantic Tool Selection, Vector Caching | [Read Guide](./docs/usage/tools-agents.md) |
-| **Resilience & State** | Chat Memory, Sliding Windows, Local-First Sync | [Read Guide](./docs/usage/memory-state.md) |
-| **Observability** | Middleware Pipeline, Event Streams, Custom Logging | [Read Guide](./docs/usage/observability-extensibility.md) |
+| Group                                 | Features                                                               | Guide                                                     |
+|:--------------------------------------|:-----------------------------------------------------------------------|:----------------------------------------------------------|
+| **Core & Setup**                      | ADK Initialization, Interaction Patterns, Model Registry               | [Read Guide](./docs/usage/core-setup.md)                  |
+| **Intelligence**                      | Prompt Composer DSL, Structured Parsers, Custom Models                 | [Read Guide](./docs/usage/models-intelligence.md)         |
+| **Tools & Agents**                    | Function Calling, Semantic Tool Selection, Vector Caching              | [Read Guide](./docs/usage/tools-agents.md)                |
+| **Resilience & State**                | Chat Memory, Sliding Windows, Local-First Sync                         | [Read Guide](./docs/usage/memory-state.md)                |
+| **Observability**                     | Middleware Pipeline, Event Streams, Custom Logging                     | [Read Guide](./docs/usage/observability-extensibility.md) |
+| **RAG: Document Ingestion**           | Document Ingestion, Vector Embedding, Similarity Search, Event Streams | [Read Guide](./docs/usage/rag-ingestion.md)               |
+| **RAG: Retrieval and LLM Generation** | Document Retrieval, RAG Pipeline, Event Streams                        | [Read Guide](./docs/usage/rag-retrieval.md)               |
 
 ### Advanced
 *   **[Architecture Overview](./docs/ARCHITECTURE.md)**: How MobileGraph handles state and lifecycle.

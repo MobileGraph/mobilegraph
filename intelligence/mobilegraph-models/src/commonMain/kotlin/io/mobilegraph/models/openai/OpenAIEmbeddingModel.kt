@@ -1,3 +1,12 @@
+/*
+* MobileGraph
+*
+* Copyright (c) 2026-present The MobileGraph Authors
+*
+* Licensed under the Apache License, Version 2.0.
+* See LICENSE for details.
+*/
+
 package io.mobilegraph.models.openai
 
 import io.ktor.client.HttpClient
@@ -11,6 +20,9 @@ import io.mobilegraph.core.capability.Capability
 import io.mobilegraph.core.context.ExecutionContext
 import io.mobilegraph.models.EmbeddingModel
 
+/**
+ * OpenAI implementation of [EmbeddingModel].
+ */
 class OpenAIEmbeddingModel(
     override val name: String = "text-embedding-3-small",
     private val apiKey: String,
@@ -22,12 +34,12 @@ class OpenAIEmbeddingModel(
     override suspend fun embed(
         text: String,
         context: ExecutionContext,
-    ): List<Float> = embedBatch(listOf(text), context).first()
+    ): FloatArray = embed(listOf(text), context).first()
 
-    override suspend fun embedBatch(
+    override suspend fun embed(
         texts: List<String>,
         context: ExecutionContext,
-    ): List<List<Float>> {
+    ): List<FloatArray> {
         val request = OpenAIEmbeddingRequest(model = name, input = texts)
         val response: OpenAIEmbeddingResponse =
             httpClient
@@ -37,6 +49,6 @@ class OpenAIEmbeddingModel(
                     setBody(request)
                 }.body()
 
-        return response.data.sortedBy { it.index }.map { it.embedding }
+        return response.data.sortedBy { it.index }.map { it.embedding.toFloatArray() }
     }
 }
