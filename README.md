@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](LICENSE)
 [![v0.1.0-alpha](https://img.shields.io/badge/version-v0.1.0--alpha-orange.svg)]()
 
-**Kotlin-first framework for building AI applications, RAG systems, and agentic workflows on Android and Kotlin Multiplatform(KMP).**
+**Kotlin-first AI framework for Android, iOS, Android Automotive, Android TV, and Kotlin Multiplatform—bringing LLMs, RAG, agents, MCP, and on-device AI into a unified developer experience.**
 
 MobileGraph provides a unified programming model for integrating LLMs, memory, tools, structured outputs, and future agentic workflows into mobile and multiplatform applications.
 
@@ -25,6 +25,27 @@ Most SDKs are simple wrappers around an API. MobileGraph is an **ADK** because i
 *   **Mobile-First Memory**: Smart sliding-window and summarization strategies that respect mobile battery and context limits.
 
 ---
+# 🗺 Roadmap
+
+MobileGraph is being developed in incremental phases, with each phase building on a stable, modular, and extensible architecture.
+
+Our mission is to become the **Kotlin-first AI framework for the Android ecosystem and Kotlin Multiplatform**, enabling developers to build everything from simple AI assistants to enterprise-grade, autonomous agentic applications. [See Roadmap Guide](./docs/ROADMAP.md)    
+
+| Phase      |    Status   | Focus                        |
+| ---------- | :---------: | ---------------------------- |
+| ✅ Phase 1  |  Completed  | Core Runtime                 |
+| ✅ Phase 2  |  Completed  | Knowledge Layer (RAG)        |
+| 🚧 Phase 3 | In Progress | Agent Runtime                |
+| 🔜 Phase 4 |   Planned   | Model Ecosystem              |
+| 🔜 Phase 5 |   Planned   | Model Context Protocol (MCP) |
+| 🔜 Phase 6 |   Planned   | Local AI & Edge Inference    |
+| 🔮 Phase 7 |    Future   | Android Ecosystem            |
+| 🚀 Phase 8 |    Vision   | MobileGraph Studio           |
+
+---
+
+We welcome community contributions, ideas, and feedback as we continue building the future of AI development for the Android ecosystem.
+
 
 ## 🚀 Quick Start in 30 Seconds
 
