@@ -1,20 +1,109 @@
----
-name: Feature request
-about: Suggest an idea for this project
-title: ''
-labels: ''
-assignees: ''
+
+
+# Feature Summary
+
+Provide a short and clear description of the feature.
+
+Example:
+
+> Add support for Azure OpenAI Chat Models.
 
 ---
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+# Problem Statement
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+What problem are you trying to solve?
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+Describe the current limitation or pain point.
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+---
+
+# Proposed Solution
+
+Describe your proposed solution.
+
+Include API examples if applicable.
+
+Example:
+
+```kotlin
+MobileGraph.initialize {
+    withModels {
+        chat("azure-gpt4", AzureChatModel(...))
+    }
+}
+```
+
+---
+
+# Alternative Solutions
+
+Describe any alternative approaches you considered.
+
+---
+
+# Use Case
+
+Explain how this feature would be used in a real application.
+
+Example:
+
+* Enterprise applications
+* Android apps
+* Kotlin Multiplatform
+* Offline AI
+* Agent workflows
+
+---
+
+# Affected Module(s)
+
+Select all that apply.
+
+* [ ] mobilegraph-core
+* [ ] mobilegraph-model
+* [ ] mobilegraph-memory
+* [ ] mobilegraph-tools
+* [ ] mobilegraph-parsers
+* [ ] mobilegraph-documents
+* [ ] mobilegraph-retrieval
+* [ ] mobilegraph-agents
+* [ ] Documentation
+* [ ] Samples
+* [ ] Other
+
+---
+
+# Is this a Breaking Change?
+
+* [ ] Yes
+* [ ] No
+
+If yes, explain why.
+
+---
+
+# Additional Context
+
+Add screenshots, links, references, research, or other relevant information.
+
+---
+
+# Contribution
+
+Would you be interested in implementing this feature?
+
+* [ ] Yes
+* [ ] No
+* [ ] I need guidance
+
+---
+
+# Checklist
+
+Before submitting this request:
+
+* [ ] I searched existing issues.
+* [ ] This feature aligns with MobileGraph's vision.
+* [ ] I have described the problem clearly.
+* [ ] I included example usage where applicable.
