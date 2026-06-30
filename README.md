@@ -29,6 +29,10 @@ Most SDKs are simple wrappers around an API. MobileGraph is an **ADK** because i
 ## 🚀 Quick Start in 30 Seconds
 
 ### 1. Installation
+
+To be published soon into maven. The repo is under alpha testing and active development. 
+
+<!-- 
 Add the core and models dependencies to your `build.gradle.kts`:
 
 ```kotlin
@@ -37,6 +41,8 @@ dependencies {
     implementation("io.mobilegraph:mobilegraph-models:0.1.0-alpha")
 }
 ```
+-->
+
 
 ### 2. Initialize the ADK
 Configure your agent's models and capabilities in one type-safe DSL:
