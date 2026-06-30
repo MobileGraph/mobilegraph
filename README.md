@@ -10,7 +10,7 @@ MobileGraph provides a unified programming model for integrating LLMs, memory, t
 
 Designed with a mobile-first mindset, MobileGraph helps developers build resilient AI experiences while remaining provider-agnostic and fully native.
 
-MobileGraph is more than just an SDK for LLMs—it is a comprehensive **Agent Development Kit (ADK)** for Kotlin Multiplatform. It provides the industrial-grade infrastructure needed to run AI agents in the real world: handling process death, managing local memory, and executing complex reasoning graphs natively on mobile devices.
+MobileGraph is more than just an SDK for LLMs—it is a comprehensive **Agent Development Kit (ADK)** for Kotlin Multiplatform. It provides the industrial-grade infrastructure needed to run AI agents in the real world: handling process death, managing local memory, and executing complex reasoning graphs natively on mobile devices. **Note: Agent framework under active devlopemnt, code not pushed yet**
 
 ---
 
