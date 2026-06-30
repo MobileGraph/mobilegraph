@@ -1,4 +1,11 @@
+---
+name: Feature request
+about: Suggest a new feature or enhancement for MobileGraph
+title: ''
+labels: ''
+assignees: ''
 
+---
 
 # Feature Summary
 
@@ -61,7 +68,9 @@ Example:
 Select all that apply.
 
 * [ ] mobilegraph-core
-* [ ] mobilegraph-model
+* [ ] mobilegraph-openai
+* [ ] mobilegraph-google
+* [ ] mobilegraph-anthropic
 * [ ] mobilegraph-memory
 * [ ] mobilegraph-tools
 * [ ] mobilegraph-parsers
