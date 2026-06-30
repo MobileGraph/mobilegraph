@@ -1,237 +1,221 @@
-# ROADMAP.md
+# 🗺 Roadmap
 
-# MobileGraph Roadmap
+MobileGraph is being developed in incremental phases, with each phase building on a stable, modular, and extensible architecture.
 
-This document defines the implementation roadmap for MobileGraph.
+Our mission is to become the **Kotlin-first AI framework for the Android ecosystem and Kotlin Multiplatform including IOS**, enabling developers to build everything from simple AI assistants to enterprise-grade, autonomous agentic applications.
 
-The roadmap intentionally prioritizes foundation and stability over feature count.
-
-Architecture documents describe the long-term vision.
-
-This roadmap describes what should be built now.
-
----
-
-# Guiding Principles
-
-MobileGraph follows these rules:
-
-* Build from the bottom up.
-* Validate architecture before expanding scope.
-* Favor stability over feature count.
-* Avoid premature abstractions.
-* Build modules incrementally.
-* Keep APIs small and composable.
+| Phase      |    Status   | Focus                        |
+| ---------- | :---------: | ---------------------------- |
+| ✅ Phase 1  |  Completed  | Core Runtime                 |
+| ✅ Phase 2  |  Completed  | Knowledge Layer (RAG)        |
+| 🚧 Phase 3 | In Progress | Agent Runtime                |
+| 🔜 Phase 4 |   Planned   | Model Ecosystem              |
+| 🔜 Phase 5 |   Planned   | Model Context Protocol (MCP) |
+| 🔜 Phase 6 |   Planned   | Local AI & Edge Inference    |
+| 🔮 Phase 7 |    Future   | Android Ecosystem            |
+| 🚀 Phase 8 |    Vision   | MobileGraph Studio           |
 
 ---
 
-# Current Milestone
+## ✅ Phase 1 — Core Runtime
 
-Current focus:
+Build the foundation for AI-powered applications.
 
-```text
-Phase 2 — Knowledge Layer
-```
+### Highlights
 
-Target modules:
-
-```text
-mobilegraph-documents
-mobilegraph-stores
-mobilegraph-retrieval
-mobilegraph-memory
-```
-
-Everything else is out of scope.
-
----
-
-# Phase 1 — Foundation
-
-Status:
-
-```text
-COMPLETED ✅
-```
-
-Goal:
-
-Establish the runtime foundation and validate the public APIs.
-
-Modules:
-
-```text
-mobilegraph-core
-mobilegraph-models
-mobilegraph-prompts
-mobilegraph-parsers
-mobilegraph-tools
-```
-
----
-
-## mobilegraph-core
-
-Responsibilities:
-
-* ExecutionContext
-* Typed identifiers
+* Provider abstraction
+* Chat models
+* Session management
 * Middleware
-* Capabilities
-* Exceptions
-* Lifecycle state
-* Cancellation
-
----
-
-## mobilegraph-models
-
-Responsibilities:
-
-* ChatModel
-* StreamingChatModel
-* EmbeddingModel
-
-Initial providers:
-
-```text
-OpenAI
-```
-
----
-
-## mobilegraph-prompts
-
-Responsibilities:
-
-* PromptTemplate
-* ChatPrompt
-* Prompt composition
-* Variable substitution
-
----
-
-## mobilegraph-parsers
-
-Responsibilities:
-
-* OutputParser
-* JsonParser
+* Streaming responses
+* Chat memory
+* Event system
 * Structured outputs
+* Kotlin DSL
+* Kotlin Multiplatform support
 
 ---
 
-## mobilegraph-tools
+## ✅ Phase 2 — Knowledge Layer (RAG)
 
-Responsibilities:
+Enable Retrieval-Augmented Generation (RAG).
 
-* Tool abstraction
-* Tool metadata
-* Tool execution
+### Highlights
 
----
-
-# Phase 1 Success Criteria
-
-The following example should work:
-
-```kotlin
-val prompt = PromptTemplate(...)
-
-val rendered = prompt.render(...)
-
-val response = model.invoke(...)
-
-val result = parser.parse(response)
-```
+* Document abstraction
+* Document loaders
+* Text splitters
+* Embedding models
+* Embedding stores
+* Vector stores
+* Retrievers
+* Context builders
+* RAG pipelines
+* Retrieval DSL
 
 ---
 
-# Phase 2 — Knowledge Layer
+## 🚧 Phase 3 — Agent Runtime
 
-Status:
+Build a durable, mobile-first agent execution engine.
 
-```text
-IN PROGRESS 🚀
-```
+### Planned Features
 
-Modules:
-
-```text
-mobilegraph-documents
-mobilegraph-stores
-mobilegraph-retrieval
-mobilegraph-memory
-```
-
-Goals:
-
-Introduce document and retrieval capabilities.
+* State Graph engine
+* ReAct reasoning
+* Planner node
+* Workflow DSL
+* Tool runtime
+* Human-in-the-loop
+* Checkpointing
+* Process death recovery
+* Multi-agent orchestration
+* Execution tracing
+* Cost & token tracking
 
 ---
 
-## Documents
+## 🔜 Phase 4 — Model Ecosystem
 
-Responsibilities:
+Expand MobileGraph with a unified provider architecture for leading AI models.
 
-* Document model
-* Chunk model
-* Metadata
-* Splitters
+### Planned Features
 
----
-
-## Stores
-
-Responsibilities:
-
-* Vector store abstractions
-* Persistence interfaces
-
----
-
-## Retrieval
-
-Responsibilities:
-
-* Retriever interface
-* Vector retrieval
-* Hybrid retrieval
+* OpenAI
+* Google Gemini
+* Anthropic Claude
+* xAI Grok
+* Mistral AI
+* DeepSeek
+* OpenRouter
+* Ollama (Remote)
+* OpenAI-compatible APIs
+* Provider capability detection
+* Dynamic model routing
+* Automatic fallback strategies
 
 ---
 
-## Memory
+## 🔜 Phase 5 — Model Context Protocol (MCP)
 
-Responsibilities:
+Enable seamless interoperability with external tools and services through MCP.
 
-* Conversation memory
-* Summary memory
-* Vector memory
+### Planned Features
 
----
-
-# Phase 2 Success Criteria
-
-Support:
-
-```text
-Prompt
-+
-Retriever
-+
-Model
-```
-
-without introducing agents.
+* MCP Client
+* Remote MCP Servers
+* Dynamic tool discovery
+* MCP Tool Provider
+* MCP Resource support
+* MCP Prompt support
+* Secure authentication
+* Session management
+* Tool caching
+* Enterprise integrations
 
 ---
 
-# Phase 3 — Agent Runtime
+## 🔜 Phase 6 — Local AI & Edge Inference
 
-Status:
+Bring private, offline AI directly to Android devices.
 
-```text
-PLANNED
-```
+### Planned Features
 
-... [Rest of the file remains same]
+* On-device Small Language Model (SLM) inference
+* GGUF model support
+* llama.cpp integration
+* ONNX Runtime
+* MediaPipe GenAI
+* Qualcomm AI Engine
+* GPU / NPU acceleration
+* Hybrid local + cloud routing
+* Offline RAG
+* Edge AI optimization
+
+---
+
+## 🔮 Phase 7 — Android Ecosystem
+
+Extend MobileGraph across the Android platform family with platform-aware AI capabilities.
+
+### Android
+
+* Jetpack Compose integration
+* Lifecycle-aware agents
+* Background AI execution
+* WorkManager integration
+
+### Android Automotive OS (AAOS)
+
+* IVI AI framework
+* Vehicle Data integration
+* Vehicle Manual RAG
+* Voice assistant integration
+* Driver distraction-aware execution
+* Car App Library support
+* Offline in-vehicle AI
+* Navigation and vehicle service integrations
+
+### Android TV
+
+* TV-optimized conversational experiences
+* Leanback integration
+* Voice-first interaction
+* Remote-friendly UI components
+
+### Tablets & Foldables
+
+* Adaptive layouts
+* Multi-pane AI experiences
+* Large-screen optimized workflows
+
+### Android XR (Future)
+
+* Spatial AI interactions
+* Multimodal agents
+* Context-aware experiences
+
+---
+
+## 🚀 Phase 8 — MobileGraph Studio
+
+Create a visual development environment for designing, debugging, and deploying AI workflows.
+
+### Planned Features
+
+* Drag-and-drop workflow builder
+* Visual State Graph editor
+* Prompt Playground
+* Agent debugger
+* Execution timeline
+* Live event viewer
+* RAG Inspector
+* Memory Inspector
+* Token & cost dashboard
+* Checkpoint explorer
+* Workflow import/export
+* Project templates
+* One-click deployment
+
+---
+
+# Long-Term Vision
+
+MobileGraph aims to become the **Kotlin-first AI framework for the Android ecosystem and Kotlin Multiplatform**, providing everything developers need to build intelligent applications—from chat assistants and Retrieval-Augmented Generation (RAG) to durable agent workflows, Model Context Protocol (MCP) integrations, and fully offline AI powered by on-device language models.
+
+Whether you're building for **Android phones, tablets, Android Automotive, Android TV, Wear OS, Android XR, or Kotlin Multiplatform**, MobileGraph provides a unified developer experience with consistent APIs, modular architecture, and production-ready tooling.
+
+## Design Principles
+
+* 📱 Android-first
+* ⚡ Kotlin-first
+* 🌍 Provider agnostic
+* 🔌 Extensible
+* 🧩 Modular
+* 🔄 Durable execution
+* 📶 Offline-first
+* 🔒 Privacy-first
+* 🧪 Testable
+* 🚀 Production ready
+
+We welcome community contributions, ideas, and feedback as we continue building the future of AI development for the Android ecosystem.
