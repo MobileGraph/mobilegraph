@@ -8,11 +8,9 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.utils.io.readLine
-import io.ktor.utils.io.readUTF8Line
 import io.mobilegraph.core.capability.Capability
 import io.mobilegraph.core.context.ExecutionContext
 import io.mobilegraph.core.facade.MobileGraph
-import io.mobilegraph.core.tools.Tool
 import io.mobilegraph.core.tools.ToolDefinition
 import io.mobilegraph.core.tools.executeFromJson
 import io.mobilegraph.core.tools.toolRegistry
@@ -22,7 +20,6 @@ import io.mobilegraph.models.ChatChunk
 import io.mobilegraph.models.ChatMessage
 import io.mobilegraph.models.ChatPromptValue
 import io.mobilegraph.models.ChatRequest
-import io.mobilegraph.models.HumanMessage
 import io.mobilegraph.models.Message
 import io.mobilegraph.models.ModelConfig
 import io.mobilegraph.models.ModelOutput
@@ -31,6 +28,7 @@ import io.mobilegraph.models.StreamingChatModel
 import io.mobilegraph.models.SystemMessage
 import io.mobilegraph.models.ToolMessage
 import io.mobilegraph.models.Usage
+import io.mobilegraph.models.UserMessage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.serialization.json.Json
@@ -216,7 +214,7 @@ class OpenAIChatModel(
     private fun ChatMessage.toOpenAI(): OpenAIMessage =
         when (this) {
             is SystemMessage -> OpenAIMessage("system", content)
-            is HumanMessage -> OpenAIMessage("user", content)
+            is UserMessage -> OpenAIMessage("user", content)
             is AssistantMessage -> OpenAIMessage("assistant", content, toolCalls = null, toolCallId = toolCallId)
             is ToolMessage -> OpenAIMessage("tool", content, toolCallId = toolCallId)
         }
@@ -233,4 +231,6 @@ class OpenAIChatModel(
             completionTokens = completionTokens,
             totalTokens = totalTokens,
         )
+
+    override fun readModelConfig(): ModelConfig? = null
 }

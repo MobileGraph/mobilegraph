@@ -38,6 +38,7 @@ class AgentActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
+        viewModel.initializeSdk(applicationContext)
         setContent {
             MaterialTheme {
                 AgentScreen(viewModel)
@@ -50,7 +51,7 @@ class AgentActivity : ComponentActivity() {
 @Composable
 @Suppress("ktlint:standard:function-naming")
 fun AgentScreen(viewModel: AgentViewModel) {
-    var query by remember { mutableStateOf("") }
+    var query by remember { mutableStateOf("I want to wash Utensils. Plan and execute") }
     val eventLog by viewModel.eventLog.collectAsState()
 
     Scaffold(
@@ -78,18 +79,18 @@ fun AgentScreen(viewModel: AgentViewModel) {
             OutlinedTextField(
                 value = query,
                 onValueChange = { query = it },
-                label = { Text("Agent Query (e.g. 'What is the weather in London?')") },
+                label = { Text("Agent Query (e.g. 'I want to wash Utensils. Plan and execute')") },
                 modifier = Modifier.fillMaxWidth(),
             )
 
             Spacer(modifier = Modifier.height(8.dp))
 
             Button(
-                onClick = { viewModel.runAgentChat(query) },
+                onClick = { viewModel.runOrchestratedAgent(query) },
                 modifier = Modifier.fillMaxWidth(),
                 enabled = !viewModel.isLoading && query.isNotBlank(),
             ) {
-                Text("Run Agent Chat")
+                Text("Run Orchestrated Agent")
             }
 
             Spacer(modifier = Modifier.height(24.dp))

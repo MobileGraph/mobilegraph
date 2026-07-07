@@ -6,8 +6,8 @@ import io.mobilegraph.core.tools.asDefinition
 import io.mobilegraph.models.AssistantMessage
 import io.mobilegraph.models.ChatMessage
 import io.mobilegraph.models.ChatPromptValue
-import io.mobilegraph.models.HumanMessage
 import io.mobilegraph.models.SystemMessage
+import io.mobilegraph.models.UserMessage
 
 /**
  * DSL for dynamic prompt construction.
@@ -32,7 +32,18 @@ class PromptComposer {
      * Adds a human/user message.
      */
     fun human(content: String) {
-        messages.add(HumanMessage(content))
+        messages.add(UserMessage(content))
+    }
+
+    fun system(content: SystemMessage) {
+        messages.add((content))
+    }
+
+    /**
+     * Adds a human/user message.
+     */
+    fun user(content: UserMessage) {
+        messages.add((content))
     }
 
     /**

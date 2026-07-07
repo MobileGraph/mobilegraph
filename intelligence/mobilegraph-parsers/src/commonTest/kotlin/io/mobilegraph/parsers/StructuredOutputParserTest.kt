@@ -66,4 +66,43 @@ class StructuredOutputParserTest {
         assertTrue(result is ParseResult.Failure)
         assertEquals("No JSON object found in output", result.error.message)
     }
+
+    @Test
+    fun testSchemaGeneration() {
+        val parser = structuredOutputParser<TestData>()
+        val instructions = parser.formatInstructions()
+
+        assertTrue(instructions.contains("\"name\": \"string\""))
+        assertTrue(instructions.contains("\"age\": \"number\""))
+        assertTrue(instructions.contains("Return a JSON object matching this schema"))
+    }
+
+    @Serializable
+    data class NestedData(
+        val items: List<String>,
+        val meta: TestData,
+    )
+
+    @Test
+    fun testNestedSchemaAndParse() {
+        val parser = structuredOutputParser<NestedData>()
+        val instructions = parser.formatInstructions()
+
+        assertTrue(instructions.contains("\"items\": [\"string\"]"))
+        assertTrue(instructions.contains("\"meta\": {\"name\": \"string\", \"age\": \"number\"}"))
+
+        val json =
+            """
+            {
+                "items": ["a", "b"],
+                "meta": {"name": "Charlie", "age": 40}
+            }
+            """.trimIndent()
+        val output = ModelOutput.ChatOutput(AssistantMessage(json))
+        val result = parser.parse(output)
+
+        assertTrue(result is ParseResult.Success)
+        assertEquals(2, result.value.items.size)
+        assertEquals("Charlie", result.value.meta.name)
+    }
 }

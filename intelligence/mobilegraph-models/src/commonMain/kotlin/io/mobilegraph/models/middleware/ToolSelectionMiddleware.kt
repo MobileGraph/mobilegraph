@@ -8,8 +8,8 @@ import io.mobilegraph.core.tools.ToolSelector
 import io.mobilegraph.core.tools.asDefinition
 import io.mobilegraph.core.tools.toolRegistry
 import io.mobilegraph.core.tools.tools
-import io.mobilegraph.models.HumanMessage
 import io.mobilegraph.models.ModelOutput
+import io.mobilegraph.models.UserMessage
 
 /**
  * Middleware that automatically selects relevant tools based on the user's query.
@@ -45,7 +45,7 @@ class ToolSelectionMiddleware : ChatModelMiddleware {
         // Extract the last human message as the query
         val query =
             input.prompt.messages
-                .filterIsInstance<HumanMessage>()
+                .filterIsInstance<UserMessage>()
                 .lastOrNull()
                 ?.content
                 ?: return next(input, context)

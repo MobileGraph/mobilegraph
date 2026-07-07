@@ -15,8 +15,8 @@ import io.mobilegraph.core.ids.SessionId
 import io.mobilegraph.core.ids.TraceId
 import io.mobilegraph.models.AssistantMessage
 import io.mobilegraph.models.ChatPromptValue
-import io.mobilegraph.models.HumanMessage
 import io.mobilegraph.models.ModelOutput
+import io.mobilegraph.models.UserMessage
 import io.mobilegraph.models.memory.InMemoryChatMessageHistory
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -44,7 +44,7 @@ class ChatMemoryMiddlewareTest {
                 )
 
             val middleware = ChatMemoryMiddleware()
-            val input1 = ChatModelInput(ChatPromptValue(listOf(HumanMessage("user msg 1", id = "msg1"))), null)
+            val input1 = ChatModelInput(ChatPromptValue(listOf(UserMessage("user msg 1", id = "msg1"))), null)
 
             // First interaction
             middleware.intercept(input1, contextWithMemory) { input, _ ->
@@ -53,11 +53,11 @@ class ChatMemoryMiddlewareTest {
             }
 
             // Second interaction - history should be prepended
-            val input2 = ChatModelInput(ChatPromptValue(listOf(HumanMessage("user msg 2", id = "msg2"))), null)
+            val input2 = ChatModelInput(ChatPromptValue(listOf(UserMessage("user msg 2", id = "msg2"))), null)
             middleware.intercept(input2, contextWithMemory) { enrichedInput, _ ->
                 // History: [Human(1), Assistant(1)] + Current: [Human(2)] = 3 messages
                 assertEquals(3, enrichedInput.prompt.messages.size)
-                assertTrue(enrichedInput.prompt.messages[0] is HumanMessage)
+                assertTrue(enrichedInput.prompt.messages[0] is UserMessage)
                 assertEquals("user msg 1", enrichedInput.prompt.messages[0].content)
                 assertTrue(enrichedInput.prompt.messages[1] is AssistantMessage)
                 assertEquals("ai resp 1", enrichedInput.prompt.messages[1].content)

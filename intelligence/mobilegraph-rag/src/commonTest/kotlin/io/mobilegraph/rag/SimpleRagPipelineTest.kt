@@ -7,9 +7,9 @@ import io.mobilegraph.models.AssistantMessage
 import io.mobilegraph.models.ChatChunk
 import io.mobilegraph.models.ChatModel
 import io.mobilegraph.models.ChatPromptValue
-import io.mobilegraph.models.HumanMessage
 import io.mobilegraph.models.ModelConfig
 import io.mobilegraph.models.ModelOutput
+import io.mobilegraph.models.UserMessage
 import io.mobilegraph.retrieval.Retriever
 import io.mobilegraph.vectorstores.RetrievalFilter
 import kotlinx.coroutines.flow.Flow
@@ -39,7 +39,7 @@ class SimpleRagPipelineTest {
             config: ModelConfig?,
             context: ExecutionContext,
         ): ModelOutput {
-            val content = (prompt.messages.first() as HumanMessage).content
+            val content = (prompt.messages.first() as UserMessage).content
             return ModelOutput.ChatOutput(AssistantMessage("Answer to: $content"))
         }
 
@@ -48,6 +48,8 @@ class SimpleRagPipelineTest {
             config: ModelConfig?,
             context: ExecutionContext,
         ): Flow<ChatChunk> = emptyFlow()
+
+        override fun readModelConfig(): ModelConfig?= null
     }
 
     @Test
@@ -62,6 +64,16 @@ class SimpleRagPipelineTest {
             val result = pipeline.execute("query")
 
             val outputText = (result as ModelOutput.ChatOutput).message.content
-            assertEquals("Answer to: Context:\ndoc content\n\nUser Question: query", outputText)
+            val expectedPrompt = """
+Use the following context to answer the user's question. 
+If the context doesn't contain the answer, say "Not enough context to answer the query."
+
+Context:
+Context:
+doc content
+
+Question: query
+            """.trimIndent()
+            assertEquals("Answer to: $expectedPrompt", outputText)
         }
 }

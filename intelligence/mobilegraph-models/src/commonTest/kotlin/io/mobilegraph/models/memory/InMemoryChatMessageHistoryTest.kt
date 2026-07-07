@@ -13,7 +13,7 @@ import io.mobilegraph.core.context.SimpleExecutionContext
 import io.mobilegraph.core.ids.RequestId
 import io.mobilegraph.core.ids.SessionId
 import io.mobilegraph.core.ids.TraceId
-import io.mobilegraph.models.HumanMessage
+import io.mobilegraph.models.UserMessage
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -27,8 +27,8 @@ class InMemoryChatMessageHistoryTest {
             val context1 = SimpleExecutionContext(TraceId("t1"), SessionId("s1"), RequestId("r1"))
             val context2 = SimpleExecutionContext(TraceId("t2"), SessionId("s2"), RequestId("r2"))
 
-            val msg1 = HumanMessage("hello from s1")
-            val msg2 = HumanMessage("hello from s2")
+            val msg1 = UserMessage("hello from s1")
+            val msg2 = UserMessage("hello from s2")
 
             history.add(msg1, context1)
             history.add(msg2, context2)
@@ -49,7 +49,7 @@ class InMemoryChatMessageHistoryTest {
             val history = InMemoryChatMessageHistory()
             val context = SimpleExecutionContext(TraceId("t1"), SessionId("s1"), RequestId("r1"))
 
-            history.add(HumanMessage("test"), context)
+            history.add(UserMessage("test"), context)
             assertEquals(1, history.get(context).size)
 
             history.clear(context)
@@ -63,8 +63,8 @@ class InMemoryChatMessageHistoryTest {
             val context1 = SimpleExecutionContext(TraceId("t1"), SessionId("s1"), RequestId("r1"))
             val context2 = SimpleExecutionContext(TraceId("t2"), SessionId("s2"), RequestId("r2"))
 
-            history.add(HumanMessage("m1"), context1)
-            history.add(HumanMessage("m2"), context2)
+            history.add(UserMessage("m1"), context1)
+            history.add(UserMessage("m2"), context2)
 
             history.clearAll()
 

@@ -6,7 +6,7 @@ import io.mobilegraph.core.tools.ToolRegistry
 /**
  * Default implementation of [ToolRegistry].
  */
-internal class DefaultToolRegistry : ToolRegistry {
+class DefaultToolRegistry : ToolRegistry {
     private val tools = mutableMapOf<String, Tool<*, *>>()
 
     override fun register(tool: Tool<*, *>) {

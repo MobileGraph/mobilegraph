@@ -20,6 +20,10 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".RagActivity" />
         <activity android:name=".AgentActivity" />
+        <activity android:name=".HitlActivity" />
+        <activity android:name=".ParallelAgentsActivity" />
+        <activity android:name=".ToolsAgentActivity" />
+        <activity android:name=".SubAgentActivity" />
     </application>
 
 </manifest>

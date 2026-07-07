@@ -29,11 +29,15 @@ dependencyResolutionManagement {
 }
 
 include(":foundation:mobilegraph-core")
+include(":foundation:mobilegraph-state")
+include(":foundation:mobilegraph-checkpoint")
 include(":intelligence:mobilegraph-models")
 include(":intelligence:mobilegraph-prompts")
 include(":intelligence:mobilegraph-parsers")
 include(":intelligence:mobilegraph-tools")
 include(":intelligence:mobilegraph-rag")
+include(":intelligence:mobilegraph-graph")
+include(":intelligence:mobilegraph-agents")
 include(":knowledge:mobilegraph-documents")
 include(":knowledge:mobilegraph-embeddings")
 include(":knowledge:mobilegraph-vectorstores")

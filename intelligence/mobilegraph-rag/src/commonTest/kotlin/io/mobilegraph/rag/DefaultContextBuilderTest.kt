@@ -15,12 +15,33 @@ class DefaultContextBuilderTest {
             )
 
         val context = builder.buildContextAndPrompt(docs, "user query")
-        assertEquals("Context:\nfirst\nsecond", context)
+        val expected = """
+Use the following context to answer the user's question. 
+If the context doesn't contain the answer, say "Not enough context to answer the query."
+
+Context:
+Context:
+first
+second
+
+Question: user query
+        """.trimIndent()
+        assertEquals(expected, context)
     }
 
     @Test
     fun testEmptyDocs() {
         val builder = DefaultContextBasedPromptBuilder()
-        assertEquals("", builder.buildContextAndPrompt(emptyList(), "user query"))
+        val context = builder.buildContextAndPrompt(emptyList(), "user query")
+        val expected = """
+Use the following context to answer the user's question. 
+If the context doesn't contain the answer, say "Not enough context to answer the query."
+
+Context:
+
+
+Question: user query
+        """.trimIndent()
+        assertEquals(expected, context)
     }
 }

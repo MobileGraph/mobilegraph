@@ -10,7 +10,7 @@ MobileGraph provides a unified programming model for integrating LLMs, memory, t
 
 Designed with a mobile-first mindset, MobileGraph helps developers build resilient AI experiences while remaining provider-agnostic and fully native.
 
-MobileGraph is more than just an SDK for LLMs—it is a comprehensive **Agent Development Kit (ADK)** for Kotlin Multiplatform. It provides the industrial-grade infrastructure needed to run AI agents in the real world: handling process death, managing local memory, and executing complex reasoning graphs natively on mobile devices. **Note: Agent framework under active devlopemnt, code not pushed yet**
+MobileGraph is more than just an SDK for LLMs—it is a comprehensive **Agent Development Kit (ADK)** for Kotlin Multiplatform. It provides the industrial-grade infrastructure needed to run AI agents in the real world: handling process death, managing local memory, and executing complex reasoning graphs natively on mobile devices.
 
 ---
 
@@ -35,8 +35,8 @@ Our mission is to become the **Kotlin-first AI framework for the Android ecosyst
 | ---------- | :---------: | ---------------------------- |
 | ✅ Phase 1  |  Completed  | Core Runtime                 |
 | ✅ Phase 2  |  Completed  | Knowledge Layer (RAG)        |
-| 🚧 Phase 3 | In Progress | Agent Runtime                |
-| 🔜 Phase 4 |   Planned   | Model Ecosystem              |
+| ✅ Phase 3  |  Completed  | Agent Runtime                |
+| 🚧 Phase 4 | In Progress | Model Ecosystem              |
 | 🔜 Phase 5 |   Planned   | Model Context Protocol (MCP) |
 | 🔜 Phase 6 |   Planned   | Local AI & Edge Inference    |
 | 🔮 Phase 7 |    Future   | Android Ecosystem            |
@@ -94,34 +94,63 @@ session.model().stream("Plan a 3-day trip to Tokyo").collect { chunk ->
     print(chunk.text)
 }
 ```
-
----
+### 4. Create and Run a Resilient Agent
+Define and execute complex workflows with just a few lines:
+```kotlin
+    val agent = MyResearchAgent(mobileGraph.models.chat())
+    val workflow = stateGraph {
+        start("research")
+        node(AgentNode("research", agent, runtime))
+        node(EndNode("finish"))
+        edge("research", "finish")
+    }
+    
+// Run the agentic workflow with automatic checkpointing
+    val result = runtime.run(workflow, initialState)
+```
 
 ## 🛠 Project Ecosystem
 
-*   **`mobilegraph-core`**: The foundation. Handles graph execution, lifecycle, and state persistence.
-*   **`mobilegraph-models`**: Adapters for major LLM providers and capability-based model orchestration.
-*   **`mobilegraph-tools`**: Infrastructure for function calling and semantic tool selection.
-*   **`mobilegraph-parsers`**: Type-safe structured data extraction (JSON to Kotlin objects).
+### Foundation
+*   **`mobilegraph-core`**: The backbone. Handles execution context, lifecycle, events, and component registry.
+*   **`mobilegraph-checkpoint`**: Infrastructure for state persistence and durable execution.
+*   **`mobilegraph-state`**: Core interfaces for immutable graph state and variable management.
+
+### Intelligence & Agents
+*   **`mobilegraph-agents`**: Orchestration logic for multi-agent workflows, parallel execution, and hierarchical delegation.
+*   **`mobilegraph-graph`**: Graph-based state machine engine with support for Fan-out/in and breakpoints.
+*   **`mobilegraph-models`**: Adapters for major LLM providers (OpenAI, Gemini, etc.) and capability orchestration.
+*   **`mobilegraph-tools`**: Infrastructure for function calling, tool registration, and semantic tool selection.
+*   **`mobilegraph-parsers`**: Type-safe structured data extraction (JSON-to-Kotlin objects) with prose extraction.
 *   **`mobilegraph-prompts`**: A type-safe DSL for building token-aware, structured prompts.
+*   **`mobilegraph-rag`**: High-level orchestration for retrieval-augmented generation pipelines.
+
+### Knowledge & RAG
+*   **`mobilegraph-documents`**: Document ingestion and processing (PDF, Text, Markdown).
+*   **`mobilegraph-embeddings`**: Interfaces and adapters for vector embedding models.
+*   **`mobilegraph-vectorstores`**: On-device and remote vector storage (e.g., SQLite-based vector search).
+*   **`mobilegraph-retrieval`**: Semantic search logic and context retrieval strategies.
 
 ---
 
 ## 📱 Sample Applications
 
-The project includes a reference implementation for both Android and iOS that demonstrates:
-*   **Resilient Chat**: State-aware interaction that survives backgrounding.
-*   **Tool Calling**: Real-time weather integration via Kotlin functions.
-*   **Multi-Model Orchestration**: Seamless switching between high-power (GPT-4o) and fast (GPT-4o-mini) models.
-*   **Local Persistence**: Automated saving and loading of chat history.
+The project includes a comprehensive reference implementation for Android that demonstrates the following core patterns:
+
+*   **Resilient Chat**: Basic state-aware interaction that survives backgrounding and process death.
+*   **RAG (Retrieval-Augmented Generation)**: On-device PDF ingestion, vector embedding, and semantic retrieval.
+*   **Autonomous Tool Agents**: LLMs that can independently decide when and how to call local Kotlin functions (e.g., Weather, Calculator).
+*   **Human-in-the-Loop (HITL)**: Workflows that pause for manual approval or feedback before proceeding.
+*   **Parallel Execution (Fan-out/in)**: Running multiple agents simultaneously (e.g., a Researcher and a Poet) and merging their results.
+*   **Hierarchical Sub-Agents**: Complex "Manager-Worker" orchestrations where agents manage their own internal sub-graphs.
 
 ### Running the Samples
 1.  **Configure API Key**: Add your OpenAI API key to `local.properties` in the root folder:
     ```properties
     open_ai_api=sk-your-key-here
     ```
-2.  **Android**: Open the project in Android Studio and run the `:androidApp` configuration.
-3.  **iOS**: Open `iosApp/iosApp.xcodeproj` in Xcode (macOS required) and run the app.
+2.  **Android**: Open the project in Android Studio and run the `:androidApp` configuration. The **Master Screen** provides a dashboard to launch each of these specific demos.
+3.  **iOS**: To be added soon.
 
 ---
 
@@ -133,8 +162,10 @@ Detailed guides for building agentic workflows with MobileGraph:
 |:--------------------------------------|:-----------------------------------------------------------------------|:----------------------------------------------------------|
 | **Core & Setup**                      | ADK Initialization, Interaction Patterns, Model Registry               | [Read Guide](./docs/usage/core-setup.md)                  |
 | **Intelligence**                      | Prompt Composer DSL, Structured Parsers, Custom Models                 | [Read Guide](./docs/usage/models-intelligence.md)         |
+| **Agent Framework**                   | Multi-Agent Orchestration, Parallel Execution, Hierarchical, HITL      | [Read Guide](./docs/usage/agent-framework.md)             |
+| **Persistence & State**               | Graph State, Checkpointing, Durable Execution, Resumption              | [Read Guide](./docs/usage/agent-framework.md)             |
 | **Tools & Agents**                    | Function Calling, Semantic Tool Selection, Vector Caching              | [Read Guide](./docs/usage/tools-agents.md)                |
-| **Resilience & State**                | Chat Memory, Sliding Windows, Local-First Sync                         | [Read Guide](./docs/usage/memory-state.md)                |
+| **Resilience & Memory**               | Chat Memory, Sliding Windows, Local-First Sync                         | [Read Guide](./docs/usage/memory-state.md)                |
 | **Observability**                     | Middleware Pipeline, Event Streams, Custom Logging                     | [Read Guide](./docs/usage/observability-extensibility.md) |
 | **RAG: Document Ingestion**           | Document Ingestion, Vector Embedding, Similarity Search, Event Streams | [Read Guide](./docs/usage/rag-ingestion.md)               |
 | **RAG: Retrieval and LLM Generation** | Document Retrieval, RAG Pipeline, Event Streams                        | [Read Guide](./docs/usage/rag-retrieval.md)               |

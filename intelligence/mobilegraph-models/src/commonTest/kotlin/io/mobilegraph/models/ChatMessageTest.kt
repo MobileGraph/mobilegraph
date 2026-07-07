@@ -15,7 +15,7 @@ import kotlin.test.assertEquals
 class ChatMessageTest {
     @Test
     fun testHumanMessage() {
-        val msg = HumanMessage("hello", id = "id1", sessionId = "s1")
+        val msg = UserMessage("hello", id = "id1", sessionId = "s1")
         assertEquals("hello", msg.content)
         assertEquals("id1", msg.id)
         assertEquals("s1", msg.sessionId)

@@ -4,8 +4,8 @@ import io.mobilegraph.core.context.ExecutionContext
 import io.mobilegraph.documents.Document
 import io.mobilegraph.models.ChatModel
 import io.mobilegraph.models.ChatPromptValue
-import io.mobilegraph.models.HumanMessage
 import io.mobilegraph.models.ModelOutput
+import io.mobilegraph.models.UserMessage
 import io.mobilegraph.vectorstores.RetrievalFilter
 
 /**
@@ -52,7 +52,7 @@ class MultiQueryRetriever(
             Provide only the queries, one per line, without numbers or any other text.
             """.trimIndent()
 
-        val output = chatModel.invoke(ChatPromptValue(listOf(HumanMessage(prompt))))
+        val output = chatModel.invoke(ChatPromptValue(listOf(UserMessage(prompt))))
 
         val text =
             when (output) {
