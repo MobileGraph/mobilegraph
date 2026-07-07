@@ -39,6 +39,8 @@ class ModelDslTest {
             context: ExecutionContext,
         ) = emptyFlow<ChatChunk>()
 
+        override fun readModelConfig(): ModelConfig? = null
+
         override fun supports(capability: Capability): Boolean = true
     }
 

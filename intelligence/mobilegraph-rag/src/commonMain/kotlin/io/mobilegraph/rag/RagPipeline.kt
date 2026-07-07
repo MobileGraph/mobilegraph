@@ -7,8 +7,8 @@ import io.mobilegraph.core.facade.MobileGraph
 import io.mobilegraph.documents.Document
 import io.mobilegraph.models.ChatModel
 import io.mobilegraph.models.ChatPromptValue
-import io.mobilegraph.models.HumanMessage
 import io.mobilegraph.models.ModelOutput
+import io.mobilegraph.models.UserMessage
 import io.mobilegraph.retrieval.Retriever
 
 /**
@@ -82,7 +82,7 @@ class SimpleRagPipeline(
     ): ModelOutput {
         val fullPrompt = contextBasedPromptBuilder.buildContextAndPrompt(docContext, query)
 
-        val result = chatModel.invoke(ChatPromptValue(listOf(HumanMessage(fullPrompt))), context = executionContext)
+        val result = chatModel.invoke(ChatPromptValue(listOf(UserMessage(fullPrompt))), context = executionContext)
 
         publish(
             MobileGraphEvent.RagResponseGenerated(
@@ -106,7 +106,7 @@ class SimpleRagPipeline(
         val fullPrompt = contextBasedPromptBuilder.buildContextAndPrompt(retrievalResult.documents, query)
 
         // 3. Chat Model
-        val output = chatModel.invoke(ChatPromptValue(listOf(HumanMessage(fullPrompt))), context = executionContext)
+        val output = chatModel.invoke(ChatPromptValue(listOf(UserMessage(fullPrompt))), context = executionContext)
 
         // 4. Publish Event
         publish(

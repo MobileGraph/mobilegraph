@@ -42,4 +42,6 @@ internal class MiddlewareChatModel(
         config: ModelConfig?,
         context: ExecutionContext,
     ): Flow<ChatChunk> = delegate.stream(prompt, config, context)
+
+    override fun readModelConfig(): ModelConfig? = delegate.readModelConfig()
 }

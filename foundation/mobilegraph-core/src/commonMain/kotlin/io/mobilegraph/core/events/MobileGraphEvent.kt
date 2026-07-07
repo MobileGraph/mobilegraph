@@ -87,4 +87,52 @@ sealed interface MobileGraphEvent {
         override val sessionId: SessionId? = null,
         override val timestamp: Instant = Clock.System.now(),
     ) : MobileGraphEvent
+
+    // --- Phase 3: Agent Events ---
+
+    data class AgentStarted(
+        override val traceId: TraceId,
+        override val requestId: RequestId,
+        override val sessionId: SessionId? = null,
+        override val timestamp: Instant = Clock.System.now(),
+    ) : MobileGraphEvent
+
+    data class AgentCompleted(
+        override val traceId: TraceId,
+        override val requestId: RequestId,
+        override val sessionId: SessionId? = null,
+        override val timestamp: Instant = Clock.System.now(),
+    ) : MobileGraphEvent
+
+    data class AgentFailed(
+        override val traceId: TraceId,
+        override val requestId: RequestId,
+        val error: String,
+        override val sessionId: SessionId? = null,
+        override val timestamp: Instant = Clock.System.now(),
+    ) : MobileGraphEvent
+
+    data class NodeStarted(
+        override val traceId: TraceId,
+        override val requestId: RequestId,
+        val nodeId: String,
+        override val sessionId: SessionId? = null,
+        override val timestamp: Instant = Clock.System.now(),
+    ) : MobileGraphEvent
+
+    data class NodeCompleted(
+        override val traceId: TraceId,
+        override val requestId: RequestId,
+        val nodeId: String,
+        override val sessionId: SessionId? = null,
+        override val timestamp: Instant = Clock.System.now(),
+    ) : MobileGraphEvent
+
+    data class WaitingForReview(
+        override val traceId: TraceId,
+        override val requestId: RequestId,
+        val nodeId: String,
+        override val sessionId: SessionId? = null,
+        override val timestamp: Instant = Clock.System.now(),
+    ) : MobileGraphEvent
 }

@@ -37,7 +37,7 @@ sealed class ChatMessage {
     fun toMessage(): Message =
         when (this) {
             is SystemMessage -> Message(Role.System, content)
-            is HumanMessage -> Message(Role.User, content)
+            is UserMessage -> Message(Role.User, content)
             is AssistantMessage -> Message(Role.Assistant, content)
             is ToolMessage -> Message(Role.Tool, content)
         }
@@ -49,7 +49,7 @@ sealed class ChatMessage {
         fun fromMessage(message: Message): ChatMessage =
             when (message.role) {
                 Role.System -> SystemMessage(message.content)
-                Role.User -> HumanMessage(message.content)
+                Role.User -> UserMessage(message.content)
                 Role.Assistant -> AssistantMessage(message.content)
                 Role.Tool -> ToolMessage(message.content, "") // Tool ID might be missing in legacy
             }
@@ -80,7 +80,7 @@ data class SystemMessage(
  * A message from a human user.
  */
 @Serializable
-data class HumanMessage(
+data class UserMessage(
     override val content: String,
     override val id: String = "",
     override val sessionId: String = "global",

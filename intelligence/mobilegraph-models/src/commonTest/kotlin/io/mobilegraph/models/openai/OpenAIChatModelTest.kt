@@ -13,8 +13,8 @@ import io.mobilegraph.core.tools.Tool
 import io.mobilegraph.core.tools.ToolMetadata
 import io.mobilegraph.core.tools.ToolRegistry
 import io.mobilegraph.models.ChatPromptValue
-import io.mobilegraph.models.HumanMessage
 import io.mobilegraph.models.ModelOutput
+import io.mobilegraph.models.UserMessage
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -73,7 +73,7 @@ class OpenAIChatModelTest {
                 )
             val prompt =
                 ChatPromptValue(
-                    messages = listOf(HumanMessage("Hi")),
+                    messages = listOf(UserMessage("Hi")),
                 )
 
             val response = model.invoke(prompt, null, context) as ModelOutput.ChatOutput
@@ -181,7 +181,7 @@ class OpenAIChatModelTest {
                         },
                 )
 
-            val prompt = ChatPromptValue(listOf(HumanMessage("What is the weather in London?")))
+            val prompt = ChatPromptValue(listOf(UserMessage("What is the weather in London?")))
             val response = model.invoke(prompt, null, context) as ModelOutput.ChatOutput
 
             assertEquals("The weather in London is 20°C.", response.message.content)

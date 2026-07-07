@@ -36,6 +36,10 @@ class MasterActivity : ComponentActivity() {
                             1 -> startActivity(Intent(this, MainActivity::class.java))
                             2 -> startActivity(Intent(this, RagActivity::class.java))
                             3 -> startActivity(Intent(this, AgentActivity::class.java))
+                            4 -> startActivity(Intent(this, HitlActivity::class.java))
+                            5 -> startActivity(Intent(this, ParallelAgentsActivity::class.java))
+                            6 -> startActivity(Intent(this, ToolsAgentActivity::class.java))
+                            7 -> startActivity(Intent(this, SubAgentActivity::class.java))
                         }
                     },
                 )
@@ -89,7 +93,43 @@ fun MasterScreen(onOptionSelected: (Int) -> Unit) {
                 onClick = { onOptionSelected(3) },
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                Text("3. Agents & Tools ")
+                Text("3. Simple Agent ")
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Button(
+                onClick = { onOptionSelected(4) },
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text("4. Human-in-the-Loop (HITL)")
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Button(
+                onClick = { onOptionSelected(5) },
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text("5. Parallel Agents (Fan-out/in)")
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Button(
+                onClick = { onOptionSelected(6) },
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text("6. Tool-Enabled Agents (Autonomous)")
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Button(
+                onClick = { onOptionSelected(7) },
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text("7. Hierarchical Sub-Agents (Orchestration)")
             }
         }
     }

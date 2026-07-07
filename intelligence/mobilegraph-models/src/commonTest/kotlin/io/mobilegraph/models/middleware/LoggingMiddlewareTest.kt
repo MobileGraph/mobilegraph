@@ -12,8 +12,8 @@ package io.mobilegraph.models.middleware
 import io.mobilegraph.core.context.ExecutionContext
 import io.mobilegraph.models.AssistantMessage
 import io.mobilegraph.models.ChatPromptValue
-import io.mobilegraph.models.HumanMessage
 import io.mobilegraph.models.ModelOutput
+import io.mobilegraph.models.UserMessage
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -36,7 +36,7 @@ class LoggingMiddlewareTest {
         runTest {
             val logger = MockLogger()
             val middleware = LoggingMiddleware(logger = logger)
-            val input = ChatModelInput(ChatPromptValue(listOf(HumanMessage("hello"))), null)
+            val input = ChatModelInput(ChatPromptValue(listOf(UserMessage("hello"))), null)
 
             middleware.intercept(input, ExecutionContext.Empty) { _, _ ->
                 ModelOutput.ChatOutput(AssistantMessage("hi"))

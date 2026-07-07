@@ -54,13 +54,13 @@ class DefaultContextBasedPromptBuilder(
             }
 
         return """
-            Use the following context to answer the user's question. 
-            If the context doesn't contain the answer, say "Not enough context to answer the query."
-            
-            Context:
-            $contextData
+Use the following context to answer the user's question. 
+If the context doesn't contain the answer, say "Not enough context to answer the query."
 
-            Question: $userQuery
-            """.trimIndent()
+Context:
+$contextData
+
+Question: $userQuery
+""".trimIndent()
     }
 }

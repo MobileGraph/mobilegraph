@@ -256,7 +256,7 @@ class RecursiveTextSplitter(
                 if (currentDoc.isNotEmpty()) {
                     val doc = joinDocs(currentDoc, separator)
                     if (doc != null) docs.add(doc)
-                    while (currentDoc.size > 1 && total > chunkOverlap) {
+                    while (total > chunkOverlap && (currentDoc.size > 1 || chunkOverlap == 0)) {
                         total -= length(currentDoc[0]) + (if (currentDoc.size > 1) separatorLen else 0)
                         currentDoc.removeAt(0)
                     }

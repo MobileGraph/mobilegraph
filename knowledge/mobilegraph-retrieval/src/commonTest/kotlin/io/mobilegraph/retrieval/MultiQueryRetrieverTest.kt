@@ -36,6 +36,8 @@ class MultiQueryRetrieverTest {
             config: ModelConfig?,
             context: ExecutionContext,
         ): Flow<ChatChunk> = emptyFlow()
+
+        override fun readModelConfig(): ModelConfig? = null
     }
 
     class MockRetriever : Retriever {

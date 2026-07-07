@@ -9,8 +9,8 @@
 
 package io.mobilegraph.prompts.composition
 
-import io.mobilegraph.models.HumanMessage
 import io.mobilegraph.models.SystemMessage
+import io.mobilegraph.models.UserMessage
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -28,7 +28,7 @@ class PromptComposerTest {
         assertEquals(2, prompt.messages.size)
         assertTrue(prompt.messages[0] is SystemMessage)
         assertEquals("You are a bot.", prompt.messages[0].content)
-        assertTrue(prompt.messages[1] is HumanMessage)
+        assertTrue(prompt.messages[1] is UserMessage)
         assertEquals("Hello", prompt.messages[1].content)
     }
 

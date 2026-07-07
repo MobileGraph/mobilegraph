@@ -14,10 +14,10 @@ import io.mobilegraph.models.AssistantMessage
 import io.mobilegraph.models.ChatChunk
 import io.mobilegraph.models.ChatModel
 import io.mobilegraph.models.ChatPromptValue
-import io.mobilegraph.models.HumanMessage
 import io.mobilegraph.models.ModelConfig
 import io.mobilegraph.models.ModelOutput
 import io.mobilegraph.models.SystemMessage
+import io.mobilegraph.models.UserMessage
 import io.mobilegraph.models.facade.chat
 import io.mobilegraph.models.facade.withModels
 import kotlinx.coroutines.test.runTest
@@ -33,11 +33,11 @@ class AdvancedMemoryTest {
             val context = ExecutionContext.Empty
 
             // Turn 1
-            memory.add(HumanMessage("q1", id = "m1"), context)
+            memory.add(UserMessage("q1", id = "m1"), context)
             memory.add(AssistantMessage("a1", id = "m2"), context)
 
             // Turn 2 - should evict Turn 1
-            memory.add(HumanMessage("q2", id = "m3"), context)
+            memory.add(UserMessage("q2", id = "m3"), context)
             memory.add(AssistantMessage("a2", id = "m4"), context)
 
             val history = memory.get(context)
@@ -67,6 +67,8 @@ class AdvancedMemoryTest {
                         config: ModelConfig?,
                         context: ExecutionContext,
                     ) = kotlinx.coroutines.flow.emptyFlow<ChatChunk>()
+
+                    override fun readModelConfig(): ModelConfig? = null
                 }
 
             val memory = ConversationSummaryBufferMemory(maxBufferMessages = 2, summarizeModel = "mock")
@@ -81,9 +83,9 @@ class AdvancedMemoryTest {
             val context = ExecutionContext.Empty
 
             // Add 3 messages (exceeds buffer of 2)
-            memory.add(HumanMessage("m1", id = "1"), context)
+            memory.add(UserMessage("m1", id = "1"), context)
             memory.add(AssistantMessage("m2", id = "2"), context)
-            memory.add(HumanMessage("m3", id = "3"), context)
+            memory.add(UserMessage("m3", id = "3"), context)
 
             val history = memory.get(context)
             // Should have 1 SystemMessage (summary) + remaining buffer

@@ -11,6 +11,7 @@ package io.mobilegraph.models.facade
 
 import io.mobilegraph.core.configuration.ModelsConfiguration
 import io.mobilegraph.core.environment.MobileGraphEnvironment
+import io.mobilegraph.core.tools.ToolDefinition
 import io.mobilegraph.models.ChatChunk
 import io.mobilegraph.models.ChatModel
 import io.mobilegraph.models.ChatPromptValue
@@ -115,10 +116,12 @@ class ModelConfigBuilder {
      */
     var stop: List<String>? = null
 
+    var tools: List<ToolDefinition>? = null
+
     /**
      * Builds the [ModelConfig] instance.
      */
-    fun build() = ModelConfig(temperature, maxTokens, stop)
+    fun build() = ModelConfig(temperature, maxTokens, stop, tools)
 }
 
 /**
@@ -152,6 +155,7 @@ private class ConfiguredChatModel(
                 temperature = config.temperature ?: defaultConfig.temperature,
                 maxTokens = config.maxTokens ?: defaultConfig.maxTokens,
                 stop = config.stop ?: defaultConfig.stop,
+                tools = config.tools,
             )
                 ?: defaultConfig
         return delegate.invoke(prompt, mergedConfig, context)
@@ -171,6 +175,8 @@ private class ConfiguredChatModel(
                 ?: defaultConfig
         return delegate.stream(prompt, mergedConfig, context)
     }
+
+    override fun readModelConfig(): ModelConfig? = defaultConfig
 }
 
 /**

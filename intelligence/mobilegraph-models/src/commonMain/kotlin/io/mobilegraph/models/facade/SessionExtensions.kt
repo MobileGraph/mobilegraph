@@ -20,9 +20,9 @@ import io.mobilegraph.core.session.MobileGraphSession
 import io.mobilegraph.models.ChatChunk
 import io.mobilegraph.models.ChatModel
 import io.mobilegraph.models.ChatPromptValue
-import io.mobilegraph.models.HumanMessage
 import io.mobilegraph.models.ModelConfig
 import io.mobilegraph.models.ModelOutput
+import io.mobilegraph.models.UserMessage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
@@ -70,7 +70,7 @@ suspend fun MobileGraphSession.chat(
     context: ExecutionContext? = null,
 ): ModelOutput {
     val chatModel = model()
-    val prompt = ChatPromptValue(messages = listOf(HumanMessage(query)))
+    val prompt = ChatPromptValue(messages = listOf(UserMessage(query)))
 
     val traceId = context?.traceId ?: TraceId("trace-$sessionId")
     val requestId = context?.requestId ?: RequestId("req-${kotlin.random.Random.nextInt()}")
@@ -109,7 +109,7 @@ fun MobileGraphSession.stream(
     context: ExecutionContext? = null,
 ): Flow<ChatChunk> {
     val chatModel = model()
-    val prompt = ChatPromptValue(messages = listOf(HumanMessage(query)))
+    val prompt = ChatPromptValue(messages = listOf(UserMessage(query)))
 
     val traceId = context?.traceId ?: TraceId("trace-$sessionId")
     val requestId = context?.requestId ?: RequestId("req-${kotlin.random.Random.nextInt()}")

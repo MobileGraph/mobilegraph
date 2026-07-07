@@ -39,6 +39,8 @@ class ModelRegistryTest {
             config: ModelConfig?,
             context: io.mobilegraph.core.context.ExecutionContext,
         ): Flow<ChatChunk> = emptyFlow()
+
+        override fun readModelConfig(): ModelConfig? = null
     }
 
     @Test

@@ -80,4 +80,6 @@ interface ChatModel : Model {
             "Tool $toolName not found"
         }
     }
+
+    fun readModelConfig(): ModelConfig?
 }
