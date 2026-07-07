@@ -6,7 +6,52 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 # Changelog
+## v0.3.0-alpha - 2026-07-08
+### Added
 
+#### Agent Runtime
+
+Introduced the MobileGraph Agent Runtime.
+
+New capabilities include:
+
+Agent abstraction
+Stateful execution
+Execution context propagation
+Agent lifecycle management
+Coroutine-first execution model
+#### Graph Runtime
+
+Introduced graph-based workflow orchestration inspired by state machine execution.
+
+Features include:
+
+Directed workflow execution
+Node abstraction
+Edge routing
+State propagation
+Deterministic execution
+#### State Management
+
+Added immutable state management throughout graph execution.
+
+Features include:
+
+Immutable execution state
+State transitions
+Checkpoint-ready architecture
+Replay-friendly execution model
+#### Tool Integration
+
+Integrated the Tool API into the agent runtime.
+
+Agents can now invoke registered tools while maintaining execution context and middleware support.
+
+#### Prompt Integration
+
+Integrated Prompt Templates with agent execution.
+
+- 
 ## v0.2.0-alpha - 2026-06-30
 
 ### Added
