@@ -51,6 +51,11 @@ class MobileGraphModels(
     fun chat(): ChatModel = registry().chat() ?: throw IllegalStateException("No ChatModel registered")
 
     /**
+     * Retrieves a named chat model from the registry.
+     */
+    fun chat(name: String): ChatModel = registry().chat(name) ?: throw IllegalStateException("ChatModel '$name' not found")
+
+    /**
      * Retrieves the default embedding model from the registry.
      */
     fun embedding(): EmbeddingModel = registry().embedding() ?: throw IllegalStateException("No EmbeddingModel registered")

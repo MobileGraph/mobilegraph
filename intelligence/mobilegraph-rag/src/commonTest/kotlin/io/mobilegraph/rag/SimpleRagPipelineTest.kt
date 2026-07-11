@@ -49,7 +49,7 @@ class SimpleRagPipelineTest {
             context: ExecutionContext,
         ): Flow<ChatChunk> = emptyFlow()
 
-        override fun readModelConfig(): ModelConfig?= null
+        override fun readModelConfig(): ModelConfig? = null
     }
 
     @Test
@@ -64,7 +64,8 @@ class SimpleRagPipelineTest {
             val result = pipeline.execute("query")
 
             val outputText = (result as ModelOutput.ChatOutput).message.content
-            val expectedPrompt = """
+            val expectedPrompt =
+                """
 Use the following context to answer the user's question. 
 If the context doesn't contain the answer, say "Not enough context to answer the query."
 
@@ -73,7 +74,7 @@ Context:
 doc content
 
 Question: query
-            """.trimIndent()
+                """.trimIndent()
             assertEquals("Answer to: $expectedPrompt", outputText)
         }
 }

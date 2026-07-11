@@ -19,9 +19,16 @@ import io.mobilegraph.models.EmbeddingModel
 import io.mobilegraph.models.ModelConfig
 import io.mobilegraph.models.ModelOutput
 import io.mobilegraph.models.ModelRegistry
+import io.mobilegraph.models.anthropic.ClaudeChatModel
+import io.mobilegraph.models.deepseek.DeepSeekChatModel
+import io.mobilegraph.models.google.GeminiChatModel
+import io.mobilegraph.models.huggingface.HuggingFaceChatModel
 import io.mobilegraph.models.middleware.ChatModelMiddleware
 import io.mobilegraph.models.middleware.MiddlewareChatModel
+import io.mobilegraph.models.openai.OpenAIChatModel
+import io.mobilegraph.models.openrouter.OpenRouterChatModel
 import io.mobilegraph.models.registry.DefaultModelRegistry
+import io.mobilegraph.models.routing.RouterBuilder
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -229,6 +236,85 @@ fun ModelsConfiguration.embedding(
     isDefault: Boolean = false,
 ) {
     embedding(model.name, model, isDefault)
+}
+
+/**
+ * Convenience for OpenAI
+ */
+fun ModelsConfiguration.openai(
+    apiKey: String,
+    name: String = "gpt-4o",
+    block: ChatModelBuilder.() -> Unit = {},
+) {
+    chat(name, OpenAIChatModel(apiKey = apiKey, name = name), block)
+}
+
+/**
+ * Convenience for Gemini
+ */
+fun ModelsConfiguration.gemini(
+    apiKey: String,
+    name: String = "gemini-2.5-flash-lite",
+    block: ChatModelBuilder.() -> Unit = {},
+) {
+    chat(name, GeminiChatModel(apiKey = apiKey, name = name), block)
+}
+
+/**
+ * Convenience for Claude
+ */
+fun ModelsConfiguration.claude(
+    apiKey: String,
+    name: String = "claude-3-5-sonnet-20241022",
+    block: ChatModelBuilder.() -> Unit = {},
+) {
+    chat(name, ClaudeChatModel(apiKey = apiKey, name = name), block)
+}
+
+/**
+ * Convenience for OpenRouter
+ */
+fun ModelsConfiguration.openrouter(
+    apiKey: String,
+    name: String,
+    block: ChatModelBuilder.() -> Unit = {},
+) {
+    chat(name, OpenRouterChatModel(apiKey = apiKey, name = name), block)
+}
+
+/**
+ * Convenience for Hugging Face
+ */
+fun ModelsConfiguration.huggingface(
+    apiKey: String,
+    name: String,
+    block: ChatModelBuilder.() -> Unit = {},
+) {
+    chat(name, HuggingFaceChatModel(apiKey = apiKey, name = name), block)
+}
+
+/**
+ * Convenience for DeepSeek
+ */
+fun ModelsConfiguration.deepseek(
+    apiKey: String,
+    name: String = "deepseek-chat",
+    block: ChatModelBuilder.() -> Unit = {},
+) {
+    chat(name, DeepSeekChatModel(apiKey = apiKey, name = name), block)
+}
+
+/**
+ * Registers a model router.
+ */
+fun ModelsConfiguration.router(
+    name: String,
+    block: RouterBuilder.() -> Unit,
+) {
+    val registry = getOrCreateRegistry()
+    val builder = RouterBuilder(name, registry)
+    builder.block()
+    registry.registerChat(name, builder.build())
 }
 
 /**

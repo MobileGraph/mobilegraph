@@ -1,95 +1,115 @@
 package io.mobilegraph.models.openai
 
+import kotlinx.serialization.EncodeDefault
+import kotlinx.serialization.EncodeDefault.Mode.NEVER
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 
 @Serializable
-internal data class OpenAIChatRequest(
+data class OpenAIChatRequest(
     val model: String,
     val messages: List<OpenAIMessage>,
-    val temperature: Double? = null,
-    @SerialName("max_tokens") val maxTokens: Int? = null,
-    val stop: List<String>? = null,
+    @EncodeDefault(NEVER) val temperature: Double? = null,
+    @SerialName("max_tokens") @EncodeDefault(NEVER) val maxTokens: Int? = null,
+    @EncodeDefault(NEVER) val stop: List<String>? = null,
     val stream: Boolean = false,
-    val tools: List<OpenAITool>? = null,
-    @SerialName("tool_choice") val toolChoice: String? = null,
+    @EncodeDefault(NEVER) val tools: List<OpenAITool>? = null,
+    @SerialName("tool_choice") @EncodeDefault(NEVER) val toolChoice: String? = null,
 )
 
 @Serializable
-internal data class OpenAITool(
+data class OpenAITool(
     val type: String = "function",
     val function: OpenAIFunction,
 )
 
 @Serializable
-internal data class OpenAIFunction(
+data class OpenAIFunction(
     val name: String,
     val description: String,
-    val parameters: JsonObject? = null,
+    @EncodeDefault(NEVER) val parameters: JsonObject? = null,
 )
 
 @Serializable
-internal data class OpenAIToolCall(
+data class OpenAIToolCall(
     val id: String,
     val type: String = "function",
     val function: OpenAIFunctionCall,
 )
 
 @Serializable
-internal data class OpenAIFunctionCall(
+data class OpenAIFunctionCall(
     val name: String,
     val arguments: String,
 )
 
 @Serializable
-internal data class OpenAIMessage(
+data class OpenAIMessage(
     val role: String,
-    val content: String? = null,
-    @SerialName("tool_calls") val toolCalls: List<OpenAIToolCall>? = null,
-    @SerialName("tool_call_id") val toolCallId: String? = null,
+    /**
+     * content can be a String or a List of OpenAIContentPart.
+     * We use JsonElement to handle this dynamic type.
+     */
+    @EncodeDefault(NEVER) val content: JsonElement? = null,
+    @SerialName("tool_calls") @EncodeDefault(NEVER) val toolCalls: List<OpenAIToolCall>? = null,
+    @SerialName("tool_call_id") @EncodeDefault(NEVER) val toolCallId: String? = null,
 )
 
 @Serializable
-internal data class OpenAIChatResponse(
+data class OpenAIContentPart(
+    val type: String,
+    @EncodeDefault(NEVER) val text: String? = null,
+    @SerialName("image_url") @EncodeDefault(NEVER) val imageUrl: OpenAIImageUrl? = null,
+)
+
+@Serializable
+data class OpenAIImageUrl(
+    val url: String,
+    @EncodeDefault(NEVER) val detail: String? = null,
+)
+
+@Serializable
+data class OpenAIChatResponse(
     val id: String,
     val choices: List<OpenAIChoice>,
     val usage: OpenAIUsage? = null,
 )
 
 @Serializable
-internal data class OpenAIChoice(
+data class OpenAIChoice(
     val message: OpenAIMessage? = null,
     val delta: OpenAIDelta? = null,
     @SerialName("finish_reason") val finishReason: String? = null,
 )
 
 @Serializable
-internal data class OpenAIDelta(
+data class OpenAIDelta(
     val content: String? = null,
 )
 
 @Serializable
-internal data class OpenAIUsage(
+data class OpenAIUsage(
     @SerialName("prompt_tokens") val promptTokens: Int,
     @SerialName("completion_tokens") val completionTokens: Int,
     @SerialName("total_tokens") val totalTokens: Int,
 )
 
 @Serializable
-internal data class OpenAIEmbeddingRequest(
+data class OpenAIEmbeddingRequest(
     val model: String,
     val input: List<String>,
 )
 
 @Serializable
-internal data class OpenAIEmbeddingResponse(
+data class OpenAIEmbeddingResponse(
     val data: List<OpenAIEmbeddingData>,
     val usage: OpenAIUsage,
 )
 
 @Serializable
-internal data class OpenAIEmbeddingData(
+data class OpenAIEmbeddingData(
     val embedding: List<Float>,
     val index: Int,
 )

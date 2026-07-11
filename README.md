@@ -1,28 +1,201 @@
-# MobileGraph: The Agent Development Kit (ADK) 📱🤖
+# MobileGraph 📱🤖
 
-[![KMP](https://img.shields.io/badge/Kotlin-Multiplatform-blue?logo=kotlin)](https://kotlinlang.org/docs/multiplatform.html)
+> **The Kotlin Multiplatform AI Framework for Building Intelligent Applications**
+
+[![Kotlin Multiplatform](https://img.shields.io/badge/Kotlin-Multiplatform-7F52FF?logo=kotlin&logoColor=white)](https://kotlinlang.org/docs/multiplatform.html)
+[![Android](https://img.shields.io/badge/Android-Supported-3DDC84?logo=android&logoColor=white)]()
+[![iOS](https://img.shields.io/badge/iOS-Supported-000000?logo=apple&logoColor=white)]()
 [![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](LICENSE)
-[![v0.1.0-alpha](https://img.shields.io/badge/version-v0.1.0--alpha-orange.svg)]()
+[![Version](https://img.shields.io/badge/version-v0.4.0--alpha-orange.svg)]()
 
-**Kotlin-first AI framework for Android, iOS, Android Automotive, Android TV, and Kotlin Multiplatform—bringing LLMs, RAG, agents, MCP, and on-device AI into a unified developer experience.**
+MobileGraph is a **Kotlin Multiplatform AI Framework** that enables developers to build intelligent applications for **Android, iOS, Android Automotive, Android TV, and the broader Kotlin ecosystem**.
 
-MobileGraph provides a unified programming model for integrating LLMs, memory, tools, structured outputs, and future agentic workflows into mobile and multiplatform applications.
+It provides a unified, provider-agnostic programming model for integrating **Large Language Models (LLMs)**, **Retrieval-Augmented Generation (RAG)**, **Prompt Engineering**, **Structured Outputs**, **Tool Calling**, **Memory**, **Agentic Workflows**, and **Graph-based Orchestration** into modern Kotlin applications.
 
-Designed with a mobile-first mindset, MobileGraph helps developers build resilient AI experiences while remaining provider-agnostic and fully native.
+Designed with a **mobile-first philosophy**, MobileGraph embraces the realities of mobile computing—application lifecycle changes, process death, intermittent connectivity, constrained resources, and offline-first experiences—while maintaining a clean, strongly typed, and idiomatic Kotlin developer experience.
 
-MobileGraph is more than just an SDK for LLMs—it is a comprehensive **Agent Development Kit (ADK)** for Kotlin Multiplatform. It provides the industrial-grade infrastructure needed to run AI agents in the real world: handling process death, managing local memory, and executing complex reasoning graphs natively on mobile devices.
+Rather than being a simple wrapper around AI APIs, MobileGraph provides the runtime infrastructure required to build resilient, scalable, and production-ready AI applications across multiple platforms.
 
 ---
 
-## ✨ Why an ADK instead of just an SDK?
+# ✨ Inspiration
 
-Most SDKs are simple wrappers around an API. MobileGraph is an **ADK** because it provides the "brain" and "nervous system" for your mobile AI:
+MobileGraph is inspired by the architectural ideas pioneered by **LangChain** and **LangGraph**, which introduced modular LLM orchestration, retrieval pipelines, tool integration, and stateful workflow execution.
 
-*   **Resilient Execution**: Automatic checkpointing. If the OS kills your app during an AI task, MobileGraph resumes exactly where it left off.
-*   **Stateful Graphs**: Define complex AI workflows as deterministic state machines.
-*   **Native Multiplatform**: 100% Kotlin. No performance-draining bridges or non-native UI overhead.
-*   **Provider Agnostic**: Seamlessly switch between OpenAI, Gemini, Anthropic, or local models with a unified capability-based API.
-*   **Mobile-First Memory**: Smart sliding-window and summarization strategies that respect mobile battery and context limits.
+Instead of replicating those frameworks, MobileGraph reimagines these concepts for the Kotlin ecosystem by combining:
+
+- Kotlin Multiplatform
+- Strongly typed APIs
+- Mobile-first runtime architecture
+- Lifecycle-aware execution
+- Immutable state management
+- Provider-agnostic abstractions
+- Native coroutine-based concurrency
+
+Our goal is to provide Kotlin developers with a modern AI framework that feels as natural as **Ktor** for networking and **Jetpack Compose** for UI development while embracing the best architectural ideas from today's AI ecosystem.
+
+MobileGraph is built **with respect for the open-source community**, and we are grateful to the projects whose ideas continue to inspire modern AI development.
+
+# 🚀 Why MobileGraph?
+
+The rapid evolution of Large Language Models has transformed how developers build intelligent applications. Frameworks such as LangChain and LangGraph have demonstrated the power of modular prompts, retrieval pipelines, tools, memory, and agent orchestration.
+
+However, most AI frameworks have been designed primarily for **server-side applications**.
+
+Mobile applications operate in a fundamentally different environment.
+
+Applications can be:
+
+- Suspended or terminated by the operating system
+- Sent to the background at any time
+- Affected by unstable or intermittent network connectivity
+- Constrained by battery, memory, and storage limitations
+- Expected to continue providing responsive user experiences even under resource pressure
+
+These challenges require more than simply wrapping an LLM API.
+
+MobileGraph was created to address these challenges by providing a **mobile-first AI runtime** built specifically for the Kotlin ecosystem.
+
+Instead of treating mobile devices as thin clients, MobileGraph provides the infrastructure needed to build resilient, stateful, and production-ready AI applications that feel native to Android, iOS, and Kotlin Multiplatform.
+
+---
+
+## ✨ Core Principles
+
+MobileGraph is built around a small set of architectural principles that guide every module in the framework.
+
+### 📱 Mobile-First Runtime
+
+Unlike traditional AI frameworks, MobileGraph embraces the realities of mobile computing.
+
+The runtime is designed to support:
+
+- Lifecycle-aware execution
+- Background processing
+- Process recovery
+- Checkpoint-ready workflows
+- Offline-first architecture
+- Resource-conscious execution
+
+---
+
+### 🔄 Provider Agnostic
+
+Applications should not depend on a specific AI provider.
+
+MobileGraph provides a unified abstraction layer that allows developers to integrate multiple AI providers through a consistent API.
+
+Supported providers include:
+
+- OpenAI
+- Google Gemini
+- Anthropic Claude
+- OpenRouter
+
+with additional providers planned for future releases.
+
+Changing providers should require little or no application code changes.
+
+---
+
+### 🧩 Modular by Design
+
+Every capability within MobileGraph is implemented as an independent module.
+
+Developers only include the functionality they need.
+
+Examples include:
+
+- Prompt Engineering
+- Structured Output Parsing
+- Tool Calling
+- Retrieval-Augmented Generation (RAG)
+- Memory
+- Agent Framework
+- Graph Runtime
+
+This modular architecture keeps applications lightweight while remaining highly extensible.
+
+---
+
+### 🔒 Strongly Typed APIs
+
+MobileGraph embraces Kotlin's type system.
+
+Instead of relying on loosely typed maps or dynamic JSON structures, the framework encourages:
+
+- Immutable models
+- Type-safe builders
+- Explicit contracts
+- Compile-time validation
+- Clear domain abstractions
+
+This leads to safer, more maintainable applications.
+
+---
+
+### ⚡ Kotlin Multiplatform Native
+
+MobileGraph is built using **Kotlin Multiplatform** from the ground up.
+
+Business logic is shared across platforms while preserving native user experiences.
+
+Supported platforms include:
+
+- Android
+- iOS
+- Android Automotive
+- Android TV
+- Desktop (planned)
+- JVM applications
+
+---
+
+### 🌊 Coroutine-First Architecture
+
+The framework is built around Kotlin Coroutines and Flow.
+
+This provides:
+
+- Structured concurrency
+- Reactive streaming
+- Cooperative cancellation
+- Efficient asynchronous execution
+
+Developers work with familiar Kotlin APIs without introducing additional reactive frameworks.
+
+---
+
+### 🧠 Agentic by Design
+
+Modern AI applications require more than simple prompt-response interactions.
+
+MobileGraph provides the building blocks for intelligent systems through:
+
+- Tool execution
+- Memory
+- Retrieval
+- Multi-agent collaboration
+- Stateful graph execution
+- Human-in-the-loop workflows
+- Durable execution
+
+These capabilities enable developers to build applications that can reason, plan, and execute complex workflows.
+
+---
+
+## 🎯 Design Goals
+
+MobileGraph aims to provide a developer experience that is:
+
+- Simple enough for building a chatbot in minutes
+- Powerful enough for enterprise-scale AI workflows
+- Flexible enough to support multiple AI providers
+- Efficient enough for resource-constrained mobile devices
+- Stable enough for long-term production use
+- Idiomatic to Kotlin and Kotlin Multiplatform
+
+The framework is designed to grow with your application—from a single prompt to sophisticated multi-agent systems—without requiring fundamental architectural changes.
 
 ---
 # 🗺 Roadmap
@@ -33,11 +206,11 @@ Our mission is to become the **Kotlin-first AI framework for the Android ecosyst
 
 | Phase      |    Status   | Focus                        |
 | ---------- | :---------: | ---------------------------- |
-| ✅ Phase 1  |  Completed  | Core Runtime                 |
+| ✅ Phase 1  |  Completed  | Core Runtime & Lifecycle     |
 | ✅ Phase 2  |  Completed  | Knowledge Layer (RAG)        |
-| ✅ Phase 3  |  Completed  | Agent Runtime                |
-| 🚧 Phase 4 | In Progress | Model Ecosystem              |
-| 🔜 Phase 5 |   Planned   | Model Context Protocol (MCP) |
+| ✅ Phase 3  |  Completed  | Multi-Agent Orchestration    |
+| ✅ Phase 4  |  Completed  | Multi-Model Cloud Ecosystem  |
+| 🚧 Phase 5 | In Progress | Model Context Protocol (MCP) |
 | 🔜 Phase 6 |   Planned   | Local AI & Edge Inference    |
 | 🔮 Phase 7 |    Future   | Android Ecosystem            |
 | 🚀 Phase 8 |    Vision   | MobileGraph Studio           |
@@ -65,7 +238,7 @@ dependencies {
 -->
 
 
-### 2. Initialize the ADK
+### 2. Initialize the SDK
 Configure your agent's models and capabilities in one type-safe DSL:
 
 ```kotlin
@@ -160,9 +333,10 @@ Detailed guides for building agentic workflows with MobileGraph:
 
 | Group                                 | Features                                                               | Guide                                                     |
 |:--------------------------------------|:-----------------------------------------------------------------------|:----------------------------------------------------------|
-| **Core & Setup**                      | ADK Initialization, Interaction Patterns, Model Registry               | [Read Guide](./docs/usage/core-setup.md)                  |
-| **Intelligence**                      | Prompt Composer DSL, Structured Parsers, Custom Models                 | [Read Guide](./docs/usage/models-intelligence.md)         |
-| **Agent Framework**                   | Multi-Agent Orchestration, Parallel Execution, Hierarchical, HITL      | [Read Guide](./docs/usage/agent-framework.md)             |
+| **Core & Setup**                      | AI Framework Initialization, Interaction Patterns, Model Registry      | [Read Guide](./docs/usage/core-setup.md)                  |
+| **Intelligence**                      | Prompt Composer DSL, Structured Parsers, Vision (Vision)               | [Read Guide](./docs/usage/models-intelligence.md)         |
+| **Multi-Model**                       | OpenAI, Gemini, Claude, OpenRouter Integration                         | [Read Guide](./docs/usage/multi-model-orchestration.md)   |
+| **Agent Framework**                   | Multi-Agent Orchestration, Parallel Execution, Hierarchical            | [Read Guide](./docs/usage/agent-framework.md)             |
 | **Persistence & State**               | Graph State, Checkpointing, Durable Execution, Resumption              | [Read Guide](./docs/usage/agent-framework.md)             |
 | **Tools & Agents**                    | Function Calling, Semantic Tool Selection, Vector Caching              | [Read Guide](./docs/usage/tools-agents.md)                |
 | **Resilience & Memory**               | Chat Memory, Sliding Windows, Local-First Sync                         | [Read Guide](./docs/usage/memory-state.md)                |
