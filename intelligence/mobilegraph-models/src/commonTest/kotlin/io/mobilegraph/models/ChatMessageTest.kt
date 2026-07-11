@@ -21,7 +21,7 @@ class ChatMessageTest {
         assertEquals("s1", msg.sessionId)
         assertEquals(SyncState.PENDING, msg.syncState)
 
-        val copied = msg.copyWith(content = "hi")
+        val copied = msg.copyWith(parts = listOf(ContentPart.Text("hi")))
         assertEquals("hi", copied.content)
         assertEquals("id1", copied.id)
     }

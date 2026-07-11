@@ -61,6 +61,6 @@ Context:
 $contextData
 
 Question: $userQuery
-""".trimIndent()
+            """.trimIndent()
     }
 }

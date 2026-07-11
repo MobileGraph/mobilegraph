@@ -15,7 +15,8 @@ class DefaultContextBuilderTest {
             )
 
         val context = builder.buildContextAndPrompt(docs, "user query")
-        val expected = """
+        val expected =
+            """
 Use the following context to answer the user's question. 
 If the context doesn't contain the answer, say "Not enough context to answer the query."
 
@@ -25,7 +26,7 @@ first
 second
 
 Question: user query
-        """.trimIndent()
+            """.trimIndent()
         assertEquals(expected, context)
     }
 
@@ -33,7 +34,8 @@ Question: user query
     fun testEmptyDocs() {
         val builder = DefaultContextBasedPromptBuilder()
         val context = builder.buildContextAndPrompt(emptyList(), "user query")
-        val expected = """
+        val expected =
+            """
 Use the following context to answer the user's question. 
 If the context doesn't contain the answer, say "Not enough context to answer the query."
 
@@ -41,7 +43,7 @@ Context:
 
 
 Question: user query
-        """.trimIndent()
+            """.trimIndent()
         assertEquals(expected, context)
     }
 }

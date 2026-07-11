@@ -40,6 +40,9 @@ class MasterActivity : ComponentActivity() {
                             5 -> startActivity(Intent(this, ParallelAgentsActivity::class.java))
                             6 -> startActivity(Intent(this, ToolsAgentActivity::class.java))
                             7 -> startActivity(Intent(this, SubAgentActivity::class.java))
+                            8 -> startActivity(Intent(this, MultiModelActivity::class.java))
+                            9 -> startActivity(Intent(this, ModelRouterActivity::class.java))
+                            10 -> startActivity(Intent(this, AgentRouterActivity::class.java))
                         }
                     },
                 )
@@ -130,6 +133,33 @@ fun MasterScreen(onOptionSelected: (Int) -> Unit) {
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 Text("7. Hierarchical Sub-Agents (Orchestration)")
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Button(
+                onClick = { onOptionSelected(8) },
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text("8. Multi-Model & Vision (OpenAI, Gemini, Claude)")
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Button(
+                onClick = { onOptionSelected(9) },
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text("9. Intelligent Model Router")
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Button(
+                onClick = { onOptionSelected(10) },
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text("10. Agent Brain Routing (Cost Optimization)")
             }
         }
     }

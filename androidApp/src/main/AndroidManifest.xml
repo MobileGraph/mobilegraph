@@ -24,6 +24,9 @@
         <activity android:name=".ParallelAgentsActivity" />
         <activity android:name=".ToolsAgentActivity" />
         <activity android:name=".SubAgentActivity" />
+        <activity android:name=".MultiModelActivity" />
+        <activity android:name=".ModelRouterActivity" />
+        <activity android:name=".AgentRouterActivity" />
     </application>
 
 </manifest>

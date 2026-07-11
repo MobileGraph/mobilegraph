@@ -24,6 +24,7 @@ import io.mobilegraph.core.events.MobileGraphEvent
 import io.mobilegraph.core.facade.MobileGraph
 import io.mobilegraph.core.memory.memory
 import io.mobilegraph.core.session.MobileGraphSession
+import io.mobilegraph.core.tools.AllToolSelector
 import io.mobilegraph.core.tools.Tool
 import io.mobilegraph.core.tools.ToolMetadata
 import io.mobilegraph.models.facade.chat
@@ -103,11 +104,11 @@ class MainViewModel : ViewModel() {
                     register(weatherTool)
                 }
                 withToolSelector(
-                    selector =
-                        SemanticToolSelector(
+                    selector = AllToolSelector(),
+                       /* SemanticToolSelector(
                             embeddingModel = embeddingModel,
                             embeddingStore = myStore,
-                        ),
+                        )*/
                 )
                 withModels {
                     // Register a high-power model for complex tasks

@@ -40,7 +40,9 @@ class MediaPipeEmbeddingModel(
                         .setBaseOptions(baseOptions)
                         .build()
 
-                TextEmbedder.createFromOptions(context, options).also { textEmbedder = it }
+                TextEmbedder.createFromOptions(context, options).also {
+                    textEmbedder = it
+                }
             }
         }
 

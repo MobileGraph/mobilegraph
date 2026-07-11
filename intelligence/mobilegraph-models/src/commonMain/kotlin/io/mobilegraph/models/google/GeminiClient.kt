@@ -1,4 +1,4 @@
-package io.mobilegraph.models.openai
+package io.mobilegraph.models.google
 
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpTimeout
@@ -8,7 +8,7 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
-fun createOpenAIHttpClient(engine: io.ktor.client.engine.HttpClientEngine? = null): HttpClient {
+internal fun createGeminiHttpClient(engine: io.ktor.client.engine.HttpClientEngine? = null): HttpClient {
     val config: io.ktor.client.HttpClientConfig<*>.() -> Unit = {
         install(ContentNegotiation) {
             json(
