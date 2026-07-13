@@ -9,6 +9,7 @@ plugins {
     id("jacoco")
     alias(libs.plugins.spotless) apply false
     alias(libs.plugins.detekt) apply false
+    alias(libs.plugins.dokka) apply false
 }
 
 allprojects {
@@ -31,6 +32,30 @@ allprojects {
 
 subprojects {
     apply(plugin = "com.diffplug.spotless")
+    apply(plugin = "org.jetbrains.dokka")
+
+    // Ensure all Kotlin Multiplatform projects export sources and javadoc
+    plugins.withType<org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper> {
+        configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension> {
+            withSourcesJar()
+        }
+
+        // Create a Javadoc JAR using Dokka output
+        val dokkaHtml = tasks.named<org.jetbrains.dokka.gradle.DokkaTask>("dokkaHtml")
+        val javadocJar by tasks.registering(Jar::class) {
+            from(dokkaHtml)
+            archiveClassifier.set("javadoc")
+        }
+
+        // Attach the Javadoc JAR to the publication if publishing is enabled
+        pluginManager.withPlugin("maven-publish") {
+            configure<PublishingExtension> {
+                publications.withType<MavenPublication> {
+                    artifact(javadocJar)
+                }
+            }
+        }
+    }
 
     if (project.path != ":androidApp") {
         apply(plugin = "io.gitlab.arturbosch.detekt")

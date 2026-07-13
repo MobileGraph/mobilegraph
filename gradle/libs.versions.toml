@@ -21,6 +21,7 @@ pdfboxAndroid = "2.0.27.0"
 sqldelight = "2.3.2"
 spotless = "8.7.0"
 detekt = "1.23.8"
+dokka = "2.2.0"
 material3 = "1.11.0-alpha07"
 material3Version = "1.4.0"
 mediapipe-tasks-text = "0.20230731"
@@ -73,4 +74,5 @@ kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref =
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }

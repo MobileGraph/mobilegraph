@@ -235,7 +235,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.MobileGraph.mobilegraph:mobilegraph-agents:0.4.0-alpha.01'
+    implementation("com.github.MobileGraph.mobilegraph:mobilegraph-sdk:0.4.0-alpha.02")
 }
 ```
 
