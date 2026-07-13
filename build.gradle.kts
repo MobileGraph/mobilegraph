@@ -34,24 +34,22 @@ subprojects {
     apply(plugin = "com.diffplug.spotless")
     apply(plugin = "org.jetbrains.dokka")
 
-    // Ensure all Kotlin Multiplatform projects export sources and javadoc
-    plugins.withType<org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper> {
-        configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension> {
-            withSourcesJar()
-        }
+    pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
+        val kotlin = extensions.getByType<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension>()
+        kotlin.withSourcesJar()
 
-        // Create a Javadoc JAR using Dokka output
         val dokkaHtml = tasks.named<org.jetbrains.dokka.gradle.DokkaTask>("dokkaHtml")
         val javadocJar by tasks.registering(Jar::class) {
             from(dokkaHtml)
             archiveClassifier.set("javadoc")
         }
 
-        // Attach the Javadoc JAR to the publication if publishing is enabled
-        pluginManager.withPlugin("maven-publish") {
-            configure<PublishingExtension> {
-                publications.withType<MavenPublication> {
-                    artifact(javadocJar)
+        afterEvaluate {
+            pluginManager.withPlugin("maven-publish") {
+                extensions.configure<PublishingExtension> {
+                    publications.withType<MavenPublication> {
+                        artifact(javadocJar)
+                    }
                 }
             }
         }
