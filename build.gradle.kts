@@ -38,9 +38,9 @@ subprojects {
         val kotlin = extensions.getByType<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension>()
         kotlin.withSourcesJar()
 
-        val dokkaHtml = tasks.named<org.jetbrains.dokka.gradle.DokkaTask>("dokkaHtml")
+        val dokkaGenerateHtml = tasks.named("dokkaGenerateHtml")
         val javadocJar by tasks.registering(Jar::class) {
-            from(dokkaHtml)
+            from(dokkaGenerateHtml)
             archiveClassifier.set("javadoc")
         }
 
