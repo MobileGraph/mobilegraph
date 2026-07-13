@@ -224,33 +224,39 @@ We welcome community contributions, ideas, and feedback as we continue building 
 
 ### 1. Installation
 
-To be published soon into maven. The repo is under alpha testing and active development. 
+To be published soon into maven. The repo is under alpha testing and active development.
 
-<!-- 
-Add the core and models dependencies to your `build.gradle.kts`:
+Add the SDK to your project via JitPack:
 
 ```kotlin
+repositories {
+    maven { url = uri("https://jitpack.io") }
+}
+
 dependencies {
-    implementation("io.mobilegraph:mobilegraph-core:0.1.0-alpha")
-    implementation("io.mobilegraph:mobilegraph-models:0.1.0-alpha")
+    // A single dependency for the entire SDK
+    implementation("com.github.MobileGraph.mobilegraph:mobilegraph-sdk:0.1.0-alpha01")
 }
 ```
--->
-
 
 ### 2. Initialize the SDK
-Configure your agent's models and capabilities in one type-safe DSL:
+Configure multiple AI providers and intelligent routing in one type-safe DSL:
 
 ```kotlin
 val mobileGraph = MobileGraph.initialize(context) {
     withModels {
-        chat("gpt-4o", OpenAIChatModel(apiKey = "sk-...")) {
-            isDefault = true
-            middleware {
-                +LoggingMiddleware()           // Real-time observability
-                +RetryMiddleware(maxRetries = 3) // Mobile network resilience
-                +ChatMemoryMiddleware()        // Automatic history management
+        // Register multiple brains
+        openai(apiKey = "sk-...") { isDefault = true }
+        gemini(apiKey = "...")
+        claude(apiKey = "...")
+        
+        // Setup intelligent routing
+        router("smart-assistant") {
+            policy {
+                condition { it.hasImages }
+                use("gpt-4o")
             }
+            default("claude-3-5-sonnet-20241022")
         }
     }
 }

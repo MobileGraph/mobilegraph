@@ -3,7 +3,11 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidMultiplatformLibrary)
+    `maven-publish`
 }
+
+group = "com.github.MobileGraph"
+// version is inherited from root project
 
 kotlin {
     android {

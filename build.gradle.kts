@@ -13,7 +13,7 @@ plugins {
 
 allprojects {
     group = "io.mobilegraph.ai"
-    version = "0.3.0-SNAPSHOT"
+    version = properties["version"] as String
 
     apply(plugin = "jacoco")
 
