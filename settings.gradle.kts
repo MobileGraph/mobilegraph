@@ -1,4 +1,4 @@
-rootProject.name = "MobileGraphSDK"
+rootProject.name = "mobilegraph-project"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
@@ -42,5 +42,6 @@ include(":knowledge:mobilegraph-documents")
 include(":knowledge:mobilegraph-embeddings")
 include(":knowledge:mobilegraph-vectorstores")
 include(":knowledge:mobilegraph-retrieval")
+include(":mobilegraph-sdk")
 include(":shared")
 include(":androidApp")

@@ -4,7 +4,11 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidMultiplatformLibrary)
     alias(libs.plugins.sqldelight)
+    `maven-publish`
 }
+
+group = "com.github.MobileGraph"
+// version is inherited from root project
 
 kotlin {
     android {
