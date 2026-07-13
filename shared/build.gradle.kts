@@ -8,13 +8,16 @@ plugins {
 }
 
 kotlin {
-    listOf(
-        iosArm64(),
-        iosSimulatorArm64(),
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "Shared"
-            isStatic = true
+    val hostOs = System.getProperty("os.name")
+    if (hostOs == "Mac OS X") {
+        listOf(
+            iosArm64(),
+            iosSimulatorArm64(),
+        ).forEach { iosTarget ->
+            iosTarget.binaries.framework {
+                baseName = "Shared"
+                isStatic = true
+            }
         }
     }
 

@@ -29,9 +29,12 @@ kotlin {
 
     jvm()
 
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
+    val hostOs = System.getProperty("os.name")
+    if (hostOs == "Mac OS X") {
+        iosX64()
+        iosArm64()
+        iosSimulatorArm64()
+    }
 
     sourceSets {
         androidMain.dependencies {

@@ -29,9 +29,15 @@ kotlin {
 
     jvm()
 
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
+    val hostOs = System.getProperty("os.name")
+    val isArm64 = System.getProperty("os.arch") == "aarch64"
+    val isMac = hostOs == "Mac OS X"
+
+    if (isMac) {
+        iosX64()
+        iosArm64()
+        iosSimulatorArm64()
+    }
 
     sourceSets {
         commonMain.dependencies {
