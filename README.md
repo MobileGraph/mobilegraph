@@ -7,6 +7,7 @@
 [![iOS](https://img.shields.io/badge/iOS-Supported-000000?logo=apple&logoColor=white)]()
 [![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-v0.4.0--alpha-orange.svg)]()
+[![](https://jitpack.io/v/MobileGraph/mobilegraph.svg)](https://jitpack.io/#MobileGraph/mobilegraph)
 
 MobileGraph is a **Kotlin Multiplatform AI Framework** that enables developers to build intelligent applications for **Android, iOS, Android Automotive, Android TV, and the broader Kotlin ecosystem**.
 
@@ -234,8 +235,7 @@ repositories {
 }
 
 dependencies {
-    // A single dependency for the entire SDK
-    implementation("com.github.MobileGraph.mobilegraph:mobilegraph-sdk:0.1.0-alpha01")
+    implementation 'com.github.MobileGraph.mobilegraph:mobilegraph-agents:0.4.0-alpha.01'
 }
 ```
 
