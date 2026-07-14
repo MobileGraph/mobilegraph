@@ -44,11 +44,15 @@ subprojects {
             archiveClassifier.set("javadoc")
         }
 
+        // Attach the Javadoc JAR to all publications
         afterEvaluate {
             pluginManager.withPlugin("maven-publish") {
                 extensions.configure<PublishingExtension> {
-                    publications.withType<MavenPublication> {
-                        artifact(javadocJar)
+                    publications.all {
+                        val publication = this
+                        if (publication is MavenPublication) {
+                            publication.artifact(javadocJar)
+                        }
                     }
                 }
             }
