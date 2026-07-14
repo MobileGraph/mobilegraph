@@ -4,3 +4,4 @@ before_install:
   - chmod +x gradlew
 install:
   - ./gradlew publishToMavenLocal -Pgroup=com.github.MobileGraph
+  - ./gradlew dokkaGenerateHtml --no-configuration-cache
