@@ -24,7 +24,7 @@ detekt = "1.23.8"
 dokka = "2.2.0"
 material3 = "1.11.0-alpha07"
 material3Version = "1.4.0"
-mediapipe-tasks-text = "0.20230731"
+mediapipe-tasks-text = "0.10.35"
 
 [libraries]
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }

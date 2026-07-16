@@ -12,8 +12,14 @@ group = "com.github.MobileGraph"
 kotlin {
     android {
         namespace = "io.mobilegraph.sdk"
-        compileSdk = libs.versions.android.compileSdk.get().toInt()
-        minSdk = libs.versions.android.minSdk.get().toInt()
+        compileSdk =
+            libs.versions.android.compileSdk
+                .get()
+                .toInt()
+        minSdk =
+            libs.versions.android.minSdk
+                .get()
+                .toInt()
         compilerOptions {
             jvmTarget = JvmTarget.JVM_11
         }
@@ -34,7 +40,7 @@ kotlin {
             api(project(":foundation:mobilegraph-core"))
             api(project(":foundation:mobilegraph-state"))
             api(project(":foundation:mobilegraph-checkpoint"))
-            
+
             api(project(":intelligence:mobilegraph-models"))
             api(project(":intelligence:mobilegraph-agents"))
             api(project(":intelligence:mobilegraph-graph"))
@@ -42,7 +48,7 @@ kotlin {
             api(project(":intelligence:mobilegraph-parsers"))
             api(project(":intelligence:mobilegraph-prompts"))
             api(project(":intelligence:mobilegraph-rag"))
-            
+
             api(project(":knowledge:mobilegraph-documents"))
             api(project(":knowledge:mobilegraph-embeddings"))
             api(project(":knowledge:mobilegraph-retrieval"))
