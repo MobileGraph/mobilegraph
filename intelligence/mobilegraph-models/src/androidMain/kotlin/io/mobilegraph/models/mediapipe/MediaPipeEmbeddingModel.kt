@@ -6,11 +6,16 @@ import com.google.mediapipe.tasks.text.textembedder.TextEmbedder.TextEmbedderOpt
 import io.mobilegraph.core.capability.Capability
 import io.mobilegraph.core.context.ExecutionContext
 import io.mobilegraph.models.EmbeddingModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 /**
  * An offline embedding model implementation using MediaPipe Tasks.
+ *
+ * MediaPipe's [TextEmbedder] wraps a TFLite interpreter whose internal state is
+ * **not thread-safe**. All calls to [embed] are serialized through a [Mutex] to
+ * prevent concurrent native access, which would corrupt memory and cause a
+ * SIGSEGV (SEGV_MAPERR).
  *
  * @param contextProvider A function that provides the Android Context.
  * @param modelPath Path to the TFLite model file in the assets folder. Download from: https://storage.googleapis.com/mediapipe-models/text_embedder/universal_sentence_encoder/float32/1/universal_sentence_encoder.tflite
@@ -21,11 +26,24 @@ class MediaPipeEmbeddingModel(
 ) : EmbeddingModel {
     override val name: String = "mediapipe-universal-sentence-encoder"
 
+    /** Guards all access to [textEmbedder] — both initialization and inference. */
+    private val mutex = Mutex()
+
+    @Volatile
     private var textEmbedder: TextEmbedder? = null
 
-    private fun getTextEmbedder(): TextEmbedder =
-        textEmbedder ?: synchronized(this) {
+    @Volatile
+    private var closed = false
+
+    private fun getOrCreateTextEmbedder(): TextEmbedder {
+        // Fast path – already initialized (volatile read is safe).
+        textEmbedder?.let { return it }
+
+        // Slow path – double-checked locking via synchronized for one-time init.
+        return synchronized(this) {
             textEmbedder ?: run {
+                check(!closed) { "MediaPipeEmbeddingModel has been closed" }
+
                 val context = contextProvider() as android.content.Context
 
                 val baseOptions =
@@ -45,6 +63,7 @@ class MediaPipeEmbeddingModel(
                 }
             }
         }
+    }
 
     override fun supports(capability: Capability): Boolean = false
 
@@ -52,8 +71,11 @@ class MediaPipeEmbeddingModel(
         text: String,
         context: ExecutionContext,
     ): FloatArray =
-        withContext(Dispatchers.Default) {
-            val result = getTextEmbedder().embed(text)
+        // The Mutex ensures only one coroutine enters the native TextEmbedder at
+        // a time, regardless of which dispatcher thread it resides on.
+        mutex.withLock {
+            check(!closed) { "MediaPipeEmbeddingModel has been closed" }
+            val result = getOrCreateTextEmbedder().embed(text)
             result
                 .embeddingResult()
                 .embeddings()
@@ -65,4 +87,16 @@ class MediaPipeEmbeddingModel(
         texts: List<String>,
         context: ExecutionContext,
     ): List<FloatArray> = texts.map { embed(it, context) }
+
+    /**
+     * Releases the native TFLite resources held by the underlying [TextEmbedder].
+     * After calling this, any subsequent [embed] call will throw [IllegalStateException].
+     */
+    fun close() {
+        synchronized(this) {
+            closed = true
+            textEmbedder?.close()
+            textEmbedder = null
+        }
+    }
 }
