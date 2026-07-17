@@ -235,7 +235,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.MobileGraph.mobilegraph:mobilegraph-sdk:0.4.0-alpha.02")
+    implementation("com.github.MobileGraph.mobilegraph:mobilegraph-sdk:0.4.0-alpha.07")
 }
 ```
 
@@ -290,6 +290,8 @@ Define and execute complex workflows with just a few lines:
 
 ## 🛠 Project Ecosystem
 
+For a detailed module dependency graph and architecture diagrams, see the **[Architecture Overview](./docs/ARCHITECTURE.md)**.
+
 ### Foundation
 *   **`mobilegraph-core`**: The backbone. Handles execution context, lifecycle, events, and component registry.
 *   **`mobilegraph-checkpoint`**: Infrastructure for state persistence and durable execution.
@@ -343,7 +345,7 @@ Detailed guides for building agentic workflows with MobileGraph:
 | **Intelligence**                      | Prompt Composer DSL, Structured Parsers, Vision (Vision)               | [Read Guide](./docs/usage/models-intelligence.md)         |
 | **Multi-Model**                       | OpenAI, Gemini, Claude, OpenRouter Integration                         | [Read Guide](./docs/usage/multi-model-orchestration.md)   |
 | **Agent Framework**                   | Multi-Agent Orchestration, Parallel Execution, Hierarchical            | [Read Guide](./docs/usage/agent-framework.md)             |
-| **Persistence & State**               | Graph State, Checkpointing, Durable Execution, Resumption              | [Read Guide](./docs/usage/agent-framework.md)             |
+| **Persistence & State**               | Graph State, Checkpointing, Durable Execution, Resumption              | [Read Guide](./docs/usage/memory-state.md)                |
 | **Tools & Agents**                    | Function Calling, Semantic Tool Selection, Vector Caching              | [Read Guide](./docs/usage/tools-agents.md)                |
 | **Resilience & Memory**               | Chat Memory, Sliding Windows, Local-First Sync                         | [Read Guide](./docs/usage/memory-state.md)                |
 | **Observability**                     | Middleware Pipeline, Event Streams, Custom Logging                     | [Read Guide](./docs/usage/observability-extensibility.md) |

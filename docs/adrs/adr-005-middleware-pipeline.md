@@ -67,9 +67,9 @@ Cross-cutting concerns must be implemented through middleware rather than embedd
 interface Middleware<I, O> {
 
     suspend fun intercept(
-        request: I,
+        input: I,
         context: ExecutionContext,
-        next: suspend (I) -> O
+        next: suspend (I, ExecutionContext) -> O
     ): O
 
 }
