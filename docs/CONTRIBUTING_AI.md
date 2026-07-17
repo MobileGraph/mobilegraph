@@ -62,33 +62,45 @@ Avoid:
 
 # Current Scope
 
-Current milestone:
+All SDK modules are implemented. The current module set is:
+
+**Foundation Layer:**
 
 ```text
 mobilegraph-core
+mobilegraph-state
+mobilegraph-checkpoint
+```
+
+**Intelligence Layer:**
+
+```text
 mobilegraph-models
 mobilegraph-prompts
 mobilegraph-parsers
 mobilegraph-tools
+mobilegraph-rag
+mobilegraph-graph
+mobilegraph-agents
 ```
 
-Do not implement:
+**Knowledge Layer:**
 
 ```text
-mobilegraph-memory
-
+mobilegraph-documents
+mobilegraph-embeddings
+mobilegraph-vectorstores
 mobilegraph-retrieval
+```
 
-mobilegraph-agents
+The following modules are planned but **not yet implemented**:
 
-mobilegraph-graph
-
+```text
 mobilegraph-compose
-
 mobilegraph-swiftui
 ```
 
-unless explicitly instructed.
+Do not create new modules unless explicitly instructed.
 
 ---
 
@@ -126,19 +138,19 @@ Never introduce:
 
 ```text
 core → graph
-
 core → agents
-
+core → models
 models → agents
-
-prompts → models
-
 tools → agents
-
 stores → models
+foundation → intelligence
+foundation → knowledge
+knowledge → agents
 ```
 
 Circular dependencies are prohibited.
+
+Note: `prompts → models` is an **allowed** dependency (prompts uses model message types).
 
 ---
 
@@ -347,14 +359,11 @@ Every public API requires tests.
 Use:
 
 ```text
-Kotest
+kotlin.test
+kotlinx-coroutines-test
 ```
 
-For Flow:
-
-```text
-Turbine
-```
+All tests should be in `commonTest` for maximum platform coverage.
 
 Framework code should prioritize:
 
@@ -421,31 +430,23 @@ It must not change business behavior.
 
 # Build Philosophy
 
-Build from the bottom up.
+Build from the bottom up. Dependencies flow downward through layers.
 
-Order:
+Layer order:
 
 ```text
-mobilegraph-core
-
+Foundation: core, state, checkpoint
 ↓
-
-mobilegraph-models
-
+Knowledge:  documents, embeddings, vectorstores, retrieval
 ↓
-
-mobilegraph-prompts
-
+Intelligence: models, prompts, parsers, tools, rag, graph, agents
 ↓
-
-mobilegraph-parsers
-
-↓
-
-mobilegraph-tools
+Application: shared, androidApp, iosApp
 ```
 
-Do not skip ahead.
+Within a layer, respect module dependency order (see ARCHITECTURE.md for the full dependency graph).
+
+Do not skip foundational layers.
 
 ---
 
