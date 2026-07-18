@@ -74,7 +74,7 @@ class HitlViewModel : ViewModel() {
         if (isInitialized) return
         isInitialized = true
 
-        MobileGraph.initialize(context) {
+        MobileGraph.initialize {
             val chatModel = OpenAIChatModel(apiKey = BuildConfig.OPEN_AI_API_KEY, name = "gpt-4o")
             withModels {
                 chat("gpt-4o", chatModel) {

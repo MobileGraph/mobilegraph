@@ -46,11 +46,9 @@ import io.mobilegraph.parsers.asText
 import io.mobilegraph.parsers.structuredOutputParser
 import io.mobilegraph.prompts.composition.promptComposer
 import io.mobilegraph.prompts.facade.withPrompts
-import io.mobilegraph.rag.facade.withRag
 import io.mobilegraph.tools.facade.withToolSelector
 import io.mobilegraph.tools.facade.withTools
 import io.mobilegraph.tools.selection.JsonEmbeddingStore
-import io.mobilegraph.tools.selection.SemanticToolSelector
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -99,7 +97,7 @@ class MainViewModel : ViewModel() {
         val embeddingModel = MediaPipeEmbeddingModel({ context })
         val miniModel = OpenAIChatModel(apiKey = openAiApiKey, name = "gpt-4o-mini")
         mobileGraph =
-            MobileGraph.initialize(context) {
+            MobileGraph.initialize {
                 withTools {
                     register(weatherTool)
                 }

@@ -223,11 +223,16 @@ We welcome community contributions, ideas, and feedback as we continue building 
 
 ## 🚀 Quick Start in 30 Seconds
 
-### 1. Installation
+### 1. Environment Checklist
+To ensure stability and compatibility, verify your project meets these requirements:
+*   **Kotlin:** 2.0.0+ (Required for K2 compiler support)
+*   **Gradle:** 8.4+
+*   **JDK:** 17+
+*   **Android Min SDK:** 24+
 
-To be published soon into maven. The repo is under alpha testing and active development.
+### 2. Installation
 
-Add the SDK to your project via JitPack:
+Add the SDK to your project via JitPack. Since MobileGraph is engine-agnostic, you **must** also provide a Ktor HTTP engine (e.g., OkHttp for Android).
 
 ```kotlin
 repositories {
@@ -236,44 +241,56 @@ repositories {
 
 dependencies {
     implementation("com.github.MobileGraph.mobilegraph:mobilegraph-sdk:0.4.0-alpha.07")
+    
+    // Required: Choose a Ktor engine
+    implementation("io.ktor:ktor-client-okhttp:3.5.1") 
 }
 ```
 
-### 2. Initialize the SDK
-Configure multiple AI providers and intelligent routing in one type-safe DSL:
+### 3. Initialize the SDK
+Initialize within a `CoroutineScope` (like `lifecycleScope` or `viewModelScope`) to ensure the registry is ready:
 
 ```kotlin
-val mobileGraph = MobileGraph.initialize(context) {
-    withModels {
-        // Register multiple brains
-        openai(apiKey = "sk-...") { isDefault = true }
-        gemini(apiKey = "...")
-        claude(apiKey = "...")
-        
-        // Setup intelligent routing
-        router("smart-assistant") {
-            policy {
-                condition { it.hasImages }
-                use("gpt-4o")
-            }
-            default("claude-3-5-sonnet-20241022")
+lifecycleScope.launch {
+    MobileGraph.initialize {
+        withModels {
+            openai(apiKey = "sk-...") { isDefault = true }
+            gemini(apiKey = "...")
+            claude(apiKey = "...")
         }
     }
 }
 ```
 
-### 3. Create and Run a Session
+### 4. Create and Run a Session
 Start a resilient, stateful interaction with just a few lines:
 
 ```kotlin
-val session = mobileGraph.createSession()
+val session = MobileGraph.instance.createSession()
 
 // Resilient, streaming interaction
-session.model().stream("Plan a 3-day trip to Tokyo").collect { chunk ->
+session.stream("Plan a 3-day trip to Tokyo").collect { chunk ->
     print(chunk.text)
 }
 ```
-### 4. Create and Run a Resilient Agent
+
+### 5. Proguard/R8 Rules (Android)
+If you are building a release version, add these rules to your `proguard-rules.pro` to prevent runtime crashes:
+
+```proguard
+# Ktor & Serialization
+-keepattributes Signature, *Annotation*, InnerClasses
+-keep class io.ktor.** { *; }
+-keep class kotlinx.serialization.json.** { *; }
+
+# MobileGraph Models
+-keep class io.mobilegraph.models.** { *; }
+-keepclassmembers class * {
+    @kotlinx.serialization.SerialName <fields>;
+}
+```
+For more details on Setup see [Setup Guide](./docs/usage/core-setup.md)
+### 6. Create and Run a Resilient Agent
 Define and execute complex workflows with just a few lines:
 ```kotlin
     val agent = MyResearchAgent(mobileGraph.models.chat())
@@ -287,6 +304,7 @@ Define and execute complex workflows with just a few lines:
 // Run the agentic workflow with automatic checkpointing
     val result = runtime.run(workflow, initialState)
 ```
+For more details on Agents see [Agent Guide](./docs/usage/agent-framework.md)
 
 ## 🛠 Project Ecosystem
 

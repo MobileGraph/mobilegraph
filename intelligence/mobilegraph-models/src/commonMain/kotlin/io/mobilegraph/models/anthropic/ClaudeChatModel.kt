@@ -4,11 +4,14 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.header
 import io.ktor.client.request.post
+import io.ktor.client.request.preparePost
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
+import io.ktor.utils.io.ByteReadChannel
+import io.ktor.utils.io.readUTF8Line
 import io.mobilegraph.core.capability.Capability
 import io.mobilegraph.core.context.ExecutionContext
 import io.mobilegraph.core.facade.MobileGraph
@@ -33,7 +36,6 @@ import io.mobilegraph.models.ToolMessage
 import io.mobilegraph.models.Usage
 import io.mobilegraph.models.UserMessage
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
@@ -163,10 +165,72 @@ class ClaudeChatModel(
         prompt: ChatPromptValue,
         config: ModelConfig?,
         context: ExecutionContext,
-    ): Flow<ChatChunk> {
-        // TODO: Implement streaming for Claude
-        return emptyFlow()
-    }
+    ): Flow<ChatChunk> =
+        kotlinx.coroutines.flow.flow {
+            val systemMessage =
+                prompt.messages
+                    .filterIsInstance<SystemMessage>()
+                    .firstOrNull()
+                    ?.content
+            val otherMessages = prompt.messages.filter { it !is SystemMessage }
+
+            val messages = otherMessages.map { it.toClaude() }
+
+            val claudeTools = config?.tools?.map { it.toClaude() }
+
+            val claudeRequest =
+                ClaudeChatRequest(
+                    model = name,
+                    messages = messages,
+                    system = systemMessage,
+                    maxTokens = config?.maxTokens ?: 1024,
+                    temperature = config?.temperature?.toDouble(),
+                    stopSequences = config?.stop,
+                    tools = if (claudeTools.isNullOrEmpty()) null else claudeTools,
+                    toolChoice = if (claudeTools.isNullOrEmpty()) null else ClaudeToolChoice("auto"),
+                    stream = true,
+                )
+
+            httpClient
+                .preparePost("$baseUrl/messages") {
+                    header("x-api-key", apiKey)
+                    header("anthropic-version", "2023-06-01")
+                    contentType(ContentType.Application.Json)
+                    setBody(claudeRequest)
+                }.execute { response ->
+                    if (response.status.value >= 400) {
+                        throw translateError(response)
+                    }
+
+                    val channel: ByteReadChannel = response.body()
+                    while (!channel.isClosedForRead) {
+                        val line = channel.readUTF8Line() ?: break
+                        if (line.startsWith("data: ")) {
+                            val jsonStr = line.substring(6)
+                            try {
+                                val event = json.decodeFromString<ClaudeStreamEvent>(jsonStr)
+                                when (event.type) {
+                                    "content_block_delta" -> {
+                                        val delta = event.delta?.text
+                                        if (delta != null) {
+                                            emit(ChatChunk(delta = delta))
+                                        }
+                                    }
+
+                                    "message_delta" -> {
+                                        val finishReason = event.delta?.stopReason
+                                        if (finishReason != null) {
+                                            emit(ChatChunk(delta = "", finishReason = finishReason))
+                                        }
+                                    }
+                                }
+                            } catch (e: Exception) {
+                                // Skip invalid lines
+                            }
+                        }
+                    }
+                }
+        }
 
     override fun readModelConfig(): ModelConfig? = null
 
@@ -205,7 +269,7 @@ class ClaudeChatModel(
         }
     }
 
-    private suspend fun ContentPart.toClaude(): JsonElement =
+    private fun ContentPart.toClaude(): JsonElement =
         when (this) {
             is ContentPart.Text -> {
                 json.encodeToJsonElement(ClaudeContentPart(type = "text", text = text))

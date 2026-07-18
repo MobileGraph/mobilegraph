@@ -1,10 +1,39 @@
 # Core & Setup Guide
 
-This guide covers the fundamental setup and architectural patterns of the MobileGraph ADK.
+This guide covers the fundamental setup and architectural patterns of the MobileGraph SDK.
 
 ---
 
-## 1. Initialization (The DSL)
+## 1. Prerequisites & Installation
+
+### Environment Checklist
+MobileGraph leverages the latest Kotlin Multiplatform features. Ensure your environment meets these requirements:
+*   **Kotlin:** 2.0.0+ 
+*   **JDK:** 17+
+*   **Android SDK:** Min SDK 24, Target SDK 37
+*   **Gradle:** 8.4+
+
+### Dependencies
+Add the SDK to your `build.gradle.kts`. MobileGraph is **engine-agnostic**, meaning you must provide a Ktor HTTP engine implementation (like OkHttp or Darwin) for networking to work.
+
+```kotlin
+dependencies {
+    implementation("com.github.MobileGraph.mobilegraph:mobilegraph-sdk:0.4.0-alpha.07")
+    
+    // Choose the engine for your platform
+    implementation("io.ktor:ktor-client-okhttp:3.5.1") // Android/JVM
+}
+```
+
+### Manifest Permissions (Android)
+Ensure your `AndroidManifest.xml` includes the Internet permission:
+```xml
+<uses-permission android:name="android.permission.INTERNET" />
+```
+
+---
+
+## 2. Initialization (The DSL)
 
 **What**: The central entry point to configure the ADK's subsystems (Models, Tools, Memory, etc.) using a type-safe Kotlin DSL.
 
@@ -12,7 +41,7 @@ This guide covers the fundamental setup and architectural patterns of the Mobile
 
 **How**:
 ```kotlin
-MobileGraph.initialize(context) {
+MobileGraph.initialize() {
     // Configure AI models and their specific behaviors
     withModels {
         chat("gpt-4o", OpenAIChatModel(apiKey = "...")) {
@@ -117,4 +146,74 @@ val model = MobileGraph.models.chat()
 model.stream(prompt, context = myContext).collect { chunk ->
     // Process chunk
 }
+```
+---
+
+## 5. Custom Model Endpoints
+
+MobileGraph allows you to point to any custom server, whether it's a local Ollama instance or a proprietary corporate endpoint.
+
+### Option A: OpenAI-Compatible (LocalAI, Ollama, vLLM)
+If your server follows the OpenAI API standard, you can reuse the `OpenAIChatModel` by providing a custom `baseUrl`.
+
+```kotlin
+val env = MobileGraphEnvironment.Builder()
+    .withModels {
+        // Example: Connecting to a local Ollama instance
+        val localModel = OpenAIChatModel(
+            name = "llama3", 
+            apiKey = "ollama", 
+            baseUrl = "http://10.0.2.2:11434/v1"
+        )
+
+        chat(localModel) {
+            isDefault = true
+            defaultConfig {
+                temperature = 0.7f
+            }
+        }
+    }
+    .build()
+
+```
+
+### Option B: Fully Custom Implementation
+For proprietary protocols, implement the `ChatModel` interface directly. This is useful for internal APIs that don't follow the OpenAI spec.
+
+```kotlin
+class MyPrivateServerModel(override val name: String = "internal-llm") : ChatModel {
+    
+    override suspend fun invoke(
+        prompt: ChatPromptValue,
+        config: ModelConfig?,
+        context: ExecutionContext
+    ): ModelOutput {
+        // 1. Convert MobileGraph prompt to your server's format
+        val lastMessage = prompt.messages.last().content
+        
+        // 2. Perform your network call (using Ktor, Retrofit, etc.)
+        val response = "Response from my private server to: $lastMessage"
+        
+        // 3. Return as a ChatOutput
+        return ModelOutput.ChatOutput(AssistantMessage(response))
+    }
+
+    override fun stream(
+        prompt: ChatPromptValue,
+        config: ModelConfig?,
+        context: ExecutionContext
+    ): Flow<ChatChunk> = flow {
+        // Implement streaming logic here if your server supports it
+    }
+
+    override fun supports(capability: Capability): Boolean = false
+    override fun readModelConfig(): ModelConfig? = null
+}
+
+// Usage in registration
+val env = MobileGraphEnvironment.Builder()
+    .withModels {
+        chat(MyPrivateServerModel())
+    }
+    .build()
 ```

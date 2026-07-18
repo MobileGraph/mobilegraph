@@ -9,6 +9,7 @@
 
 package io.mobilegraph.core.facade
 
+import io.ktor.client.HttpClient
 import io.mobilegraph.core.environment.MobileGraphEnvironment
 import io.mobilegraph.core.runtime.MobileGraphRuntime
 import io.mobilegraph.core.session.MobileGraphSession
@@ -71,12 +72,33 @@ class MobileGraph private constructor(
          * @param environment The pre-built [MobileGraphEnvironment].
          * @return The initialized [MobileGraph] instance.
          */
-        fun initialize(
-            context: Any? = null,
-            environment: MobileGraphEnvironment,
-        ): MobileGraph {
+        fun initialize(environment: MobileGraphEnvironment): MobileGraph {
+            // Dependency Guard: Check for Ktor engine
+            validateKtorEngine()
+
             val runtime = MobileGraphRuntime(environment)
             return MobileGraph(environment, runtime).also { _instance = it }
+        }
+
+        private fun validateKtorEngine() {
+            try {
+                // Attempt to create a client to verify an engine is present in the classpath
+                HttpClient().close()
+            } catch (e: Throwable) {
+                val message = e.message ?: ""
+                if (message.contains("HttpClientEngine") ||
+                    message.contains("engine") ||
+                    e::class.simpleName?.contains("NoEngine") == true
+                ) {
+                    throw IllegalStateException(
+                        "MobileGraph Initialization Failed: No Ktor HTTP engine found. " +
+                            "MobileGraph is engine-agnostic and requires you to provide a Ktor engine dependency. " +
+                            "For Android, add: implementation(\"io.ktor:ktor-client-okhttp:3.5.1\") " +
+                            "For iOS, add: implementation(\"io.ktor:ktor-client-darwin:3.5.1\")",
+                        e,
+                    )
+                }
+            }
         }
 
         /**
@@ -86,13 +108,10 @@ class MobileGraph private constructor(
          * @param block Configuration block using [MobileGraphEnvironment.Builder].
          * @return The initialized [MobileGraph] instance.
          */
-        fun initialize(
-            context: Any? = null,
-            block: MobileGraphEnvironment.Builder.() -> Unit,
-        ): MobileGraph {
+        fun initialize(block: MobileGraphEnvironment.Builder.() -> Unit): MobileGraph {
             val builder = MobileGraphEnvironment.Builder()
             builder.block()
-            return initialize(context, builder.build())
+            return initialize(builder.build())
         }
 
         /**
@@ -101,6 +120,6 @@ class MobileGraph private constructor(
          * @param block Configuration block using [MobileGraphEnvironment.Builder].
          * @return The initialized [MobileGraph] instance.
          */
-        operator fun invoke(block: MobileGraphEnvironment.Builder.() -> Unit): MobileGraph = initialize(null, block)
+        operator fun invoke(block: MobileGraphEnvironment.Builder.() -> Unit): MobileGraph = initialize(block)
     }
 }
