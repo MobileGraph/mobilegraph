@@ -240,7 +240,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.MobileGraph.mobilegraph:mobilegraph-sdk:0.4.0-alpha.07")
+    implementation("com.github.MobileGraph.mobilegraph:mobilegraph-sdk:0.4.0-alpha.08")
     
     // Required: Choose a Ktor engine
     implementation("io.ktor:ktor-client-okhttp:3.5.1") 
