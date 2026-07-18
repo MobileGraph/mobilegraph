@@ -60,7 +60,7 @@ The `RagPipeline` orchestrates the entire process: **Search -> Augment -> Genera
 ### Basic Setup
 
 ```kotlin
-MobileGraph.initialize(context) {
+MobileGraph.initialize() {
     // ... model and vector store config ...
 
     withRetrievers {

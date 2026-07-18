@@ -28,7 +28,7 @@ val weatherTool = object : Tool<String, String> {
 **How to Register Tools**:
 Register your tools during ADK initialization so the AI can discover them.
 ```kotlin
-MobileGraph.initialize(context) {
+MobileGraph.initialize() {
     withTools {
         register(weatherTool)
     }

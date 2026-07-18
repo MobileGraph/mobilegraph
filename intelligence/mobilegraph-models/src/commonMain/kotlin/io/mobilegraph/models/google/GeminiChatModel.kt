@@ -3,11 +3,14 @@ package io.mobilegraph.models.google
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.post
+import io.ktor.client.request.preparePost
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
+import io.ktor.utils.io.ByteReadChannel
+import io.ktor.utils.io.readUTF8Line
 import io.mobilegraph.core.capability.Capability
 import io.mobilegraph.core.context.ExecutionContext
 import io.mobilegraph.core.facade.MobileGraph
@@ -32,7 +35,6 @@ import io.mobilegraph.models.ToolMessage
 import io.mobilegraph.models.Usage
 import io.mobilegraph.models.UserMessage
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -165,10 +167,60 @@ class GeminiChatModel(
         prompt: ChatPromptValue,
         config: ModelConfig?,
         context: ExecutionContext,
-    ): Flow<ChatChunk> {
-        // TODO: Implement streaming for Gemini
-        return emptyFlow()
-    }
+    ): Flow<ChatChunk> =
+        kotlinx.coroutines.flow.flow {
+            val systemMessage = prompt.messages.filterIsInstance<SystemMessage>().firstOrNull()
+            val otherMessages = prompt.messages.filter { it !is SystemMessage }
+
+            val contents = otherMessages.map { it.toGemini() }
+            val systemInstruction = systemMessage?.toGemini()
+
+            val geminiRequest =
+                GeminiChatRequest(
+                    contents = contents,
+                    systemInstruction = systemInstruction,
+                    generationConfig =
+                        GeminiGenerationConfig(
+                            temperature = config?.temperature?.toDouble(),
+                            maxOutputTokens = config?.maxTokens,
+                            stopSequences = config?.stop,
+                        ),
+                    tools =
+                        config?.tools?.let { tools ->
+                            listOf(GeminiTool(tools.map { it.toGemini() }))
+                        },
+                )
+
+            httpClient
+                .preparePost("$baseUrl/models/$name:streamGenerateContent?alt=sse&key=$apiKey") {
+                    contentType(ContentType.Application.Json)
+                    setBody(geminiRequest)
+                }.execute { response ->
+                    if (response.status.value >= 400) {
+                        throw translateError(response)
+                    }
+
+                    val channel: ByteReadChannel = response.body()
+                    while (!channel.isClosedForRead) {
+                        val line = channel.readUTF8Line() ?: break
+                        if (line.startsWith("data: ")) {
+                            val jsonStr = line.substring(6)
+                            try {
+                                val chunkResponse = json.decodeFromString<GeminiChatResponse>(jsonStr)
+                                val textDelta =
+                                    chunkResponse.candidates.firstOrNull()?.content?.parts?.joinToString("") {
+                                        it.text ?: ""
+                                    }
+                                if (textDelta != null) {
+                                    emit(ChatChunk(delta = textDelta))
+                                }
+                            } catch (e: Exception) {
+                                // Skip invalid lines
+                            }
+                        }
+                    }
+                }
+        }
 
     override fun readModelConfig(): ModelConfig? = null
 
@@ -186,7 +238,7 @@ class GeminiChatModel(
         }
     }
 
-    private suspend fun ChatMessage.toGemini(): GeminiContent {
+    private fun ChatMessage.toGemini(): GeminiContent {
         val role =
             when (this) {
                 is UserMessage -> "user"

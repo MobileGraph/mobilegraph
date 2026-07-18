@@ -9,7 +9,6 @@ import androidx.lifecycle.viewModelScope
 import io.mobilegraph.agents.Agent
 import io.mobilegraph.agents.AgentNode
 import io.mobilegraph.agents.DefaultAgentRuntime
-import io.mobilegraph.ai.ApplicationLogger
 import io.mobilegraph.ai.BuildConfig
 import io.mobilegraph.checkpoint.InMemoryCheckpointStore
 import io.mobilegraph.core.context.SimpleExecutionContext
@@ -31,7 +30,6 @@ import io.mobilegraph.models.facade.models
 import io.mobilegraph.models.facade.openai
 import io.mobilegraph.models.facade.router
 import io.mobilegraph.models.facade.withModels
-import io.mobilegraph.models.middleware.LoggingMiddleware
 import io.mobilegraph.parsers.asText
 import io.mobilegraph.state.GraphState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -71,7 +69,7 @@ class AgentRouterViewModel : ViewModel() {
         if (isInitialized) return
         isInitialized = true
 
-        MobileGraph.initialize(context) {
+        MobileGraph.initialize {
             withModels {
                 // 1. Register individual providers
                 openai(apiKey = BuildConfig.OPEN_AI_API_KEY, name = "gpt-4o-mini")

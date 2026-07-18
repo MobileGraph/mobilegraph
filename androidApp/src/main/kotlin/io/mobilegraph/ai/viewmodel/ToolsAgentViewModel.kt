@@ -77,7 +77,7 @@ class ToolsAgentViewModel : ViewModel() {
         if (isInitialized) return
         isInitialized = true
 
-        MobileGraph.initialize(context) {
+        MobileGraph.initialize {
             // 1. Register a Global Tool during initialization
             withTools {
                 register(WeatherTool())

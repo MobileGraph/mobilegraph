@@ -17,6 +17,25 @@ internal data class ClaudeChatRequest(
     @SerialName("stop_sequences") @EncodeDefault(NEVER) val stopSequences: List<String>? = null,
     @EncodeDefault(NEVER) val tools: List<ClaudeTool>? = null,
     @SerialName("tool_choice") @EncodeDefault(NEVER) val toolChoice: ClaudeToolChoice? = null,
+    @EncodeDefault(NEVER) val stream: Boolean? = null,
+)
+
+@Serializable
+internal data class ClaudeStreamEvent(
+    val type: String,
+    val message: ClaudeChatResponse? = null,
+    val index: Int? = null,
+    @SerialName("content_block") val contentBlock: ClaudeContentPart? = null,
+    val delta: ClaudeDelta? = null,
+    val usage: ClaudeUsage? = null,
+)
+
+@Serializable
+internal data class ClaudeDelta(
+    val type: String,
+    val text: String? = null,
+    @SerialName("partial_json") val partialJson: String? = null,
+    @SerialName("stop_reason") val stopReason: String? = null,
 )
 
 @Serializable

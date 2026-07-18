@@ -17,7 +17,6 @@ import io.mobilegraph.models.ChatPromptValue
 import io.mobilegraph.models.ContentPart
 import io.mobilegraph.models.ModelOutput
 import io.mobilegraph.models.UserMessage
-import io.mobilegraph.models.facade.chat
 import io.mobilegraph.models.facade.claude
 import io.mobilegraph.models.facade.deepseek
 import io.mobilegraph.models.facade.gemini
@@ -56,7 +55,7 @@ class MultiModelViewModel : ViewModel() {
         if (isInitialized) return
         isInitialized = true
 
-        MobileGraph.initialize(context) {
+        MobileGraph.initialize {
             // Add a global tool for testing
             withTools {
                 register(WeatherTool())

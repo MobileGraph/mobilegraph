@@ -22,7 +22,6 @@ import io.mobilegraph.core.tools.ToolRegistry
 import io.mobilegraph.graph.DefaultExecutionEngine
 import io.mobilegraph.graph.EndNode
 import io.mobilegraph.graph.ExecutionResult
-import io.mobilegraph.graph.GraphNode
 import io.mobilegraph.graph.StateGraph
 import io.mobilegraph.graph.stateGraph
 import io.mobilegraph.models.ChatModel
@@ -71,7 +70,7 @@ class AgentViewModel : ViewModel() {
         if (isInitialized) return
         isInitialized = true
 
-        MobileGraph.initialize(context) {
+        MobileGraph.initialize {
             val chatModel = OpenAIChatModel(apiKey = BuildConfig.OPEN_AI_API_KEY, name = "gpt-4o")
             withModels {
                 chat("gpt-4o", chatModel) {

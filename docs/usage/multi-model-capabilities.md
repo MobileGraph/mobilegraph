@@ -59,7 +59,7 @@ router("smart-assistant") {
 Set up your entire model ecosystem in one block:
 
 ```kotlin
-MobileGraph.initialize(context) {
+MobileGraph.initialize() {
     withModels {
         openai(apiKey = "...")
         gemini(apiKey = "...")

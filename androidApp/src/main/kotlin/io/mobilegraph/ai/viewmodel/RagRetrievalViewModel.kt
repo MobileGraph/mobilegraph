@@ -78,7 +78,7 @@ class RagRetrievalViewModel : ViewModel() {
         val chatModel = OpenAIChatModel(apiKey = openAiApiKey, name = "gpt-4o")
 
         mobileGraph =
-            MobileGraph.initialize(context) {
+            MobileGraph.initialize {
                 // SDK USE: withModels DSL to register chat and embedding models
                 withModels {
                     chat("gpt-4o", chatModel) {
