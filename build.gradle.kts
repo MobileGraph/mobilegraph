@@ -10,10 +10,11 @@ plugins {
     alias(libs.plugins.spotless) apply false
     alias(libs.plugins.detekt) apply false
     alias(libs.plugins.dokka) apply false
+    alias(libs.plugins.mavenPublish) apply false
 }
 
 allprojects {
-    group = "io.mobilegraph.ai"
+    group = "io.mobilegraph"
     version = properties["version"] as String
 
     apply(plugin = "jacoco")
@@ -34,26 +35,59 @@ subprojects {
     apply(plugin = "com.diffplug.spotless")
     apply(plugin = "org.jetbrains.dokka")
 
+    plugins.withId("com.vanniktech.maven.publish") {
+
+        extensions.configure<com.vanniktech.maven.publish.MavenPublishBaseExtension> {
+
+            publishToMavenCentral()
+
+            signAllPublications()
+
+            coordinates(
+                "io.github.mobilegraph",
+                project.name,
+                rootProject.version.toString()
+            )
+
+            pom {
+                name.set(project.name)
+                description.set(project.description ?: "MobileGraph module")
+
+                inceptionYear.set("2026")
+
+                url.set("https://github.com/MobileGraph/mobilegraph")
+
+                licenses {
+                    license {
+                        name.set("Apache License 2.0")
+                        url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+                    }
+                }
+
+                developers {
+                    developer {
+                        id.set("mobilegraph")
+                        name.set("Bharat Hazarika")
+                        email.set("bharatjyotih2@gmail.com")
+                    }
+                }
+
+                scm {
+                    url.set("https://github.com/MobileGraph/mobilegraph")
+                    connection.set("scm:git:https://github.com/MobileGraph/mobilegraph.git")
+                    developerConnection.set("scm:git:ssh://git@github.com/MobileGraph/mobilegraph.git")
+                }
+            }
+        }
+    }
     pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
         val kotlin = extensions.getByType<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension>()
         kotlin.withSourcesJar()
 
         val dokkaGenerateHtml = tasks.named("dokkaGenerateHtml")
-        val javadocJar by tasks.registering(Jar::class) {
-            from(dokkaGenerateHtml)
+        tasks.register<Jar>("javadocJar") {
             archiveClassifier.set("javadoc")
-        }
-
-        // Attach the Javadoc JAR and ensure sources are included in all publications
-        afterEvaluate {
-            pluginManager.withPlugin("maven-publish") {
-                extensions.configure<PublishingExtension> {
-                    publications.withType<MavenPublication> {
-                        // Ensure each publication includes the javadoc
-                        artifact(javadocJar)
-                    }
-                }
-            }
+            from(dokkaGenerateHtml)
         }
     }
 
@@ -83,6 +117,7 @@ subprojects {
         dependsOn(rootProject.tasks.named("spotlessApply"))
     }
 }
+
 
 // Root project spotless and detekt
 apply(plugin = "com.diffplug.spotless")
