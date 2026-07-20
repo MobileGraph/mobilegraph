@@ -17,8 +17,12 @@ MobileGraph leverages the latest Kotlin Multiplatform features. Ensure your envi
 Add the SDK to your `build.gradle.kts`. MobileGraph is **engine-agnostic**, meaning you must provide a Ktor HTTP engine implementation (like OkHttp or Darwin) for networking to work.
 
 ```kotlin
+repositories {
+    mavenCentral()
+}
+
 dependencies {
-    implementation("com.github.MobileGraph.mobilegraph:mobilegraph-sdk:0.4.0-alpha.07")
+    implementation("io.github.mobilegraph:mobilegraph-sdk:0.5.0-alpha")
     
     // Choose the engine for your platform
     implementation("io.ktor:ktor-client-okhttp:3.5.1") // Android/JVM

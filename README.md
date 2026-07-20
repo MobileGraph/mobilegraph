@@ -6,8 +6,7 @@
 [![Android](https://img.shields.io/badge/Android-Supported-3DDC84?logo=android&logoColor=white)]()
 [![iOS](https://img.shields.io/badge/iOS-Supported-000000?logo=apple&logoColor=white)]()
 [![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-v0.4.0--alpha-orange.svg)]()
-[![](https://jitpack.io/v/MobileGraph/mobilegraph.svg)](https://jitpack.io/#MobileGraph/mobilegraph)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.mobilegraph/mobilegraph-sdk)](https://central.sonatype.com/artifact/io.github.mobilegraph/mobilegraph-sdk)
 
 MobileGraph is a **Kotlin Multiplatform AI Framework** that enables developers to build intelligent applications for **Android, iOS, Android Automotive, Android TV, and the broader Kotlin ecosystem**.
 
@@ -16,6 +15,22 @@ It provides a unified, provider-agnostic programming model for integrating **Lar
 Designed with a **mobile-first philosophy**, MobileGraph embraces the realities of mobile computing—application lifecycle changes, process death, intermittent connectivity, constrained resources, and offline-first experiences—while maintaining a clean, strongly typed, and idiomatic Kotlin developer experience.
 
 Rather than being a simple wrapper around AI APIs, MobileGraph provides the runtime infrastructure required to build resilient, scalable, and production-ready AI applications across multiple platforms.
+
+---
+
+## 📑 Table of Contents
+
+- [Inspiration](#-inspiration)
+- [Why MobileGraph?](#-why-mobilegraph)
+  - [Core Principles](#-core-principles)
+  - [Design Goals](#-design-goals)
+- [Roadmap](#-roadmap)
+- [Quick Start](#-quick-start-in-30-seconds)
+- [Project Ecosystem](#-project-ecosystem)
+- [Sample Applications](#-sample-applications)
+- [Documentation](#-documentation)
+- [Contributing](#-contributing)
+- [License](#-license)
 
 ---
 
@@ -232,7 +247,7 @@ To ensure stability and compatibility, verify your project meets these requireme
 
 ### 2. Installation
 
-Add the SDK to your project via JitPack. Since MobileGraph is engine-agnostic, you **must** also provide a Ktor HTTP engine (e.g., OkHttp for Android).
+Add the SDK to your project via Maven Central. Since MobileGraph is engine-agnostic, you **must** also provide a Ktor HTTP engine (e.g., OkHttp for Android).
 
 ```kotlin
 repositories {
