@@ -1,6 +1,10 @@
 jdk:
   - openjdk17
+
 before_install:
   - chmod +x gradlew
+
 install:
-  - ./gradlew dokkaGenerateHtml publishToMavenLocal -Pgroup=com.github.MobileGraph --no-configuration-cache
+  - ./gradlew clean publishToMavenLocal \
+    -Pgroup=com.github.MobileGraph \
+    --no-configuration-cache

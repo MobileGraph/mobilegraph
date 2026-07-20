@@ -25,6 +25,7 @@ dokka = "2.2.0"
 material3 = "1.11.0-alpha07"
 material3Version = "1.4.0"
 mediapipe-tasks-text = "0.10.35"
+vanniktech = "0.37.0"
 
 [libraries]
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
@@ -76,3 +77,4 @@ spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
+mavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "vanniktech" }

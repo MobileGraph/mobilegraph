@@ -4,10 +4,12 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidMultiplatformLibrary)
     `maven-publish`
+    alias(libs.plugins.dokka)
+
+    alias(libs.plugins.mavenPublish)
 }
 
-group = "com.github.MobileGraph"
-// version is inherited from root project
+// group is inherited from root project
 
 kotlin {
     android {

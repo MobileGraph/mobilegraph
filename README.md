@@ -236,11 +236,11 @@ Add the SDK to your project via JitPack. Since MobileGraph is engine-agnostic, y
 
 ```kotlin
 repositories {
-    maven { url = uri("https://jitpack.io") }
+    mavenCentral()
 }
 
 dependencies {
-    implementation("com.github.MobileGraph.mobilegraph:mobilegraph-sdk:0.4.0-alpha.08")
+    implementation("io.github.mobilegraph:mobilegraph-sdk:0.5.0-alpha")
     
     // Required: Choose a Ktor engine
     implementation("io.ktor:ktor-client-okhttp:3.5.1") 
