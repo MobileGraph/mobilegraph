@@ -1,6 +1,6 @@
 # MobileGraph 📱🤖
 
-> **The Kotlin Multiplatform AI Framework for Building Intelligent Applications**
+> **Build AI-powered Android & iOS apps in Kotlin — chat, agents, RAG, and more.**
 
 [![Kotlin Multiplatform](https://img.shields.io/badge/Kotlin-Multiplatform-7F52FF?logo=kotlin&logoColor=white)](https://kotlinlang.org/docs/multiplatform.html)
 [![Android](https://img.shields.io/badge/Android-Supported-3DDC84?logo=android&logoColor=white)]()
@@ -8,13 +8,31 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](LICENSE)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.mobilegraph/mobilegraph-sdk)](https://central.sonatype.com/artifact/io.github.mobilegraph/mobilegraph-sdk)
 
-MobileGraph is a **Kotlin Multiplatform AI Framework** that enables developers to build intelligent applications for **Android, iOS, Android Automotive, Android TV, and the broader Kotlin ecosystem**.
+**MobileGraph** is an open-source Kotlin Multiplatform SDK that lets you add AI capabilities to your **Android** and **iOS** apps — from a simple chatbot to a full autonomous agent — without worrying about process death, lifecycle, or provider lock-in.
 
-It provides a unified, provider-agnostic programming model for integrating **Large Language Models (LLMs)**, **Retrieval-Augmented Generation (RAG)**, **Prompt Engineering**, **Structured Outputs**, **Tool Calling**, **Memory**, **Agentic Workflows**, and **Graph-based Orchestration** into modern Kotlin applications.
+Think of it as **"LangChain / LangGraph, but built for mobile."**
 
-Designed with a **mobile-first philosophy**, MobileGraph embraces the realities of mobile computing—application lifecycle changes, process death, intermittent connectivity, constrained resources, and offline-first experiences—while maintaining a clean, strongly typed, and idiomatic Kotlin developer experience.
+### See it in action — a streaming chat in 4 lines:
 
-Rather than being a simple wrapper around AI APIs, MobileGraph provides the runtime infrastructure required to build resilient, scalable, and production-ready AI applications across multiple platforms.
+```kotlin
+val session = MobileGraph.instance.createSession()
+
+session.stream("Plan a 3-day trip to Tokyo").collect { chunk ->
+    print(chunk.text)   // ← streams to your UI in real time
+}
+```
+
+### What can you build with MobileGraph?
+
+| Capability | What it means |
+|---|---|
+| 💬 **AI Chat** | Streaming conversations with OpenAI, Gemini, Claude, or any provider — swap with one line |
+| 📄 **RAG (search your docs)** | Load PDFs or text on-device, embed them, and let the LLM answer questions from your data |
+| 🤖 **Autonomous Agents** | LLMs that decide when to call your Kotlin functions (weather, calculator, APIs…) |
+| 🔀 **Multi-Agent Workflows** | Run agents in parallel, chain them, or build manager → worker hierarchies |
+| 💾 **Survives Process Death** | Checkpoints state automatically — your AI workflow resumes exactly where it left off |
+| 🧑‍💻 **Human-in-the-Loop** | Pause any workflow to ask for user approval, then continue |
+| 📱 **Truly Mobile-First** | Lifecycle-aware, offline-capable, battery-conscious — not just an API wrapper |
 
 ---
 
