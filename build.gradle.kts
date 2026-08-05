@@ -46,7 +46,7 @@ subprojects {
             coordinates(
                 "io.github.mobilegraph",
                 project.name,
-                rootProject.version.toString()
+                rootProject.version.toString(),
             )
 
             pom {
@@ -117,7 +117,6 @@ subprojects {
         dependsOn(rootProject.tasks.named("spotlessApply"))
     }
 }
-
 
 // Root project spotless and detekt
 apply(plugin = "com.diffplug.spotless")

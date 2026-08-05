@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -43,6 +45,7 @@ class MasterActivity : ComponentActivity() {
                             8 -> startActivity(Intent(this, MultiModelActivity::class.java))
                             9 -> startActivity(Intent(this, ModelRouterActivity::class.java))
                             10 -> startActivity(Intent(this, AgentRouterActivity::class.java))
+                            11 -> startActivity(Intent(this, McpActivity::class.java))
                         }
                     },
                 )
@@ -65,7 +68,8 @@ fun MasterScreen(onOptionSelected: (Int) -> Unit) {
                 Modifier
                     .padding(innerPadding)
                     .padding(16.dp)
-                    .fillMaxSize(),
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
         ) {
             Text(
                 "Select a functionality to test:",
@@ -160,6 +164,15 @@ fun MasterScreen(onOptionSelected: (Int) -> Unit) {
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 Text("10. Agent Brain Routing (Cost Optimization)")
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Button(
+                onClick = { onOptionSelected(11) },
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text("11. MCP Integration (Remote Tools)")
             }
         }
     }

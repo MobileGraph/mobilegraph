@@ -21,6 +21,7 @@ dependencies {
     implementation(projects.intelligence.mobilegraphModels)
     implementation(projects.intelligence.mobilegraphPrompts)
     implementation(projects.intelligence.mobilegraphParsers)
+    implementation(projects.intelligence.mobilegraphMcp)
     implementation(projects.intelligence.mobilegraphTools)
     implementation(projects.intelligence.mobilegraphRag)
     implementation(projects.intelligence.mobilegraphGraph)

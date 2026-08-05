@@ -27,6 +27,7 @@
         <activity android:name=".MultiModelActivity" />
         <activity android:name=".ModelRouterActivity" />
         <activity android:name=".AgentRouterActivity" />
+        <activity android:name=".McpActivity" />
     </application>
 
 </manifest>

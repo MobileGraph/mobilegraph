@@ -22,7 +22,7 @@ repositories {
 }
 
 dependencies {
-    implementation("io.github.mobilegraph:mobilegraph-sdk:0.5.0-alpha")
+    implementation("io.github.mobilegraph:mobilegraph-sdk:0.1.0-beta")
     
     // Choose the engine for your platform
     implementation("io.ktor:ktor-client-okhttp:3.5.1") // Android/JVM

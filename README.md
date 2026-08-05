@@ -244,7 +244,7 @@ Our mission is to become the **Kotlin-first AI framework for the Android ecosyst
 | ✅ Phase 2  |  Completed  | Knowledge Layer (RAG)        |
 | ✅ Phase 3  |  Completed  | Multi-Agent Orchestration    |
 | ✅ Phase 4  |  Completed  | Multi-Model Cloud Ecosystem  |
-| 🚧 Phase 5 | In Progress | Model Context Protocol (MCP) |
+| ✅ Phase 5  |  Completed  | Model Context Protocol (MCP) |
 | 🔜 Phase 6 |   Planned   | Local AI & Edge Inference    |
 | 🔮 Phase 7 |    Future   | Android Ecosystem            |
 | 🚀 Phase 8 |    Vision   | MobileGraph Studio           |
@@ -273,7 +273,7 @@ repositories {
 }
 
 dependencies {
-    implementation("io.github.mobilegraph:mobilegraph-sdk:0.5.0-alpha")
+    implementation("io.github.mobilegraph:mobilegraph-sdk:0.1.0-beta")
     
     // Required: Choose a Ktor engine
     implementation("io.ktor:ktor-client-okhttp:3.5.1") 
@@ -351,6 +351,7 @@ For a detailed module dependency graph and architecture diagrams, see the **[Arc
 ### Intelligence & Agents
 *   **`mobilegraph-agents`**: Orchestration logic for multi-agent workflows, parallel execution, and hierarchical delegation.
 *   **`mobilegraph-graph`**: Graph-based state machine engine with support for Fan-out/in and breakpoints.
+*   **`mobilegraph-mcp`**: **(New)** Implementation of the Model Context Protocol (MCP). Supports **Streamable HTTP** and **SSE** transports for dynamic remote tool and resource discovery.
 *   **`mobilegraph-models`**: Adapters for major LLM providers (OpenAI, Gemini, etc.) and capability orchestration.
 *   **`mobilegraph-tools`**: Infrastructure for function calling, tool registration, and semantic tool selection.
 *   **`mobilegraph-parsers`**: Type-safe structured data extraction (JSON-to-Kotlin objects) with prose extraction.
@@ -400,6 +401,7 @@ Detailed guides for building agentic workflows with MobileGraph:
 | **Tools & Agents**                    | Function Calling, Semantic Tool Selection, Vector Caching              | [Read Guide](./docs/usage/tools-agents.md)                |
 | **Resilience & Memory**               | Chat Memory, Sliding Windows, Local-First Sync                         | [Read Guide](./docs/usage/memory-state.md)                |
 | **Observability**                     | Middleware Pipeline, Event Streams, Custom Logging                     | [Read Guide](./docs/usage/observability-extensibility.md) |
+| **MCP Integration**                   | Model Context Protocol, Remote Tools, SSE Transports                   | [Read Guide](./docs/usage/mcp-integration.md)              |
 | **RAG: Document Ingestion**           | Document Ingestion, Vector Embedding, Similarity Search, Event Streams | [Read Guide](./docs/usage/rag-ingestion.md)               |
 | **RAG: Retrieval and LLM Generation** | Document Retrieval, RAG Pipeline, Event Streams                        | [Read Guide](./docs/usage/rag-retrieval.md)               |
 
