@@ -7,6 +7,12 @@ plugins {
     alias(libs.plugins.composeCompiler)
 }
 
+compose {
+    resources {
+        packageOfResClass = "io.mobilegraph.ai"
+    }
+}
+
 kotlin {
     val hostOs = System.getProperty("os.name")
     if (hostOs == "Mac OS X") {
