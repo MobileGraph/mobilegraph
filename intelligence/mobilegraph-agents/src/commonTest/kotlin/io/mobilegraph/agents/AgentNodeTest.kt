@@ -3,8 +3,6 @@ package io.mobilegraph.agents
 import io.mobilegraph.core.context.SimpleExecutionContext
 import io.mobilegraph.core.ids.RequestId
 import io.mobilegraph.core.ids.TraceId
-import io.mobilegraph.core.tools.Tool
-import io.mobilegraph.core.tools.ToolMetadata
 import io.mobilegraph.core.tools.ToolRegistry
 import io.mobilegraph.graph.ExecutionResult
 import io.mobilegraph.graph.StateGraph
@@ -15,8 +13,8 @@ import io.mobilegraph.models.ModelConfig
 import io.mobilegraph.models.ModelOutput
 import io.mobilegraph.models.SystemMessage
 import io.mobilegraph.models.UserMessage
+import io.mobilegraph.skills.Skill
 import io.mobilegraph.state.GraphState
-import io.mobilegraph.tools.registry.DefaultToolRegistry
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.test.runTest
@@ -52,6 +50,7 @@ class AgentNodeTest {
         override val tools: ToolRegistry? = null,
         override val graph: StateGraph? = null,
         override val useGlobalTools: Boolean = false,
+        override val skills: List<Skill> = emptyList(),
     ) : Agent {
         override val name = "mock"
         override val description = "mock"
@@ -155,5 +154,54 @@ class AgentNodeTest {
 
             val result = node.execute(TestState())
             assertTrue(result is ExecutionResult.Error)
+        }
+
+    @Test
+    fun testAgentWithSkills() =
+        runTest {
+            io.mobilegraph.core.facade.MobileGraph
+                .initialize { }
+            val runtime = DefaultAgentRuntime(io.mobilegraph.graph.DefaultExecutionEngine())
+
+            var capturedPrompt: String? = null
+            val model =
+                object : ChatModel {
+                    override val name = "skill-test"
+
+                    override fun supports(capability: io.mobilegraph.core.capability.Capability) = false
+
+                    override suspend fun invoke(
+                        p: ChatPromptValue,
+                        c: ModelConfig?,
+                        ctx: io.mobilegraph.core.context.ExecutionContext,
+                    ): ModelOutput {
+                        capturedPrompt = p.messages.joinToString("\n") { it.content }
+                        return ModelOutput.ChatOutput(AssistantMessage("ok"))
+                    }
+
+                    override fun stream(
+                        p: ChatPromptValue,
+                        c: ModelConfig?,
+                        ctx: io.mobilegraph.core.context.ExecutionContext,
+                    ) = emptyFlow<io.mobilegraph.models.ChatChunk>()
+
+                    override fun readModelConfig() = null
+                }
+
+            val skill =
+                Skill(
+                    name = "TestSkill",
+                    description = "Skill Desc",
+                    instructions = "Skill Rule",
+                    tools = emptyList(),
+                )
+
+            val agent = MockAgent(model, skills = listOf(skill))
+            val node = AgentNode("agent", agent, runtime)
+
+            node.execute(TestState())
+
+            assertTrue(capturedPrompt?.contains("=== ACTIVE SKILL: TestSkill ===") == true)
+            assertTrue(capturedPrompt!!.contains("Skill Rule"))
         }
 }

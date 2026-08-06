@@ -28,9 +28,25 @@ class AgentNode(
     override suspend fun execute(state: GraphState): ExecutionResult {
         if (agent.graph == null) {
             val userPrompt = agent.formatAgentInstruction(state)
+
+            val systemMessage =
+                if (agent.skills.isEmpty()) {
+                    agent.rolePrompt
+                } else {
+                    val mergedContent = StringBuilder(agent.rolePrompt.content)
+                    agent.skills.forEach { skill ->
+                        mergedContent.append("\n\n")
+                        mergedContent.append("=== ACTIVE SKILL: ${skill.name} ===\n")
+                        skill.description?.let { mergedContent.append("Description: $it\n") }
+                        mergedContent.append(skill.instructions)
+                        mergedContent.append("\n====================================")
+                    }
+                    io.mobilegraph.models.SystemMessage(mergedContent.toString())
+                }
+
             val prompt =
                 promptComposer {
-                    system(agent.rolePrompt)
+                    system(systemMessage)
                     user(userPrompt)
                 }.compose()
 
@@ -92,6 +108,15 @@ class AgentNode(
 
     private fun resolveRegistry(): ToolRegistry? {
         val localTools = agent.tools
+        val skillTools =
+            if (agent.skills.isNotEmpty()) {
+                DefaultToolRegistry().apply {
+                    agent.skills.flatMap { it.tools }.forEach { register(it) }
+                }
+            } else {
+                null
+            }
+
         val globalTools =
             if (agent.useGlobalTools) {
                 try {
@@ -103,17 +128,29 @@ class AgentNode(
                 null
             }
 
+        // Merge logic: Local > Skills > Global
         return when {
-            localTools != null && globalTools != null -> {
-                // Merge local and global
+            (localTools != null || skillTools != null) && globalTools != null -> {
                 DefaultToolRegistry().apply {
                     globalTools.getAll().forEach { register(it) }
-                    localTools.getAll().forEach { register(it) } // Local overrides global
+                    skillTools?.getAll()?.forEach { register(it) }
+                    localTools?.getAll()?.forEach { register(it) }
+                }
+            }
+
+            localTools != null && skillTools != null -> {
+                DefaultToolRegistry().apply {
+                    skillTools.getAll().forEach { register(it) }
+                    localTools.getAll().forEach { register(it) }
                 }
             }
 
             localTools != null -> {
                 localTools
+            }
+
+            skillTools != null -> {
+                skillTools
             }
 
             globalTools != null -> {
