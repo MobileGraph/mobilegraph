@@ -46,6 +46,7 @@ class MasterActivity : ComponentActivity() {
                             9 -> startActivity(Intent(this, ModelRouterActivity::class.java))
                             10 -> startActivity(Intent(this, AgentRouterActivity::class.java))
                             11 -> startActivity(Intent(this, McpActivity::class.java))
+                            12 -> startActivity(Intent(this, SkillActivity::class.java))
                         }
                     },
                 )
@@ -173,6 +174,15 @@ fun MasterScreen(onOptionSelected: (Int) -> Unit) {
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 Text("11. MCP Integration (Remote Tools)")
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Button(
+                onClick = { onOptionSelected(12) },
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text("12. Skills System (Declarative AI)")
             }
         }
     }

@@ -23,6 +23,7 @@ dependencies {
     implementation(projects.intelligence.mobilegraphParsers)
     implementation(projects.intelligence.mobilegraphMcp)
     implementation(projects.intelligence.mobilegraphTools)
+    implementation(projects.intelligence.mobilegraphSkills)
     implementation(projects.intelligence.mobilegraphRag)
     implementation(projects.intelligence.mobilegraphGraph)
     implementation(projects.intelligence.mobilegraphAgents)

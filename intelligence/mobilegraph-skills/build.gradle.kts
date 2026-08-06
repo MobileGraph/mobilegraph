@@ -3,18 +3,16 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidMultiplatformLibrary)
+    alias(libs.plugins.kotlinSerialization)
     `maven-publish`
     alias(libs.plugins.dokka)
 
     alias(libs.plugins.mavenPublish)
 }
 
-// group is inherited from root project
-// version is inherited from root project
-
 kotlin {
     android {
-        namespace = "io.mobilegraph.agents"
+        namespace = "io.mobilegraph.skills"
         compileSdk =
             libs.versions.android.compileSdk
                 .get()
@@ -23,8 +21,12 @@ kotlin {
             libs.versions.android.minSdk
                 .get()
                 .toInt()
-        compilerOptions { jvmTarget = JvmTarget.JVM_11 }
+
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_11
+        }
     }
+
     jvm()
 
     val hostOs = System.getProperty("os.name")
@@ -36,15 +38,10 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(project(":foundation:mobilegraph-core"))
-            implementation(project(":foundation:mobilegraph-state"))
-            implementation(project(":foundation:mobilegraph-checkpoint"))
-            implementation(project(":intelligence:mobilegraph-graph"))
-            implementation(project(":intelligence:mobilegraph-models"))
-            implementation(project(":intelligence:mobilegraph-tools"))
-            implementation(project(":intelligence:mobilegraph-skills"))
-            implementation(project(":intelligence:mobilegraph-prompts"))
-            implementation(libs.kotlinx.coroutines.core)
+            api(projects.foundation.mobilegraphCore)
+            implementation(projects.intelligence.mobilegraphModels)
+            implementation(projects.intelligence.mobilegraphTools)
+            implementation(libs.kotlinx.serialization.json)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

@@ -29,6 +29,7 @@ session.stream("Plan a 3-day trip to Tokyo").collect { chunk ->
 | 💬 **AI Chat** | Streaming conversations with OpenAI, Gemini, Claude, or any provider — swap with one line |
 | 📄 **RAG (search your docs)** | Load PDFs or text on-device, embed them, and let the LLM answer questions from your data |
 | 🤖 **Autonomous Agents** | LLMs that decide when to call your Kotlin functions (weather, calculator, APIs…) |
+| 🧩 **Skills System** | Load "Expertise" from Markdown files at runtime — dynamic behavior without code updates |
 | 🔀 **Multi-Agent Workflows** | Run agents in parallel, chain them, or build manager → worker hierarchies |
 | 💾 **Survives Process Death** | Checkpoints state automatically — your AI workflow resumes exactly where it left off |
 | 🧑‍💻 **Human-in-the-Loop** | Pause any workflow to ask for user approval, then continue |
@@ -351,7 +352,8 @@ For a detailed module dependency graph and architecture diagrams, see the **[Arc
 ### Intelligence & Agents
 *   **`mobilegraph-agents`**: Orchestration logic for multi-agent workflows, parallel execution, and hierarchical delegation.
 *   **`mobilegraph-graph`**: Graph-based state machine engine with support for Fan-out/in and breakpoints.
-*   **`mobilegraph-mcp`**: **(New)** Implementation of the Model Context Protocol (MCP). Supports **Streamable HTTP** and **SSE** transports for dynamic remote tool and resource discovery.
+*   **`mobilegraph-skills`**:Declarative AI capabilities. Load instructions and bind tools directly from Markdown files.
+*   **`mobilegraph-mcp`**:Implementation of the Model Context Protocol (MCP). Supports **Streamable HTTP** and **SSE** transports for dynamic remote tool and resource discovery.
 *   **`mobilegraph-models`**: Adapters for major LLM providers (OpenAI, Gemini, etc.) and capability orchestration.
 *   **`mobilegraph-tools`**: Infrastructure for function calling, tool registration, and semantic tool selection.
 *   **`mobilegraph-parsers`**: Type-safe structured data extraction (JSON-to-Kotlin objects) with prose extraction.
@@ -401,6 +403,7 @@ Detailed guides for building agentic workflows with MobileGraph:
 | **Tools & Agents**                    | Function Calling, Semantic Tool Selection, Vector Caching              | [Read Guide](./docs/usage/tools-agents.md)                |
 | **Resilience & Memory**               | Chat Memory, Sliding Windows, Local-First Sync                         | [Read Guide](./docs/usage/memory-state.md)                |
 | **Observability**                     | Middleware Pipeline, Event Streams, Custom Logging                     | [Read Guide](./docs/usage/observability-extensibility.md) |
+| **Skills System**                    | Declarative AI, Markdown Loading, Dynamic Tool Binding                 | [Read Guide](./docs/usage/skills-system.md)               |
 | **MCP Integration**                   | Model Context Protocol, Remote Tools, SSE Transports                   | [Read Guide](./docs/usage/mcp-integration.md)              |
 | **RAG: Document Ingestion**           | Document Ingestion, Vector Embedding, Similarity Search, Event Streams | [Read Guide](./docs/usage/rag-ingestion.md)               |
 | **RAG: Retrieval and LLM Generation** | Document Retrieval, RAG Pipeline, Event Streams                        | [Read Guide](./docs/usage/rag-retrieval.md)               |

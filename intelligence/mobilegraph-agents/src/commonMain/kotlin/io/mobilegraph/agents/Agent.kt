@@ -6,6 +6,7 @@ import io.mobilegraph.models.ChatModel
 import io.mobilegraph.models.ModelOutput
 import io.mobilegraph.models.SystemMessage
 import io.mobilegraph.models.UserMessage
+import io.mobilegraph.skills.Skill
 import io.mobilegraph.state.GraphState
 
 /**
@@ -24,6 +25,13 @@ interface Agent {
     val tools: ToolRegistry?
     val rolePrompt: SystemMessage
     val graph: StateGraph?
+
+    /**
+     * A list of skills equipped by this agent.
+     * Skill instructions will be automatically added to the system prompt,
+     * and skill tools will be added to the agent's capabilities.
+     */
+    val skills: List<Skill> get() = emptyList()
 
     /**
      * Whether this agent should have access to the global tool registry

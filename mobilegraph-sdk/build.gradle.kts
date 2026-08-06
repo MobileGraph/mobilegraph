@@ -46,6 +46,8 @@ kotlin {
             api(project(":intelligence:mobilegraph-models"))
             api(project(":intelligence:mobilegraph-agents"))
             api(project(":intelligence:mobilegraph-graph"))
+            api(project(":intelligence:mobilegraph-mcp"))
+            api(project(":intelligence:mobilegraph-skills"))
             api(project(":intelligence:mobilegraph-tools"))
             api(project(":intelligence:mobilegraph-parsers"))
             api(project(":intelligence:mobilegraph-prompts"))
