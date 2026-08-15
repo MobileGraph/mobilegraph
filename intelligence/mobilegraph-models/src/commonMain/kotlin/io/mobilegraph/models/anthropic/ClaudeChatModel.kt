@@ -49,16 +49,11 @@ class ClaudeChatModel(
     private val apiKey: String,
     private val baseUrl: String = "https://api.anthropic.com/v1",
     private val httpClient: HttpClient = createClaudeHttpClient(),
+    private val capabilities: Set<Capability> = defaultCapabilities(name),
 ) : StreamingChatModel {
     private val json = Json { ignoreUnknownKeys = true }
 
-    override fun supports(capability: Capability): Boolean =
-        capability in
-            setOf(
-                Capability.Streaming,
-                Capability.FunctionCalling,
-                Capability.Vision,
-            )
+    override fun supports(capability: Capability): Boolean = capability in capabilities
 
     override suspend fun invoke(
         prompt: ChatPromptValue,
@@ -320,5 +315,22 @@ class ClaudeChatModel(
             description = description,
             inputSchema = compliantSchema,
         )
+    }
+
+    companion object {
+        fun defaultCapabilities(modelName: String): Set<Capability> {
+            val caps =
+                mutableSetOf(
+                    Capability.Streaming,
+                    Capability.FunctionCalling,
+                )
+
+            // Most Claude 3+ models support vision
+            if (modelName.contains("claude-3")) {
+                caps.add(Capability.Vision)
+            }
+
+            return caps
+        }
     }
 }

@@ -51,17 +51,11 @@ open class OpenAIChatModel(
     private val apiKey: String,
     private val baseUrl: String = "https://api.openai.com/v1",
     private val httpClient: HttpClient = createOpenAIHttpClient(),
+    private val capabilities: Set<Capability> = defaultCapabilities(name),
 ) : StreamingChatModel {
     protected val json = Json { ignoreUnknownKeys = true }
 
-    override fun supports(capability: Capability): Boolean =
-        capability in
-            setOf(
-                Capability.Streaming,
-                Capability.FunctionCalling,
-                Capability.StructuredOutput,
-                Capability.Vision,
-            )
+    override fun supports(capability: Capability): Boolean = capability in capabilities
 
     override suspend fun invoke(
         prompt: ChatPromptValue,
@@ -356,4 +350,29 @@ open class OpenAIChatModel(
         )
 
     override fun readModelConfig(): ModelConfig? = null
+
+    companion object {
+        /**
+         * Default capabilities for OpenAI models based on their name.
+         */
+        fun defaultCapabilities(modelName: String): Set<Capability> {
+            val caps =
+                mutableSetOf(
+                    Capability.Streaming,
+                    Capability.FunctionCalling,
+                )
+
+            if (modelName.contains("gpt-4o") || modelName.contains("gpt-4-turbo")) {
+                caps.add(Capability.Vision)
+                caps.add(Capability.StructuredOutput)
+            }
+
+            if (modelName.startsWith("o1") || modelName.startsWith("o3")) {
+                caps.add(Capability.Reasoning)
+                caps.add(Capability.Vision)
+            }
+
+            return caps
+        }
+    }
 }

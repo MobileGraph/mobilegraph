@@ -9,6 +9,7 @@
 
 package io.mobilegraph.models.facade
 
+import io.mobilegraph.core.capability.Capability
 import io.mobilegraph.core.configuration.ModelsConfiguration
 import io.mobilegraph.core.environment.MobileGraphEnvironment
 import io.mobilegraph.core.tools.ToolDefinition
@@ -244,9 +245,16 @@ fun ModelsConfiguration.embedding(
 fun ModelsConfiguration.openai(
     apiKey: String,
     name: String = "gpt-4o",
+    capabilities: Set<Capability>? = null,
     block: ChatModelBuilder.() -> Unit = {},
 ) {
-    chat(name, OpenAIChatModel(apiKey = apiKey, name = name), block)
+    val model =
+        OpenAIChatModel(
+            apiKey = apiKey,
+            name = name,
+            capabilities = capabilities ?: OpenAIChatModel.defaultCapabilities(name),
+        )
+    chat(name, model, block)
 }
 
 /**
@@ -255,9 +263,16 @@ fun ModelsConfiguration.openai(
 fun ModelsConfiguration.gemini(
     apiKey: String,
     name: String = "gemini-2.5-flash-lite",
+    capabilities: Set<Capability>? = null,
     block: ChatModelBuilder.() -> Unit = {},
 ) {
-    chat(name, GeminiChatModel(apiKey = apiKey, name = name), block)
+    val model =
+        GeminiChatModel(
+            apiKey = apiKey,
+            name = name,
+            capabilities = capabilities ?: GeminiChatModel.defaultCapabilities(name),
+        )
+    chat(name, model, block)
 }
 
 /**
@@ -266,9 +281,16 @@ fun ModelsConfiguration.gemini(
 fun ModelsConfiguration.claude(
     apiKey: String,
     name: String = "claude-3-5-sonnet-20241022",
+    capabilities: Set<Capability>? = null,
     block: ChatModelBuilder.() -> Unit = {},
 ) {
-    chat(name, ClaudeChatModel(apiKey = apiKey, name = name), block)
+    val model =
+        ClaudeChatModel(
+            apiKey = apiKey,
+            name = name,
+            capabilities = capabilities ?: ClaudeChatModel.defaultCapabilities(name),
+        )
+    chat(name, model, block)
 }
 
 /**
@@ -277,9 +299,16 @@ fun ModelsConfiguration.claude(
 fun ModelsConfiguration.openrouter(
     apiKey: String,
     name: String,
+    capabilities: Set<Capability>? = null,
     block: ChatModelBuilder.() -> Unit = {},
 ) {
-    chat(name, OpenRouterChatModel(apiKey = apiKey, name = name), block)
+    val model =
+        OpenRouterChatModel(
+            apiKey = apiKey,
+            name = name,
+            capabilities = capabilities ?: OpenAIChatModel.defaultCapabilities(name),
+        )
+    chat(name, model, block)
 }
 
 /**

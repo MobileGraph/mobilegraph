@@ -411,7 +411,7 @@ Detailed guides for building agentic workflows with MobileGraph:
 ### Advanced
 *   **[Architecture Overview](./docs/ARCHITECTURE.md)**: How MobileGraph handles state and lifecycle.
 *   **[ADR (Architectural Decisions)](./docs/adrs)**: The "Why" behind our technical choices.
-
+*   AI generated documentation can be found - https://deepwiki.com/MobileGraph/mobilegraph
 ---
 
 ## 🤝 Contributing

@@ -14,6 +14,9 @@ The default provider, supporting `gpt-4o`, `gpt-4o-mini`, and legacy models.
 openai(apiKey = "sk-...") {
     isDefault = true
 }
+
+// Advanced: Explicitly declare capabilities for an instance
+openai(apiKey = "...", name = "gpt-4o-mini", capabilities = setOf(Capability.FunctionCalling))
 ```
 
 ### Google Gemini

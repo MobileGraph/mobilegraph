@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.mobilegraph.ai.BuildConfig
+import io.mobilegraph.core.capability.Capability
 import io.mobilegraph.core.context.SimpleExecutionContext
 import io.mobilegraph.core.facade.MobileGraph
 import io.mobilegraph.core.ids.RequestId
@@ -44,7 +45,19 @@ class ModelRouterViewModel : ViewModel() {
         MobileGraph.initialize {
             withModels {
                 // 1. Setup individual providers
-                openai(apiKey = BuildConfig.OPEN_AI_API_KEY, "gpt-4o-mini")
+                // Model X: Supports Vision and Streaming
+                openai(
+                    apiKey = BuildConfig.OPEN_AI_API_KEY,
+                    name = "gpt-4o",
+                    capabilities = setOf(Capability.Streaming, Capability.Vision),
+                )
+
+                // Model Y: Supports Tools and Structured Output
+                openai(
+                    apiKey = BuildConfig.OPEN_AI_API_KEY,
+                    name = "gpt-4o-mini",
+                    capabilities = setOf(Capability.FunctionCalling, Capability.StructuredOutput),
+                )
 
                 // Assuming keys are provided for demo purposes
                 gemini(apiKey = BuildConfig.GEMINI_API_KEY, name = "gemini-2.5-flash-lite")
@@ -52,10 +65,10 @@ class ModelRouterViewModel : ViewModel() {
 
                 // 2. Define the Intelligent Router
                 router("smart-assistant") {
-                    // Policy 1: If input contains images, use GPT-4o (Vision)
+                    // Policy 1: If input contains images, route to Model X (Vision enabled)
                     policy {
                         condition { it.hasImages }
-                        use("gpt-4o-mini")
+                        use("gpt-4o")
                     }
 
                     // Policy 2: If the prompt is very long, use Gemini (Large Context)

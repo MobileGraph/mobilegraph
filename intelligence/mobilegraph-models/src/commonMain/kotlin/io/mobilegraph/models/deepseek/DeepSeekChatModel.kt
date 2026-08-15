@@ -1,6 +1,7 @@
 package io.mobilegraph.models.deepseek
 
 import io.ktor.client.HttpClient
+import io.mobilegraph.core.capability.Capability
 import io.mobilegraph.models.openai.OpenAIChatModel
 import io.mobilegraph.models.openai.createOpenAIHttpClient
 
@@ -13,4 +14,5 @@ class DeepSeekChatModel(
     private val apiKey: String,
     private val baseUrl: String = "https://api.deepseek.com",
     private val httpClient: HttpClient = createOpenAIHttpClient(),
-) : OpenAIChatModel(name, apiKey, baseUrl, httpClient)
+    private val capabilities: Set<Capability> = OpenAIChatModel.defaultCapabilities(name),
+) : OpenAIChatModel(name, apiKey, baseUrl, httpClient, capabilities)

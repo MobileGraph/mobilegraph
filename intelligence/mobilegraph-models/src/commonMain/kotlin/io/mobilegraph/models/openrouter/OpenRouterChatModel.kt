@@ -29,7 +29,8 @@ class OpenRouterChatModel(
     private val apiKey: String,
     private val baseUrl: String = "https://openrouter.ai/api/v1",
     private val httpClient: HttpClient = createOpenAIHttpClient(),
-) : OpenAIChatModel(name, apiKey, baseUrl, httpClient) {
+    private val capabilities: Set<Capability> = OpenAIChatModel.defaultCapabilities(name),
+) : OpenAIChatModel(name, apiKey, baseUrl, httpClient, capabilities) {
     override fun supports(capability: Capability): Boolean = super.supports(capability) || capability == Capability.Vision
 
     override suspend fun invoke(
