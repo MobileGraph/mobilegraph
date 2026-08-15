@@ -45,16 +45,11 @@ class GeminiChatModel(
     private val apiKey: String,
     private val baseUrl: String = "https://generativelanguage.googleapis.com/v1beta",
     private val httpClient: HttpClient = createGeminiHttpClient(),
+    private val capabilities: Set<Capability> = defaultCapabilities(name),
 ) : StreamingChatModel {
     private val json = Json { ignoreUnknownKeys = true }
 
-    override fun supports(capability: Capability): Boolean =
-        capability in
-            setOf(
-                Capability.Streaming,
-                Capability.FunctionCalling,
-                Capability.Vision,
-            )
+    override fun supports(capability: Capability): Boolean = capability in capabilities
 
     override suspend fun invoke(
         prompt: ChatPromptValue,
@@ -287,4 +282,21 @@ class GeminiChatModel(
             description = description,
             parameters = parameters,
         )
+
+    companion object {
+        fun defaultCapabilities(modelName: String): Set<Capability> {
+            val caps =
+                mutableSetOf(
+                    Capability.Streaming,
+                    Capability.FunctionCalling,
+                )
+
+            // Gemini 1.5+ generally supports vision
+            if (modelName.contains("gemini-1.5") || modelName.contains("gemini-2")) {
+                caps.add(Capability.Vision)
+            }
+
+            return caps
+        }
+    }
 }
