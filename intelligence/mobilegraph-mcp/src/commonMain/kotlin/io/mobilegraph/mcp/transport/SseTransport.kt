@@ -31,6 +31,7 @@ class SseTransport(
     private val sseUrl: String,
     private val postUrl: String = sseUrl, // Usually the same base, but might differ
     private val isPost: Boolean = true,
+    private val headers: Map<String, String> = emptyMap(),
 ) : McpTransport {
     private var initialMessage: String? = null
     private var sessionId: String? = null
@@ -68,6 +69,9 @@ class SseTransport(
                 try {
                     val block: io.ktor.client.request.HttpRequestBuilder.() -> Unit = {
                         header("Accept", "text/event-stream, application/json")
+                        this@SseTransport.headers.forEach { (key, value) ->
+                            header(key, value)
+                        }
                         if (isPost) {
                             contentType(ContentType.Application.Json)
                             setBody(TextContent(initialMessage ?: "{}", ContentType.Application.Json))
@@ -134,6 +138,9 @@ class SseTransport(
         try {
             client.post(postUrl) {
                 header("Accept", "application/json")
+                this@SseTransport.headers.forEach { (key, value) ->
+                    header(key, value)
+                }
                 sessionId?.let { header("mcp-session-id", it) }
                 setBody(TextContent(message, ContentType.Application.Json))
             }

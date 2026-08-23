@@ -11,6 +11,26 @@ import io.mobilegraph.mcp.transport.StreamableHttpTransport
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
+class McpHttpServerBuilder {
+    private val _headers = mutableMapOf<String, String>()
+    val headers: Map<String, String> get() = _headers
+
+    fun header(
+        name: String,
+        value: String,
+    ) {
+        _headers[name] = value
+    }
+
+    fun headers(headers: Map<String, String>) {
+        _headers.putAll(headers)
+    }
+
+    fun headers(vararg pairs: Pair<String, String>) {
+        _headers.putAll(pairs)
+    }
+}
+
 class McpConfiguration {
     private val clients = mutableListOf<McpClient>()
 
@@ -21,8 +41,14 @@ class McpConfiguration {
         url: String,
         client: HttpClient = HttpClient(),
         isPost: Boolean = true,
+        headers: Map<String, String> = emptyMap(),
+        block: (McpHttpServerBuilder.() -> Unit)? = null,
     ) {
-        val transport = SseTransport(client, url, isPost = isPost)
+        val builder = McpHttpServerBuilder()
+        builder.headers(headers)
+        block?.invoke(builder)
+
+        val transport = SseTransport(client, url, isPost = isPost, headers = builder.headers)
         val mcpClient = McpClient(transport)
         clients.add(mcpClient)
     }
@@ -33,8 +59,14 @@ class McpConfiguration {
     fun streamableHttpServer(
         url: String,
         client: HttpClient = HttpClient(),
+        headers: Map<String, String> = emptyMap(),
+        block: (McpHttpServerBuilder.() -> Unit)? = null,
     ) {
-        val transport = StreamableHttpTransport(client, url)
+        val builder = McpHttpServerBuilder()
+        builder.headers(headers)
+        block?.invoke(builder)
+
+        val transport = StreamableHttpTransport(client, url, headers = builder.headers)
         val mcpClient = McpClient(transport)
         clients.add(mcpClient)
     }

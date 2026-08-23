@@ -74,7 +74,9 @@ class McpViewModel : ViewModel() {
             // 2. Install MCP Plugin
             plugins {
                 install(McpPlugin.Mcp) {
-                    streamableHttpServer("https://remote-mcp-server-authless.mobilegraph-mcp-test.workers.dev/mcp")
+                    streamableHttpServer("https://remote-mcp-server-authless.mobilegraph-mcp-test.workers.dev/mcp") {
+                        header("X-Custom", "Val")
+                    }
                 }
             }
 

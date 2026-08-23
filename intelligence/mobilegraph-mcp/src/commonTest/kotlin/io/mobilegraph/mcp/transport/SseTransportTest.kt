@@ -71,4 +71,42 @@ class SseTransportTest {
             assertEquals("test-session", capturedSessionId)
             transport.close()
         }
+
+    @Test
+    fun testCustomHeaders() =
+        runTest {
+            var capturedConnectAuth: String? = null
+            var capturedSendAuth: String? = null
+            val mockEngine =
+                MockEngine { request ->
+                    if (request.method.value == "POST") {
+                        capturedSendAuth = request.headers["Authorization"]
+                        respond("ok")
+                    } else {
+                        capturedConnectAuth = request.headers["Authorization"]
+                        respond(
+                            content = "data: {\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"ok\"}\n\n",
+                            headers = headersOf("Content-Type", "text/event-stream"),
+                        )
+                    }
+                }
+            val client = HttpClient(mockEngine)
+            val transport =
+                SseTransport(
+                    client,
+                    "http://test.com",
+                    isPost = false,
+                    headers = mapOf("Authorization" to "Bearer sse-token"),
+                )
+
+            val firstMsg = transport.receive().first()
+            assertTrue(firstMsg.contains("ok"))
+            assertEquals("Bearer sse-token", capturedConnectAuth)
+
+            transport.send("test-message")
+            delay(100)
+            assertEquals("Bearer sse-token", capturedSendAuth)
+
+            transport.close()
+        }
 }

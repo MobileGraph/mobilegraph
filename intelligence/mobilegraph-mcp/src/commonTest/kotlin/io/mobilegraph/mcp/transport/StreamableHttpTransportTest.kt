@@ -108,23 +108,41 @@ class StreamableHttpTransportTest {
 
             transport.send("test")
 
-            var response: String? = null
-            val job =
-                launch {
-                    transport.receive().collect {
-                        response = it
-                    }
+            val response = transport.receive().first()
+            assertTrue(response.contains("jsonrpc"), "Expected JSON-RPC error: $response")
+        }
+
+    @Test
+    fun testCustomHeaders() =
+        runTest {
+            var capturedAuth: String? = null
+            var capturedCustom: String? = null
+            val mockEngine =
+                MockEngine { request ->
+                    capturedAuth = request.headers["Authorization"]
+                    capturedCustom = request.headers["X-Custom-Header"]
+                    respond(
+                        content = """{"jsonrpc":"2.0","id":1,"result":"ok"}""",
+                        status = HttpStatusCode.OK,
+                        headers = headersOf("Content-Type", "application/json"),
+                    )
                 }
+            val client = HttpClient(mockEngine)
+            val transport =
+                StreamableHttpTransport(
+                    client,
+                    "http://test.com",
+                    headers =
+                        mapOf(
+                            "Authorization" to "Bearer test-token",
+                            "X-Custom-Header" to "CustomValue",
+                        ),
+                )
 
-            var attempts = 0
-            while (response == null && attempts < 20) {
-                delay(50)
-                attempts++
-            }
-
-            assertTrue(response != null, "Should have received an error response")
-            // Transport emits JSON-RPC error on non-2xx
-            assertTrue(response!!.contains("jsonrpc"), "Expected JSON-RPC error: $response")
-            job.cancel()
+            transport.send("test")
+            val response = transport.receive().first()
+            assertTrue(response.contains("ok"))
+            assertEquals("Bearer test-token", capturedAuth)
+            assertEquals("CustomValue", capturedCustom)
         }
 }

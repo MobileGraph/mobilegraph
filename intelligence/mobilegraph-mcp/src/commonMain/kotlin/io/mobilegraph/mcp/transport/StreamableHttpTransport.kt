@@ -28,6 +28,7 @@ import kotlinx.coroutines.launch
 class StreamableHttpTransport(
     private val client: HttpClient,
     private val url: String,
+    private val headers: Map<String, String> = emptyMap(),
 ) : McpTransport {
     private val messages =
         MutableSharedFlow<String>(
@@ -45,6 +46,9 @@ class StreamableHttpTransport(
                 client
                     .post(url) {
                         header("Accept", "application/json, text/event-stream")
+                        this@StreamableHttpTransport.headers.forEach { (key, value) ->
+                            header(key, value)
+                        }
                         sessionId?.let { header("mcp-session-id", it) }
                         setBody(TextContent(message, ContentType.Application.Json))
                     }.let { response ->
