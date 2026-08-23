@@ -6,11 +6,14 @@
 [![Android](https://img.shields.io/badge/Android-Supported-3DDC84?logo=android&logoColor=white)]()
 [![iOS](https://img.shields.io/badge/iOS-Supported-000000?logo=apple&logoColor=white)]()
 [![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](LICENSE)
-[![Maven Central](https://img.shields.io/maven-central/v/io.github.mobilegraph/mobilegraph-sdk)](https://central.sonatype.com/artifact/io.github.mobilegraph/mobilegraph-sdk)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.mobilegraph/mobilegraph-sdk)](https://central.sonatype.com/artifact/io.github.mobilegraph/mobilegraph-sdk/0.0.1)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/MobileGraph/mobilegraph)
 
 **MobileGraph** is an open-source Kotlin Multiplatform SDK that lets you add AI capabilities to your **Android** and **iOS** apps — from a simple chatbot to a full autonomous agent — without worrying about process death, lifecycle, or provider lock-in.
 
 Think of it as **"LangChain / LangGraph, but built for mobile."**
+
+You may also refer to our Medium blog post [here](https://medium.com/@bharatjyotih2/introducing-mobilegraph-an-open-source-ai-application-framework-for-kotlin-multiplatform-08a915738984)
 
 ### See it in action — a streaming chat in 4 lines:
 
