@@ -26,10 +26,14 @@ MobileGraph.initialize {
     plugins {
         install(McpPlugin.Mcp) {
             // Modern HTTP-based transport (optimized for Serverless/Cloudflare)
-            streamableHttpServer("https://mcp-server.example.com/mcp")
+            streamableHttpServer("https://mcp-server.example.com/mcp") {
+                header("Authorization", "Bearer your-token")
+            }
             
             // Or use classic persistent SSE transport
-            // sseServer("https://mcp-server.example.com/sse", isPost = true)
+            // sseServer("https://mcp-server.example.com/sse", isPost = true) {
+            //     header("Authorization", "Bearer your-token")
+            // }
         }
     }
 }
