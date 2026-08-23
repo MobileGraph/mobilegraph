@@ -34,4 +34,11 @@ class InMemoryCheckpointStore : CheckpointStore {
             checkpoints.remove(id)
             Unit
         }
+
+    override suspend fun getLatestCheckpointId(): String =
+        mutex.withLock {
+            checkpoints.values
+                .maxByOrNull { it.metadata.timestamp }
+                .let { it?.id?.value ?: "" }
+        }
 }

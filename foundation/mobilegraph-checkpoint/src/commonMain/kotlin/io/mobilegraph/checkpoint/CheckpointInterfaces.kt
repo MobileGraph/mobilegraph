@@ -52,4 +52,10 @@ interface CheckpointStore {
      * Deletes a specific checkpoint.
      */
     suspend fun delete(id: CheckpointId)
+
+    /**
+     * Returns the last checkpoint ID before HITL.
+     * While resuming the workflow after HITL, the client can use this ID to resume.
+     */
+    suspend fun getLatestCheckpointId(): String
 }
