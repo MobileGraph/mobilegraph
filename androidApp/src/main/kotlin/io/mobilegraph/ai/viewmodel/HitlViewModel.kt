@@ -155,9 +155,8 @@ class HitlViewModel : ViewModel() {
 
             try {
                 // Resume from the review node with user input
-                val traceId = review.state.executionContext.traceId.value
                 val nodeId = review.nodeId
-                val checkpointId = "${traceId}_${nodeId}_0" // Simplification for sample
+                val checkpointId = checkpointStore.getLatestCheckpointId()
 
                 val result =
                     agentRuntime.resume(
