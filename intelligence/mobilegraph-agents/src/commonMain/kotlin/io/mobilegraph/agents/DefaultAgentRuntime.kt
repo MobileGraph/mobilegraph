@@ -5,6 +5,7 @@ import io.mobilegraph.checkpoint.CheckpointStore
 import io.mobilegraph.core.events.EventPublisher
 import io.mobilegraph.core.events.MobileGraphEvent
 import io.mobilegraph.core.facade.MobileGraph
+import io.mobilegraph.graph.ExecutionConfig
 import io.mobilegraph.graph.ExecutionEngine
 import io.mobilegraph.graph.ExecutionResult
 import io.mobilegraph.graph.StateGraph
@@ -24,6 +25,7 @@ class DefaultAgentRuntime(
     override suspend fun run(
         graph: StateGraph,
         initialState: GraphState,
+        config: ExecutionConfig,
     ): ExecutionResult =
         coroutineScope {
             val eventPublisher = MobileGraph.instance.getComponent(EventPublisher::class)
@@ -38,7 +40,7 @@ class DefaultAgentRuntime(
             )
 
             try {
-                val result = executionEngine.execute(graph, initialState)
+                val result = executionEngine.execute(graph, initialState, config)
 
                 if (result is ExecutionResult.Success) {
                     eventPublisher?.publish(
@@ -67,6 +69,8 @@ class DefaultAgentRuntime(
         checkpointId: String,
         nodeId: String,
         input: Map<String, Any?>,
+        config: ExecutionConfig,
+        reExecute: Boolean,
     ): ExecutionResult =
         coroutineScope {
             val store = checkpointStore ?: throw IllegalStateException("CheckpointStore is required for resumption")
@@ -83,7 +87,7 @@ class DefaultAgentRuntime(
                 )
 
             try {
-                val result = executionEngine.resume(graph, resumedState, nodeId)
+                val result = executionEngine.resume(graph, resumedState, nodeId, config, reExecute)
 
                 if (result is ExecutionResult.Success) {
                     eventPublisher?.publish(

@@ -135,4 +135,12 @@ sealed interface MobileGraphEvent {
         override val sessionId: SessionId? = null,
         override val timestamp: Instant = Clock.System.now(),
     ) : MobileGraphEvent
+
+    data class LifecycleChanged(
+        val state: io.mobilegraph.core.lifecycle.LifecycleState,
+        override val traceId: TraceId = TraceId("system"),
+        override val requestId: RequestId = RequestId("system"),
+        override val sessionId: SessionId? = null,
+        override val timestamp: Instant = Clock.System.now(),
+    ) : MobileGraphEvent
 }

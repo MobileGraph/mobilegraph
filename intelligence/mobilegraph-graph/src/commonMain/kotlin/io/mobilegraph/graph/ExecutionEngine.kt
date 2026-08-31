@@ -16,6 +16,7 @@ interface ExecutionEngine {
     suspend fun execute(
         graph: StateGraph,
         initialState: GraphState,
+        config: ExecutionConfig = ExecutionConfig(),
     ): ExecutionResult
 
     /**
@@ -24,11 +25,14 @@ interface ExecutionEngine {
      * @param graph The graph to execute.
      * @param state The state to resume with.
      * @param nodeId The ID of the node to resume from.
+     * @param config The execution configuration.
      * @return The result of the graph execution.
      */
     suspend fun resume(
         graph: StateGraph,
         state: GraphState,
         nodeId: String,
+        config: ExecutionConfig = ExecutionConfig(),
+        reExecute: Boolean = false,
     ): ExecutionResult
 }

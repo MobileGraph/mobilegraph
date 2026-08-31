@@ -13,6 +13,7 @@ import io.ktor.utils.io.readLine
 import io.mobilegraph.core.capability.Capability
 import io.mobilegraph.core.context.ExecutionContext
 import io.mobilegraph.core.facade.MobileGraph
+import io.mobilegraph.core.lifecycle.LifecycleState
 import io.mobilegraph.core.tools.ToolDefinition
 import io.mobilegraph.core.tools.executeFromJson
 import io.mobilegraph.core.tools.toolRegistry
@@ -63,6 +64,11 @@ open class OpenAIChatModel(
         context: ExecutionContext,
     ): ModelOutput =
         try {
+            // Graceful Lifecycle Check
+            if (context.lifecycleState == LifecycleState.Background) {
+                println("OpenAIChatModel: Executing in background. Consider using a low-priority configuration.")
+            }
+
             val messages = prompt.messages.map { it.toOpenAI() }
             val openAIRequest =
                 OpenAIChatRequest(
