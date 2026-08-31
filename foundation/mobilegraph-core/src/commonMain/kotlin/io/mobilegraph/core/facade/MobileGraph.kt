@@ -63,7 +63,7 @@ class MobileGraph private constructor(
         /**
          * The current version of the MobileGraph SDK.
          */
-        const val VERSION = "0.0.1"
+        const val VERSION = "0.0.2"
 
         /**
          * Initializes MobileGraph with the given environment.
