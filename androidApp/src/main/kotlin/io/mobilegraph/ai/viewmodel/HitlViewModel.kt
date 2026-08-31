@@ -16,11 +16,16 @@ import io.mobilegraph.core.context.SimpleExecutionContext
 import io.mobilegraph.core.events.MobileGraphEvent
 import io.mobilegraph.core.facade.MobileGraph
 import io.mobilegraph.core.facade.events
+import io.mobilegraph.core.facade.initialize
 import io.mobilegraph.core.ids.RequestId
 import io.mobilegraph.core.ids.TraceId
+import io.mobilegraph.core.lifecycle.LifecycleRegistry
+import io.mobilegraph.core.lifecycle.LifecycleState
 import io.mobilegraph.core.tools.ToolRegistry
+import io.mobilegraph.graph.BackgroundPolicy
 import io.mobilegraph.graph.DefaultExecutionEngine
 import io.mobilegraph.graph.EndNode
+import io.mobilegraph.graph.ExecutionConfig
 import io.mobilegraph.graph.ExecutionResult
 import io.mobilegraph.graph.HumanReviewNode
 import io.mobilegraph.graph.StateGraph
@@ -74,7 +79,7 @@ class HitlViewModel : ViewModel() {
         if (isInitialized) return
         isInitialized = true
 
-        MobileGraph.initialize {
+        MobileGraph.initialize(context) {
             val chatModel = OpenAIChatModel(apiKey = BuildConfig.OPEN_AI_API_KEY, name = "gpt-4o")
             withModels {
                 chat("gpt-4o", chatModel) {
@@ -118,6 +123,20 @@ class HitlViewModel : ViewModel() {
                 message?.let { addEvent(it) }
             }
         }
+
+        // --- Auto-Resume Strategy ---
+        viewModelScope.launch {
+            val registry = MobileGraph.instance.getComponent(LifecycleRegistry::class)
+            registry?.currentState?.collect { state ->
+                if (state == LifecycleState.Foreground) {
+                    val review = awaitingReview
+                    if (review != null && review.checkpointId?.endsWith("_auto") == true) {
+                        addEvent("App foregrounded: Resuming background-paused execution")
+                        resumeFromPause(review)
+                    }
+                }
+            }
+        }
     }
 
     fun startWorkflow(topic: String) {
@@ -133,7 +152,31 @@ class HitlViewModel : ViewModel() {
                         userQuery = topic,
                     )
 
-                val result = agentRuntime.run(workflowGraph, initialState)
+                val config = ExecutionConfig(backgroundPolicy = BackgroundPolicy.PAUSE)
+                val result = agentRuntime.run(workflowGraph, initialState, config)
+                handleResult(result)
+            } catch (e: Exception) {
+                uiState = "Error: ${e.message}"
+            } finally {
+                isLoading = false
+            }
+        }
+    }
+
+    private fun resumeFromPause(review: ExecutionResult.AwaitingReview) {
+        viewModelScope.launch {
+            isLoading = true
+            uiState = "Resuming..."
+            awaitingReview = null
+            try {
+                val result =
+                    agentRuntime.resume(
+                        graph = workflowGraph,
+                        checkpointId = review.checkpointId!!,
+                        nodeId = review.nodeId,
+                        config = ExecutionConfig(backgroundPolicy = BackgroundPolicy.PAUSE),
+                        reExecute = true,
+                    )
                 handleResult(result)
             } catch (e: Exception) {
                 uiState = "Error: ${e.message}"

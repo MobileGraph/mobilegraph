@@ -49,6 +49,12 @@ interface ExecutionContext : ComponentProvider {
     val locale: String?
 
     /**
+     * The current lifecycle state of the application.
+     */
+    val lifecycleState: io.mobilegraph.core.lifecycle.LifecycleState
+        get() = io.mobilegraph.core.lifecycle.LifecycleState.Foreground
+
+    /**
      * Epoch timestamp (ms) after which the operation should time out.
      */
     val deadline: Long?

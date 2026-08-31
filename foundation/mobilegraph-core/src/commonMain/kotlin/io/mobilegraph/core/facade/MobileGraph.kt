@@ -121,5 +121,16 @@ class MobileGraph private constructor(
          * @return The initialized [MobileGraph] instance.
          */
         operator fun invoke(block: MobileGraphEnvironment.Builder.() -> Unit): MobileGraph = initialize(block)
+
+        /**
+         * Shuts down the SDK and releases all platform resources.
+         */
+        fun terminate() {
+            _instance?.let {
+                it.getComponent(io.mobilegraph.core.lifecycle.LifecycleObserver::class)?.stop()
+                it.runtime.terminate()
+                _instance = null
+            }
+        }
     }
 }

@@ -49,6 +49,11 @@ kotlin {
             implementation(libs.ktor.client.core)
             api(libs.kotlinx.serialization.json)
         }
+        val androidMain by getting {
+            dependencies {
+                implementation("androidx.lifecycle:lifecycle-process:2.11.0")
+            }
+        }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
             implementation(libs.kotlinx.coroutines.test)

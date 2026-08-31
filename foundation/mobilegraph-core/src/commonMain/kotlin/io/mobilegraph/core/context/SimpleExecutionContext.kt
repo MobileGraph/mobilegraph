@@ -14,6 +14,7 @@ data class SimpleExecutionContext(
     override val requestId: RequestId,
     override val metadata: Metadata = Metadata(),
     override val locale: String? = null,
+    override val lifecycleState: io.mobilegraph.core.lifecycle.LifecycleState = io.mobilegraph.core.lifecycle.LifecycleState.Foreground,
     override val deadline: Long? = null,
     override val cancellationToken: CancellationToken = CancellationToken.None,
     private val componentProvider: ComponentProvider? = null,

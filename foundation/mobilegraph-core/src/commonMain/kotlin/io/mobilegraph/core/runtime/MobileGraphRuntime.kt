@@ -16,11 +16,13 @@ import io.mobilegraph.core.events.MobileGraphEvent
 import io.mobilegraph.core.ids.RequestId
 import io.mobilegraph.core.ids.SessionId
 import io.mobilegraph.core.ids.TraceId
+import io.mobilegraph.core.lifecycle.LifecycleRegistry
 import io.mobilegraph.core.metadata.Metadata
 import io.mobilegraph.core.session.MobileGraphSession
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -42,6 +44,17 @@ internal class MobileGraphRuntime(
         )
     val events = _events.asSharedFlow()
 
+    init {
+        // Observe lifecycle changes if registry is present
+        environment.getComponent(LifecycleRegistry::class)?.let { registry ->
+            scope.launch {
+                registry.currentState.collect { state ->
+                    publishEvent(MobileGraphEvent.LifecycleChanged(state))
+                }
+            }
+        }
+    }
+
     fun createSession(modelName: String? = null): MobileGraphSession = DefaultMobileGraphSession(this, modelName)
 
     override suspend fun publish(event: MobileGraphEvent) {
@@ -51,6 +64,24 @@ internal class MobileGraphRuntime(
     suspend fun publishEvent(event: MobileGraphEvent) {
         println("SDK Runtime: Publishing event: $event")
         _events.emit(event)
+    }
+
+    fun terminate() {
+        scope.launch {
+            _events.emit(
+                MobileGraphEvent.RequestFailed(
+                    traceId =
+                        io.mobilegraph.core.ids
+                            .TraceId("system"),
+                    requestId =
+                        io.mobilegraph.core.ids
+                            .RequestId("system"),
+                    errorMessage = "SDK Terminated",
+                ),
+            )
+        }
+        // Cancel all ongoing operations in this runtime
+        scope.cancel()
     }
 }
 
@@ -70,6 +101,13 @@ internal class DefaultMobileGraphSession(
             override val requestId: RequestId get() = RequestId("req-${kotlin.random.Random.nextInt()}")
             override val metadata: Metadata = Metadata()
             override val locale: String? = null
+            override val lifecycleState: io.mobilegraph.core.lifecycle.LifecycleState
+                get() =
+                    runtime.environment
+                        .getComponent(LifecycleRegistry::class)
+                        ?.currentState
+                        ?.value
+                        ?: io.mobilegraph.core.lifecycle.LifecycleState.Foreground
             override val deadline: Long? = null
             override val cancellationToken: CancellationToken = CancellationToken.None
 

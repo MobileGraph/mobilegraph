@@ -10,8 +10,10 @@ import io.mobilegraph.ai.BuildConfig
 import io.mobilegraph.core.capability.Capability
 import io.mobilegraph.core.context.SimpleExecutionContext
 import io.mobilegraph.core.facade.MobileGraph
+import io.mobilegraph.core.facade.initialize
 import io.mobilegraph.core.ids.RequestId
 import io.mobilegraph.core.ids.TraceId
+import io.mobilegraph.core.lifecycle.LifecycleRegistry
 import io.mobilegraph.models.ChatPromptValue
 import io.mobilegraph.models.ContentPart
 import io.mobilegraph.models.ModelOutput
@@ -35,6 +37,7 @@ class ModelRouterViewModel : ViewModel() {
     var isLoading by mutableStateOf(false)
     var responseText by mutableStateOf("")
     var routedModelName by mutableStateOf("")
+    var lifecycleState by mutableStateOf("Unknown")
 
     private var isInitialized = false
 
@@ -42,7 +45,7 @@ class ModelRouterViewModel : ViewModel() {
         if (isInitialized) return
         isInitialized = true
 
-        MobileGraph.initialize {
+        MobileGraph.initialize(context) {
             withModels {
                 // 1. Setup individual providers
                 // Model X: Supports Vision and Streaming
@@ -80,6 +83,14 @@ class ModelRouterViewModel : ViewModel() {
                     // Default: Use Claude for general reasoning
                     default("claude-sonnet-4-5-20250929")
                 }
+            }
+        }
+
+        // Observe lifecycle state
+        viewModelScope.launch {
+            val registry = MobileGraph.instance.getComponent(LifecycleRegistry::class)
+            registry?.currentState?.collect { state ->
+                lifecycleState = state.name
             }
         }
     }
@@ -130,6 +141,15 @@ class ModelRouterViewModel : ViewModel() {
                 uiState = "Error"
             } finally {
                 isLoading = false
+            }
+        }
+
+        // Observe lifecycle state
+        viewModelScope.launch {
+            val registry = MobileGraph.instance.getComponent(LifecycleRegistry::class)
+            registry?.currentState?.collect { state ->
+                // handle UI from here
+                lifecycleState = state.name
             }
         }
     }

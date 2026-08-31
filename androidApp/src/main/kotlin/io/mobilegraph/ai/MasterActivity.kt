@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.tom_roush.pdfbox.android.PDFBoxResourceLoader
+import io.mobilegraph.core.facade.MobileGraph
 
 class MasterActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,6 +52,13 @@ class MasterActivity : ComponentActivity() {
                     },
                 )
             }
+        }
+    } // In your Activity, Fragment, or a custom Application cleanup
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (isFinishing) {
+            MobileGraph.terminate()
         }
     }
 }

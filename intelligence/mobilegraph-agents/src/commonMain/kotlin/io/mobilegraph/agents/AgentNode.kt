@@ -106,7 +106,7 @@ class AgentNode(
         }
     }
 
-    private fun resolveRegistry(): ToolRegistry? {
+    fun resolveRegistry(): ToolRegistry? {
         val localTools = agent.tools
         val skillTools =
             if (agent.skills.isNotEmpty()) {

@@ -82,10 +82,12 @@ sealed interface ExecutionResult {
      * Execution is paused waiting for human review.
      * @property nodeId The ID of the node that requested review.
      * @property state The current state of the graph.
+     * @property checkpointId Optional ID of the saved checkpoint for resumption.
      */
     data class AwaitingReview(
         val nodeId: String,
         override val state: GraphState,
+        val checkpointId: String? = null,
     ) : ExecutionResult
 
     /**
