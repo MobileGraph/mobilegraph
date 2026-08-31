@@ -406,6 +406,7 @@ Detailed guides for building agentic workflows with MobileGraph:
 | **Tools & Agents**                    | Function Calling, Semantic Tool Selection, Vector Caching              | [Read Guide](./docs/usage/tools-agents.md)                |
 | **Resilience & Memory**               | Chat Memory, Sliding Windows, Local-First Sync                         | [Read Guide](./docs/usage/memory-state.md)                |
 | **Observability**                     | Middleware Pipeline, Event Streams, Custom Logging                     | [Read Guide](./docs/usage/observability-extensibility.md) |
+| **Lifecycle & Resilience**            | Background Policies, Auto-Resume, Connectivity awareness               | [Read Guide](./docs/usage/lifecycle-management.md)        |
 | **Skills System**                    | Declarative AI, Markdown Loading, Dynamic Tool Binding                 | [Read Guide](./docs/usage/skills-system.md)               |
 | **MCP Integration**                   | Model Context Protocol, Remote Tools, SSE Transports                   | [Read Guide](./docs/usage/mcp-integration.md)              |
 | **RAG: Document Ingestion**           | Document Ingestion, Vector Embedding, Similarity Search, Event Streams | [Read Guide](./docs/usage/rag-ingestion.md)               |
