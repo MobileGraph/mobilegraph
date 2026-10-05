@@ -143,4 +143,58 @@ sealed interface MobileGraphEvent {
         override val sessionId: SessionId? = null,
         override val timestamp: Instant = Clock.System.now(),
     ) : MobileGraphEvent
+
+    // --- Phase 4: A2A (Agent-to-Agent) Events ---
+
+    data class A2ATaskSubmitted(
+        override val traceId: TraceId,
+        override val requestId: RequestId,
+        val remoteAgent: String,
+        val nodeId: String,
+        override val sessionId: SessionId? = null,
+        override val timestamp: Instant = Clock.System.now(),
+    ) : MobileGraphEvent
+
+    data class A2ATaskStatusChanged(
+        override val traceId: TraceId,
+        override val requestId: RequestId,
+        val taskId: String,
+        val status: String,
+        val remoteAgent: String,
+        val nodeId: String,
+        override val sessionId: SessionId? = null,
+        override val timestamp: Instant = Clock.System.now(),
+    ) : MobileGraphEvent
+
+    data class A2AArtifactReceived(
+        override val traceId: TraceId,
+        override val requestId: RequestId,
+        val taskId: String,
+        val artifactId: String,
+        val remoteAgent: String,
+        val nodeId: String,
+        override val sessionId: SessionId? = null,
+        override val timestamp: Instant = Clock.System.now(),
+    ) : MobileGraphEvent
+
+    data class A2ATaskCompleted(
+        override val traceId: TraceId,
+        override val requestId: RequestId,
+        val taskId: String,
+        val remoteAgent: String,
+        val nodeId: String,
+        override val sessionId: SessionId? = null,
+        override val timestamp: Instant = Clock.System.now(),
+    ) : MobileGraphEvent
+
+    data class A2ATaskFailed(
+        override val traceId: TraceId,
+        override val requestId: RequestId,
+        val taskId: String,
+        val error: String,
+        val remoteAgent: String,
+        val nodeId: String,
+        override val sessionId: SessionId? = null,
+        override val timestamp: Instant = Clock.System.now(),
+    ) : MobileGraphEvent
 }

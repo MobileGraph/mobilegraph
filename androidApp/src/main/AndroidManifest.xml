@@ -30,6 +30,7 @@
         <activity android:name=".AgentRouterActivity" />
         <activity android:name=".McpActivity" />
         <activity android:name=".SkillActivity" />
+        <activity android:name=".A2AActivity" />
     </application>
 
 </manifest>

@@ -27,6 +27,7 @@ dependencies {
     implementation(projects.intelligence.mobilegraphRag)
     implementation(projects.intelligence.mobilegraphGraph)
     implementation(projects.intelligence.mobilegraphAgents)
+    implementation(projects.intelligence.mobilegraphA2a)
     implementation(projects.knowledge.mobilegraphDocuments)
     implementation(projects.knowledge.mobilegraphEmbeddings)
     implementation(projects.knowledge.mobilegraphRetrieval)
@@ -34,6 +35,7 @@ dependencies {
 
     implementation(libs.sqldelight.android.driver)
     implementation(libs.ktor.client.okhttp)
+    implementation(libs.ktor.client.mock)
     implementation(libs.jsoup)
     implementation(libs.androidx.activity.compose)
 
