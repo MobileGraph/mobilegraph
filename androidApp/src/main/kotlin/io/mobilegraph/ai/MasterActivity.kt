@@ -48,6 +48,7 @@ class MasterActivity : ComponentActivity() {
                             10 -> startActivity(Intent(this, AgentRouterActivity::class.java))
                             11 -> startActivity(Intent(this, McpActivity::class.java))
                             12 -> startActivity(Intent(this, SkillActivity::class.java))
+                            13 -> startActivity(Intent(this, A2AActivity::class.java))
                         }
                     },
                 )
@@ -191,6 +192,15 @@ fun MasterScreen(onOptionSelected: (Int) -> Unit) {
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 Text("12. Skills System (Declarative AI)")
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Button(
+                onClick = { onOptionSelected(13) },
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text("13. A2A Protocol (Agent-to-Agent Delegation)")
             }
         }
     }

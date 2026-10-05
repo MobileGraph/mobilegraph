@@ -10,10 +10,11 @@ Our mission is to become the **Kotlin-first AI framework for the Android ecosyst
 | ✅ Phase 2  | Completed | Knowledge Layer (RAG)                  |
 | ✅ Phase 3  | Completed | Agent Runtime (Durable Workflows)      |
 | ✅ Phase 4  | Completed | Multi-Model Cloud Ecosystem            |
-| 🔜 Phase 5 |  Planned  | Model Context Protocol (MCP)           |
-| 🔜 Phase 6 |  Planned  | Local AI & Edge Inference              |
-| 🔮 Phase 7 |  Future   | Android & Automotive Ecosystem         |
-| 🚀 Phase 8 |  Vision   | MobileGraph Studio (Visual Builder)    |
+| ✅ Phase 5  | Completed | Model Context Protocol (MCP)           |
+| ✅ Phase 6  | Completed | Agent-to-Agent (A2A) Protocol          |
+| 🔜 Phase 7  |  Planned  | Local AI & Edge Inference              |
+| 🔮 Phase 8  |  Future   | Android & Automotive Ecosystem         |
+| 🚀 Phase 9  |  Vision   | MobileGraph Studio (Visual Builder)    |
 
 ---
 
@@ -29,22 +30,24 @@ Durable, mobile-first agent execution engine. Support for stateful graphs, auton
 ## ✅ Phase 4 — Model Ecosystem
 Expanded cloud provider suite. Native integration for OpenAI, Gemini, Claude, DeepSeek, Hugging Face, and OpenRouter. Includes multi-modal vision and intelligent model routing.
 
+## ✅ Phase 5 — Model Context Protocol (MCP)
+Enable seamless interoperability with external tools and services through MCP. Includes MCP client, Streamable HTTP and SSE transports, and dynamic tool discovery.
+
+## ✅ Phase 6 — Agent-to-Agent (A2A) Protocol
+Enable multi-agent collaboration across heterogeneous systems via A2A Protocol v1.0.
+
+### Highlights
+* A2A Client for Android & KMP (`:intelligence:mobilegraph-a2a`)
+* Agent Card discovery (`/.well-known/agent-card.json`)
+* Task delegation via JSON-RPC (`SendMessage`, `GetTask`, `CancelTask`)
+* Real-time SSE streaming updates (`SendStreamingMessage`)
+* Human-in-the-loop (HITL) task handling (`input-required`)
+* Multi-modal artifacts and conversation history tracking
+* Automatic protocol version fallback (v1.0 → v0.3)
+
 ---
 
-## 🚧 Phase 5 — Model Context Protocol (MCP)
-
-Enable seamless interoperability with external tools and services through MCP.
-
-### Planned Features
-* MCP Client for Android
-* Remote MCP Server connections
-* Dynamic tool discovery via MCP
-* MCP Resource & Prompt support
-* Secure authentication & session management
-
----
-
-## 🔜 Phase 6 — Local AI & Edge Inference
+## 🔜 Phase 7 — Local AI & Edge Inference
 
 Bring private, offline AI directly to Android devices.
 
@@ -57,7 +60,7 @@ Bring private, offline AI directly to Android devices.
 
 ---
 
-## 🔮 Phase 7 — Android Ecosystem
+## 🔮 Phase 8 — Android Ecosystem
 
 Extend MobileGraph across the Android platform family.
 
@@ -68,7 +71,7 @@ Extend MobileGraph across the Android platform family.
 
 ---
 
-## 🚀 Phase 8 — MobileGraph Studio
+## 🚀 Phase 9 — MobileGraph Studio
 
 Create a visual development environment for designing AI workflows.
 
