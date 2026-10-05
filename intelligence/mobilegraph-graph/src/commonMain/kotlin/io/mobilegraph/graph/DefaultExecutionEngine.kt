@@ -18,6 +18,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import kotlin.coroutines.cancellation.CancellationException
+import kotlin.time.Clock
 
 /**
  * Core engine responsible for traversing and executing a [StateGraph].
@@ -142,9 +143,16 @@ class DefaultExecutionEngine(
                                                 )
 
                                                 // 2. Save Checkpoint (Durability)
-                                                saveCheckpoint(nodeId, result.state)
+                                                val savedCheckpointId = saveCheckpoint(nodeId, result.state)
 
-                                                nodeId to result
+                                                val updatedResult =
+                                                    if (result is ExecutionResult.AwaitingReview && result.checkpointId == null) {
+                                                        result.copy(checkpointId = savedCheckpointId)
+                                                    } else {
+                                                        result
+                                                    }
+
+                                                nodeId to updatedResult
                                             } catch (e: Exception) {
                                                 // Error Strategy: Isolated Failure
                                                 // If a node crashes, we catch it here so that its siblings in a
@@ -229,7 +237,7 @@ class DefaultExecutionEngine(
     ): String? {
         if (checkpointStore == null) return null
 
-        val now = 0L // Mocked for now
+        val now = Clock.System.now().toEpochMilliseconds()
 
         val suffix = if (isAutoSave) "_auto" else ""
         val checkpointId =

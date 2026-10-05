@@ -29,14 +29,16 @@ session.stream("Plan a 3-day trip to Tokyo").collect { chunk ->
 
 | Capability | What it means |
 |---|---|
-| 💬 **AI Chat** | Streaming conversations with OpenAI, Gemini, Claude, or any provider — swap with one line |
-| 📄 **RAG (search your docs)** | Load PDFs or text on-device, embed them, and let the LLM answer questions from your data |
-| 🤖 **Autonomous Agents** | LLMs that decide when to call your Kotlin functions (weather, calculator, APIs…) |
-| 🧩 **Skills System** | Load "Expertise" from Markdown files at runtime — dynamic behavior without code updates |
-| 🔀 **Multi-Agent Workflows** | Run agents in parallel, chain them, or build manager → worker hierarchies |
-| 💾 **Survives Process Death** | Checkpoints state automatically — your AI workflow resumes exactly where it left off |
-| 🧑‍💻 **Human-in-the-Loop** | Pause any workflow to ask for user approval, then continue |
-| 📱 **Truly Mobile-First** | Lifecycle-aware, offline-capable, battery-conscious — not just an API wrapper |
+| 💬 **AI Chat & Intelligent Routing** | Streaming conversations with OpenAI, Gemini, Claude, or OpenRouter with automated policy-based model routing |
+| 📄 **RAG (Search Your Docs)** | Load PDFs or text on-device, embed them into local vector stores (SQLite), and query with semantic retrieval |
+| 🤖 **Autonomous Tool Agents** | LLMs that dynamically decide when and how to call local Kotlin functions (Weather, Calculator, APIs...) |
+| 🧩 **Skills System** | Load declarative AI capabilities and tool bindings from Markdown files at runtime without code re-deployment |
+| 🔌 **Model Context Protocol (MCP)** | Connect to remote MCP servers over Streamable HTTP and SSE for dynamic tool and resource discovery |
+| 🤝 **Agent-to-Agent (A2A) Protocol** | Discover remote agents via Agent Cards, delegate tasks over A2A Protocol v1.0 with real-time SSE streaming |
+| 🔀 **Multi-Agent Workflows** | Run agents in parallel (Fan-out/in), chain them in state graphs, or build manager → worker hierarchies |
+| 💾 **Durable Execution & Checkpointing** | Checkpoints graph state automatically — your AI workflow survives backgrounding and process death |
+| 🧑‍💻 **Human-in-the-Loop (HITL)** | Pause workflows at review nodes for user approval/feedback, then resume execution seamlessly |
+| 📱 **Mobile-First & Lifecycle-Aware** | Reactive to Android/iOS lifecycles, memory pressure, and offline/network transitions with background policies |
 
 ---
 
@@ -249,9 +251,10 @@ Our mission is to become the **Kotlin-first AI framework for the Android ecosyst
 | ✅ Phase 3  |  Completed  | Multi-Agent Orchestration    |
 | ✅ Phase 4  |  Completed  | Multi-Model Cloud Ecosystem  |
 | ✅ Phase 5  |  Completed  | Model Context Protocol (MCP) |
-| 🔜 Phase 6 |   Planned   | Local AI & Edge Inference    |
-| 🔮 Phase 7 |    Future   | Android Ecosystem            |
-| 🚀 Phase 8 |    Vision   | MobileGraph Studio           |
+| ✅ Phase 6  |  Completed  | Agent-to-Agent (A2A) Protocol|
+| 🔜 Phase 7 |   Planned   | Local AI & Edge Inference    |
+| 🔮 Phase 8 |    Future   | Android Ecosystem            |
+| 🚀 Phase 9 |    Vision   | MobileGraph Studio           |
 
 ---
 
@@ -354,6 +357,7 @@ For a detailed module dependency graph and architecture diagrams, see the **[Arc
 
 ### Intelligence & Agents
 *   **`mobilegraph-agents`**: Orchestration logic for multi-agent workflows, parallel execution, and hierarchical delegation.
+*   **`mobilegraph-a2a`**: Implementation of the Agent-to-Agent (A2A) Protocol (v1.0). Enables discovering and delegating tasks to remote A2A agents with SSE streaming and automatic v0.3 fallback.
 *   **`mobilegraph-graph`**: Graph-based state machine engine with support for Fan-out/in and breakpoints.
 *   **`mobilegraph-skills`**:Declarative AI capabilities. Load instructions and bind tools directly from Markdown files.
 *   **`mobilegraph-mcp`**:Implementation of the Model Context Protocol (MCP). Supports **Streamable HTTP** and **SSE** transports for dynamic remote tool and resource discovery.
@@ -378,6 +382,8 @@ The project includes a comprehensive reference implementation for Android that d
 *   **Resilient Chat**: Basic state-aware interaction that survives backgrounding and process death.
 *   **RAG (Retrieval-Augmented Generation)**: On-device PDF ingestion, vector embedding, and semantic retrieval.
 *   **Autonomous Tool Agents**: LLMs that can independently decide when and how to call local Kotlin functions (e.g., Weather, Calculator).
+*   **Model Context Protocol (MCP)**: Connecting to remote MCP tool servers over SSE and Streamable HTTP.
+*   **Agent-to-Agent (A2A) Protocol**: Discovering remote multi-skill A2A agents via Agent Cards, delegating tasks over A2A v1.0, and receiving real-time SSE stream events.
 *   **Human-in-the-Loop (HITL)**: Workflows that pause for manual approval or feedback before proceeding.
 *   **Parallel Execution (Fan-out/in)**: Running multiple agents simultaneously (e.g., a Researcher and a Poet) and merging their results.
 *   **Hierarchical Sub-Agents**: Complex "Manager-Worker" orchestrations where agents manage their own internal sub-graphs.
@@ -409,12 +415,15 @@ Detailed guides for building agentic workflows with MobileGraph:
 | **Lifecycle & Resilience**            | Background Policies, Auto-Resume, Connectivity awareness               | [Read Guide](./docs/usage/lifecycle-management.md)        |
 | **Skills System**                    | Declarative AI, Markdown Loading, Dynamic Tool Binding                 | [Read Guide](./docs/usage/skills-system.md)               |
 | **MCP Integration**                   | Model Context Protocol, Remote Tools, SSE Transports                   | [Read Guide](./docs/usage/mcp-integration.md)              |
+| **A2A Integration**                   | Agent-to-Agent Protocol v1.0, Agent Discovery, Remote Task Delegation  | [Read Guide](./docs/guides/a2a.md)                        |
 | **RAG: Document Ingestion**           | Document Ingestion, Vector Embedding, Similarity Search, Event Streams | [Read Guide](./docs/usage/rag-ingestion.md)               |
 | **RAG: Retrieval and LLM Generation** | Document Retrieval, RAG Pipeline, Event Streams                        | [Read Guide](./docs/usage/rag-retrieval.md)               |
 
-### Advanced
+### Advanced Architecture & Decision Records
 *   **[Architecture Overview](./docs/ARCHITECTURE.md)**: How MobileGraph handles state and lifecycle.
-*   **[ADR (Architectural Decisions)](./docs/adrs)**: The "Why" behind our technical choices.
+*   **[A2A Protocol Architecture](./docs/architecture/a2a.md)**: Design of the A2A client, transport layer, and graph integration.
+*   **[ADR 0001: A2A Integration](./docs/adr/0001-a2a-integration.md)**: Architectural decision record for A2A support.
+*   **[ADR (Architectural Decisions)](./docs/adrs)**: Complete index of technical architectural choices.
 *   AI generated documentation can be found - https://deepwiki.com/MobileGraph/mobilegraph
 ---
 
